@@ -14,7 +14,7 @@
     </head>
     <body class="nav-fixed">
          @include('layouts.includes._sidebar')
-         @include('layouts.includes._topbar')
+         {{-- @include('layouts.includes._topbar') --}}
          @yield('content')
          @include('layouts.includes._footer')
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
