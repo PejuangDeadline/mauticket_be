@@ -2,11 +2,11 @@
     <nav class="sidenav shadow-right sidenav-light">
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
-                <a class="mt-4 nav-link" href="charts.html">
+                <a class="mt-4 nav-link" href="{{url('/dropdown')}}">
                     <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
                     Dropdown
                 </a>
-                <a class="mt-4 nav-link" href="charts.html">
+                <a class="mt-4 nav-link" href="{{url('/rule')}}">
                     <div class="nav-link-icon"><i data-feather="tool"></i></div>
                     Rules
                 </a>
