@@ -2,14 +2,18 @@
     <nav class="sidenav shadow-right sidenav-light">
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
-                <a class="mt-4 nav-link" href="{{url('/dropdown')}}">
-                    <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
-                    Dropdown
-                </a>
-                <a class="mt-4 nav-link" href="{{url('/rule')}}">
+                 <!-- Sidenav Accordion (Utilities)-->
+                 <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseUtilities" aria-expanded="false" aria-controls="collapseUtilities">
                     <div class="nav-link-icon"><i data-feather="tool"></i></div>
-                    Rules
+                    Master Configuration
+                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
+                <div class="collapse" id="collapseUtilities" data-bs-parent="#accordionSidenav">
+                    <nav class="sidenav-menu-nested nav">
+                        <a class="nav-link" href="{{url('/dropdown')}}">Dropdown</a>
+                        <a class="nav-link" href="{{url('/rule')}}">Rules</a>
+                    </nav>
+                </div>
             </div>
         </div>
         <!-- Sidenav Footer-->
