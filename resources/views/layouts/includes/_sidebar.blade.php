@@ -12,6 +12,7 @@
                     <nav class="sidenav-menu-nested nav">
                         <a class="nav-link" href="{{url('/dropdown')}}">Dropdown</a>
                         <a class="nav-link" href="{{url('/rule')}}">Rules</a>
+                        <a class="nav-link" href="{{url('/user')}}">User</a>
                     </nav>
                 </div>
             </div>
