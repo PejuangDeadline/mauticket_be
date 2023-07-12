@@ -27,9 +27,9 @@ class UserController extends Controller
             'role' => 'required',
             'password' => 'required',
         ]);
-
-        $password = encrypt($request->password);
-
+        
+        $password = bcrypt($request->password);
+        //dd($password);
         $addUser=User::create([
             'id_partner' => '0',
             'name' => $request->name,
