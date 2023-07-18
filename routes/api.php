@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\ApiAuthController;
+use App\Http\Controllers\API\ApiRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [ApiRegisterController::class, 'register']);
+Route::post('getToken', [ApiRegisterController::class, 'getToken']);
+
+Route::middleware('auth:api')->group(function () {
+    //Auth for FE
+    Route::post('signup/store', [ApiAuthController::class, 'storesignup']);
+    Route::post('send-token', [ApiAuthController::class, 'sendToken']);
+    Route::post('verify-email', [ApiAuthController::class, 'verifemail']);
 });

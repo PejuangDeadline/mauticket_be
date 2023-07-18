@@ -51,4 +51,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/partner', [MstPartnerController::class, 'index']);
     Route::post('/partner/store', [MstPartnerController::class, 'storePartner']);
     Route::post('/contract', [MstPartnerController::class, 'storeContract']);
+
+    //ajaxArea
+    Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
+    Route::get('/ajax/mappingDistrict/{city_id}', 'App\Http\Controllers\AjaxAreaController@searchDistrict')->name('mappingDistrict');
+    Route::get('/ajax/mappingSubDistrict/{district_id}', 'App\Http\Controllers\AjaxAreaController@searchSubDistrict')->name('mappingSubDistrict');
+    Route::get('/ajax/mappingZipcode/{subdistrict_id}', 'App\Http\Controllers\AjaxAreaController@searchZipcode')->name('mappingZipcode');
 });
