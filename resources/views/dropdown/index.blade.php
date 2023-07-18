@@ -116,6 +116,7 @@
                       <!--end validasi form-->
                     </div>
                 </div>
+                <div class="table-responsive"> 
                 <table id="tableUser" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -237,6 +238,7 @@
                     @endforeach
                   </tbody>
                 </table>
+              </div>
               </div>
               <!-- /.card-body -->
             </div>
