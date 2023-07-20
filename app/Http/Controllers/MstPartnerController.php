@@ -14,8 +14,10 @@ class MstPartnerController extends Controller
     use searchAreaTrait;
     public function index()
     {
-        $partner = MstPartner::select('*')
+        $partner = MstPartner::leftJoin('contract_partners', 'mst_partners.id', '=', 'contract_partners.id_partner')
+        ->select('mst_partners.*', 'contract_partners.start_date', 'contract_partners.end_date')
         ->get();
+      
         //API Regional
         $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
         $url_AuthRegional = $ruleAuthRegional->rule_value;
@@ -48,6 +50,7 @@ class MstPartnerController extends Controller
 
     public function storePartner(Request $request)
     {
+        dd('hi');
         // dd($request->all());
 
         $request->validate([
@@ -119,6 +122,7 @@ class MstPartnerController extends Controller
     }
     public function StoreUpdatePartner(Request $request)
     {
+        dd('hi');
         // dd($request->all());
 
         $request->validate([
@@ -226,4 +230,18 @@ class MstPartnerController extends Controller
             return redirect('/partner')->with('failed','Failed Update Partner');
         }
     }
+
+
+    public function deletePartner($id){
+        dd('hi');
+    }
+
+    public function storeContract(){
+        dd('hi');
+    }
+
+    public function updateContract(){
+        dd('hi');
+    }
+
 }
