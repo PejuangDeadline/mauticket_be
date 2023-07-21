@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MstPartner;
-use App\Models\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Traits\searchAreaTrait;
+use App\Models\Rule;
+use App\Models\MstPartner;
+use App\Models\ContractPartner;
 
 class MstPartnerController extends Controller
 {
@@ -17,7 +18,7 @@ class MstPartnerController extends Controller
         $partner = MstPartner::leftJoin('contract_partners', 'mst_partners.id', '=', 'contract_partners.id_partner')
         ->select('mst_partners.*', 'contract_partners.start_date', 'contract_partners.end_date')
         ->get();
-      
+
         //API Regional
         $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
         $url_AuthRegional = $ruleAuthRegional->rule_value;
@@ -50,12 +51,12 @@ class MstPartnerController extends Controller
 
     public function storePartner(Request $request)
     {
-        dd('hi');
+        //dd('hi');
         // dd($request->all());
 
         $request->validate([
-            "partner" => "required",
-            "pic" => "required",
+            "partner_name" => "required",
+            "pic_name" => "required",
             "pic_contact" => "required"
         ]);
 
@@ -78,7 +79,7 @@ class MstPartnerController extends Controller
         $token = $data['token'];
 
         // create by email
-        $created_by=auth()->user()->email;
+        $created_by = auth()->user()->email;
 
         DB::beginTransaction();
         try {
@@ -93,8 +94,8 @@ class MstPartnerController extends Controller
             $subdistrict_name = $this->subdistrictName($token, $request->subdistrict);
 
             $query = MstPartner::create([
-                'partner_name' => $request->partner,
-                'pic_name' => $request->pic,
+                'partner_name' => $request->partner_name,
+                'pic_name' => $request->pic_name,
                 'pic_contact' => $request->pic_contact,
                 'contact_1' => $request->contact_1,
                 'contact_2' => $request->contact_2,
@@ -106,7 +107,7 @@ class MstPartnerController extends Controller
                 'zip_code' => $request->zip_code,
                 'is_active' => $request->is_active,
                 'npwp' => $request->npwp,
-                'created_by' => $request->created_by,
+                'created_by' => $created_by,
             ]);
 
             DB::commit();
@@ -122,12 +123,12 @@ class MstPartnerController extends Controller
     }
     public function StoreUpdatePartner(Request $request)
     {
-        dd('hi');
+        //dd('hi');
         // dd($request->all());
 
         $request->validate([
-            "partner" => "required",
-            "pic" => "required",
+            "partner_name" => "required",
+            "pic_name" => "required",
             "pic_contact" => "required"
         ]);
 
@@ -138,7 +139,7 @@ class MstPartnerController extends Controller
         $province_id = $request->province_by_id;
         $city_id = $request->city;
         $district_id = $request->district;
-        $subdistrict_id = $request->subdistrict;
+        $subdistrict_id = $request->sub_district;
 
         //get Token Area
         $rule = Rule::where('rule_name', 'API Auth Regional')->first();
@@ -167,6 +168,9 @@ class MstPartnerController extends Controller
         $partner->district = $district_id;
         $partner->sub_district = $subdistrict_id;
 
+        // create by email
+        $created_by = auth()->user()->email;
+
         DB::beginTransaction();
 
         try {
@@ -182,10 +186,10 @@ class MstPartnerController extends Controller
                 //Area Subdistrict by ID
                 $subdistrict_name = $this->subdistrictName($token, $subdistrict_id);
 
-                $query =  MstPartner:: where('id',$request->id_profile)
+                $query =  MstPartner::where('id',$request->id_partner)
                     ->update([
-                        'partner_name' => $request->partner,
-                        'pic_name' => $request->pic,
+                        'partner_name' => $request->partner_name,
+                        'pic_name' => $request->pic_name,
                         'pic_contact' => $request->pic_contact,
                         'contact_1' => $request->contact_1,
                         'contact_2' => $request->contact_2,
@@ -197,16 +201,16 @@ class MstPartnerController extends Controller
                         'zip_code' => $request->zip_code,
                         'is_active' => $request->is_active,
                         'npwp' => $request->npwp,
-                        'created_by' => $request->created_by,
+                        'created_by' => $created_by,
                     ]);
             }
             else
             {
                 //dd('tidak berubah');
-                $query =  MstPartner:: where('id',$request->id_profile)
+                $query =  MstPartner::where('id',$request->id_partner)
                     ->update([
-                        'partner_name' => $request->partner,
-                        'pic_name' => $request->pic,
+                        'partner_name' => $request->partner_name,
+                        'pic_name' => $request->pic_name,
                         'pic_contact' => $request->pic_contact,
                         'contact_1' => $request->contact_1,
                         'contact_2' => $request->contact_2,
@@ -233,15 +237,120 @@ class MstPartnerController extends Controller
 
 
     public function deletePartner($id){
-        dd('hi');
+        //dd('hi');
+        // create by email
+        $created_by = auth()->user()->email;
+
+        DB::beginTransaction();
+        try {
+
+            $query =  MstPartner::where('id',$id)
+                    ->update([
+                        'is_active' => '0',
+                        'created_by' => $created_by,
+                    ]);
+            DB::commit();
+            // all good
+
+            return redirect('/partner')->with('status','Success Delete Partner');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/partner')->with('failed','Failed Delete Partner');
+        }
     }
 
-    public function storeContract(){
-        dd('hi');
+    public function storeContract(Request $request){
+        //dd('hi');
+        //dd($request->all());
+
+        $request->validate([
+            "start_date" => "required",
+            "end_date" => "required",
+        ]);
+
+        // create by email
+        $created_by = auth()->user()->email;
+
+        DB::beginTransaction();
+        try {
+
+            $query =  ContractPartner::create([
+                'id_partner' => $request->id_partner,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'is_active' => '1',
+            ]);
+
+            $query =  ContractPartner:: where('id',$request->id_partner)
+                    ->update([
+                        'is_active' => '1',
+                    ]);
+
+            DB::commit();
+            // all good
+
+            return redirect('/partner')->with('status','Success Add Contract');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/partner')->with('failed','Failed Add Contract');
+        }
     }
 
-    public function updateContract(){
-        dd('hi');
+    public function updateContract(Request $request){
+        //dd('hi');
+        //dd($request->all());
+
+        $request->validate([
+            "start_date" => "required",
+            "end_date" => "required",
+        ]);
+
+        $id_contract = $request->id;
+        $contractPartner = ContractPartner::where('id',$id_contract)->first();
+        //dd($contractPartner);
+        // compare data with database
+        $contractPartner->start_date = $request->start_date;
+        $contractPartner->end_date = $request->end_date;
+
+        // create by email
+        $created_by = auth()->user()->email;
+
+        DB::beginTransaction();
+        try {
+            if($contractPartner->isDirty())
+            {
+                //dd('berubah');
+
+                $query =  ContractPartner::where('id',$id_contract)
+                            ->update([
+                                'id_partner' => $id_contract,
+                                'start_date' => $request->start_date,
+                                'end_date' => $request->end_date,
+                                'is_active' => '1',
+                            ]);
+            }
+            else
+            {
+                //dd('tidak berubah');
+            }
+
+            DB::commit();
+            // all good
+
+            return redirect('/partner')->with('status','Success Update Contract');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/partner')->with('failed','Failed Update Contract');
+        }
     }
 
 }
