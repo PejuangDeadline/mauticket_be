@@ -494,7 +494,7 @@
                             <form action="{{ url('/contract/update') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
-                                    <input type="text" name="id" id="id" value="{{$data->id}}" hidden>
+                                    <input type="hidden" name="id_partner" id="id_partner" value="{{$data->id_partner}}" hidden>
                                   <div class="form-group">
                                     <label for="date-from">From</label>
                                     <input value="{{\Carbon\Carbon::parse($data->start_date)->format('Y-m-d')}}" type="date" class="form-control" id="start_date" name="start_date" required>

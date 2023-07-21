@@ -16,7 +16,7 @@ class MstPartnerController extends Controller
     public function index()
     {
         $partner = MstPartner::leftJoin('contract_partners', 'mst_partners.id', '=', 'contract_partners.id_partner')
-        ->select('mst_partners.*', 'contract_partners.start_date', 'contract_partners.end_date')
+        ->select('mst_partners.*', 'contract_partners.id_partner', 'contract_partners.start_date', 'contract_partners.end_date')
         ->get();
 
         //API Regional
@@ -314,9 +314,11 @@ class MstPartnerController extends Controller
         $id_contract = $request->id;
         $contractPartner = ContractPartner::where('id',$id_contract)->first();
         //dd($contractPartner);
+
         // compare data with database
         $contractPartner->start_date = $request->start_date;
         $contractPartner->end_date = $request->end_date;
+        $contractPartner->id_partner = $request->id_partner;
 
         // create by email
         $created_by = auth()->user()->email;
