@@ -50,7 +50,11 @@ Route::middleware(['auth'])->group(function () {
     //Partner
     Route::get('/partner', [MstPartnerController::class, 'index']);
     Route::post('/partner/store', [MstPartnerController::class, 'storePartner']);
+    Route::post('/partner/update', [MstPartnerController::class, 'StoreUpdatePartner']);
+    Route::delete('/partner/delete/{id}', [MstPartnerController::class, 'deletePartner']);
     Route::post('/contract', [MstPartnerController::class, 'storeContract']);
+    Route::post('/contract/update', [MstPartnerController::class, 'updateContract']);
+
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
