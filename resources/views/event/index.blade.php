@@ -40,7 +40,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Partner</h3>
+                <h3 class="card-title">List of Event</h3>
               </div>
 
               <!-- /.card-header -->
@@ -56,19 +56,43 @@
                             <div class="modal-dialog modal-lg">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="modal-add-label">Add Partner</h5>
+                                  <h5 class="modal-title" id="modal-add-label">Add Event</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                        <form action="{{ url('/partner/store') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ url('/event/store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-
-                                        <div class="mb-3">
-                                            <div class="form-group">
+                                        <div hidden>
+                                            <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
+                                            <input class="form-control" id="is_active" name="is_active" value="1"/>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <select name="id_partner" id="id_partner" class="form-control" required>
+                                                    <option class="text-center" value="">Select Partner</option>
+                                                    @foreach ($getPartner as $item)
+                                                    <option class="text-center" value="{{$item->partner_name}}">{{$item->partner_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select name="event_category" id="event_category" class="form-control" required>
+                                                    <option class="text-center" value="">Select Event Category</option>
+                                                    @foreach ($getEventCategory as $item)
+                                                    <option class="text-center" value="{{$item->name_value}}">{{$item->name_value}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-control" id="partner_name" name="partner_name" type="text" placeholder="Input Partner Name"/>
+                                            <input class="form-control" id="event_name" name="event_name" type="text" placeholder="Input Event Name"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-control" id="highlight" name="highlight" type="text" placeholder="Input Highlight"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>Description</b></label>
+                                            <textarea class="form-control" id="description" name="description" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="row mb-3" align="left">
                                             <div class="col-md-3">
@@ -129,39 +153,27 @@
 
                                         <div class="mb-3">
                                             <label><b>Address</b></label>
-                                            <textarea class="form-control" id="partner_addr" name="partner_addr" cols="30" rows="3" placeholder=""></textarea>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-3">
-                                                <span><b>PIC Name</b></span>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" id="pic_name" name="pic_name" class="form-control" value="" autocomplete="off">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <span><b>PIC Phone</b></span>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" id="pic_contact" name="pic_contact" class="form-control" value="" autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-3">
-                                                <span><b>Phone 1</b></span>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" id="contact_1" name="contact_1" class="form-control" value="" autocomplete="off">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <span><b>Phone 2</b></span>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" id="contact_2" name="contact_2" class="form-control" value="" autocomplete="off">
-                                            </div>
+                                            <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label><b>NPWP</b></label>
-                                            <input class="form-control" id="npwp" name="npwp" type="text" placeholder="12.345.678.9-012.345" />
+                                            <label><b>Exchange Ticket Info</b></label>
+                                            <textarea class="form-control" id="exchange_ticket_info" name="exchange_ticket_info" cols="30" rows="3" placeholder=""></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>TC Info</b></label>
+                                            <textarea class="form-control" id="tc_info" name="tc_info" cols="30" rows="3" placeholder=""></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>Including Info</b></label>
+                                            <textarea class="form-control" id="including_info" name="including_info" cols="30" rows="3" placeholder=""></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>Excluding Info</b></label>
+                                            <textarea class="form-control" id="excluding_info" name="excluding_info" cols="30" rows="3" placeholder=""></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>Facility</b></label>
+                                            <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                               </div>
                               <div class="modal-footer">
@@ -172,7 +184,6 @@
                               </div>
                             </div>
                           </div>
-
 
                     <div class="col-sm-12">
                       <!--alert success -->
@@ -207,12 +218,11 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                <table id="tablePartner" class="table table-bordered table-striped">
+                <table id="tableEvent" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Partner Name</th>
-                    <th>PIC Info</th>
+                    <th>Event Name</th>
                     <th>Address</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -222,12 +232,11 @@
                     @php
                       $no=1;
                     @endphp
-                    @foreach ($partner as $data)
+                    @foreach ($event as $data)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td><strong>{{ $data->partner_name }}</strong></td>
-                        <td><strong>{{ $data->pic_name }}</strong><br>
-                            <i>{{ $data->pic_contact }}</i>
+                        <td><strong>{{ $data->event_name }}</strong><br>
+                            <i>({{ $data->event_category }})</i>
                         </td>
                         <td>
                             <strong>{{ $data->province }},</strong>
@@ -247,25 +256,28 @@
                             @endif
                         </td>
                         <td>
-                            <button title="Edit Partner" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
-                                <i class="fas fa-edit"></i>
-                              </button>
-
-                              <button title="Show Contract" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-showContract{{ $data->id }}">
-                                <i class="fas fa-eye"></i>
-                              </button>
-                              @if ($data->start_date == null)
-                              <button title="Add Contract" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-addContract{{ $data->id }}">
-                                <i class="fas fa-plus"></i>
-                              </button>
-                              @else
-                              <button title="Edit Contract" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-editContract{{ $data->id }}">
-                                <i class="fas fa-calendar-alt"></i>
-                              </button>
-                              @endif
-                            <button title="Delete Partner" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
-                                <i class="fas fa-trash-alt"></i>
-                              </button>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                  </button>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle"></i> Detail</a></li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
+                                            <i class="fas fa-edit"></i> Edit Detail
+                                        </a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('ticket-payment/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Payment</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
+                                            <i class="fas fa-trash-alt"></i>Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                               </div>
+                            </div>
                         </td>
                     </tr>
 
@@ -280,14 +292,37 @@
                             <div class="modal-body">
                                 <form action="{{ url('/partner/update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-
-                                <div class="mb-3">
-                                    <div class="form-group">
-                                        <input hidden value="{{$data->id}}" class="form-control" id="id_partner" name="id_partner"/>
+                                <div hidden>
+                                    <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
+                                    <input class="form-control" id="is_active" name="is_active" value="1"/>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <select name="id_partner" id="id_partner" class="form-control" required>
+                                            <option class="text-center" value="{{ $data->id_partner }}">{{ $data->id_partner }}</option>
+                                            @foreach ($getPartner as $item)
+                                            <option class="text-center" value="{{$item->partner_name}}">{{$item->partner_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select name="event_category" id="event_category" class="form-control" required>
+                                            <option class="text-center" value="{{ $data->event_category }}">{{ $data->event_category }}</option>
+                                            @foreach ($getEventCategory as $item)
+                                            <option class="text-center" value="{{$item->name_value}}">{{$item->name_value}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <input value="{{$data->partner_name}}" class="form-control" id="partner_name" name="partner_name" type="text" placeholder="Input Partner Name"/>
+                                    <input class="form-control" id="event_name" name="event_name" type="text" placeholder="Input Event Name" value="{{$data->event_name}}"/>
+                                </div>
+                                <div class="mb-3">
+                                    <input class="form-control" id="highlight" name="highlight" type="text" placeholder="Input Highlight" value="{{$data->highlight}}"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label><b>Description</b></label>
+                                    <textarea class="form-control" id="description" name="description" cols="30" rows="3" placeholder="">{{$data->description}}</textarea>
                                 </div>
                                 <div class="row mb-3" align="left">
                                     <div class="col-md-3">
@@ -298,7 +333,7 @@
                                         <select class="form-control" name="province_by_id" id="province_by_id">
                                             <option class="text-center" value="{{$data->province}}" selected>{{$data->province}}</option>
                                             @foreach ($provinces as $province)
-                                            <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $data->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
+                                            <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -309,7 +344,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <select name="city" id="city" class="form-control" required>
-                                            <option class="text-center" value="{{ $data->city }}" {{ $data->city ? 'selected' : '' }}>{{ $data->city }}</option>
+                                            <option class="text-center" value="{{$data->city}}">{{$data->city}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -321,7 +356,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <select id="district" name="district" class="form-control">
-                                            <option class="text-center" value="{{ $data->district }}" {{ $data->district ? 'selected' : '' }}>{{ $data->district }}</option>
+                                            <option class="text-center" value="{{$data->district}}">{{$data->district}}</option>
                                         </select>
                                     </div>
                                     @csrf
@@ -330,8 +365,8 @@
                                         <small class="text-muted" style="font-style: italic;">Subdistrict</small>
                                     </div>
                                     <div class="col-md-3">
-                                        <select id="sub_district" name="sub_district" class="form-control">
-                                            <option class="text-center" value="{{ $data->sub_district }}" {{ $data->sub_district ? 'selected' : '' }}>{{ $data->sub_district }}</option>
+                                        <select id="subdistrict" name="subdistrict" class="form-control">
+                                            <option class="text-center" value="{{$data->sub_district}}">{{$data->sub_district}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -342,75 +377,36 @@
                                         <small class="text-muted" style="font-style: italic;">Postal Code</small>
                                     </div>
                                     <div class="col-md-3">
-                                        <input  value="{{$data->zip_code}}" type="text" id="zip_code" name="zip_code" class="form-control text-center" value="" autocomplete="off">
+                                        <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="{{$data->zip_code}}" autocomplete="off">
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label><b>Address</b></label>
-                                    <textarea  value="{{$data->partner_addr}}" class="form-control" id="partner_addr" name="partner_addr" cols="30" rows="3" placeholder="">{{$data->partner_addr}}</textarea>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <span><b>PIC Name</b></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input  value="{{$data->pic_name}}" type="text" id="pic_name" name="pic_name" class="form-control" value="" autocomplete="off">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <span><b>PIC Phone</b></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input  value="{{$data->pic_contact}}" type="text" id="pic_contact" name="pic_contact" class="form-control" value="" autocomplete="off">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <span><b>Phone 1</b></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input  value="{{$data->contact_1}}" type="text" id="contact_1" name="contact_1" class="form-control" value="" autocomplete="off">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <span><b>Phone 2</b></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input  value="{{$data->contact_2}}" type="text" id="contact_2" name="contact_2" class="form-control" value="" autocomplete="off">
-                                    </div>
+                                    <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label><b>NPWP</b></label>
-                                    <input  value="{{$data->npwp}}" class="form-control" id="npwp" name="npwp" type="text" placeholder="12.345.678.9-012.345" />
+                                    <label><b>Exchange Ticket Info</b></label>
+                                    <textarea class="form-control" id="exchange_ticket_info" name="exchange_ticket_info" cols="30" rows="3" placeholder="">{{$data->exchange_ticket_info}}</textarea>
                                 </div>
-                                <script>
-                                    const NPWP = document.getElementById("npwp")
-
-                                    NPWP.oninput = (e) => {
-                                        e.target.value = autoFormatNPWP(e.target.value);
-                                    }
-
-                                    function autoFormatNPWP(NPWPString) {
-                                        try {
-                                            var cleaned = ("" + NPWPString).replace(/\D/g, "");
-                                            var match = cleaned.match(/(\d{0,2})?(\d{0,3})?(\d{0,3})?(\d{0,1})?(\d{0,3})?(\d{0,3})$/);
-                                            return [
-                                                    match[1],
-                                                    match[2] ? ".": "",
-                                                    match[2],
-                                                    match[3] ? ".": "",
-                                                    match[3],
-                                                    match[4] ? ".": "",
-                                                    match[4],
-                                                    match[5] ? "-": "",
-                                                    match[5],
-                                                    match[6] ? ".": "",
-                                                    match[6]].join("")
-
-                                        } catch(err) {
-                                            return "";
-                                        }
-                                    }
-                                  </script>
+                                <div class="mb-3">
+                                    <label><b>TC Info</b></label>
+                                    <textarea class="form-control" id="tc_info" name="tc_info" cols="30" rows="3" placeholder="">{{$data->tc_info}}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label><b>Including Info</b></label>
+                                    <textarea class="form-control" id="including_info" name="including_info" cols="30" rows="3" placeholder="">{{$data->including_info}}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label><b>Excluding Info</b></label>
+                                    <textarea class="form-control" id="excluding_info" name="excluding_info" cols="30" rows="3" placeholder="">{{$data->excluding_info}}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label><b>Facility</b></label>
+                                    <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder="">{{$data->facility}}</textarea>
+                                </div>
+                                
+                                </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
                                     <button class="btn btn-primary" type="submit">Save</button>
@@ -430,7 +426,7 @@
                             <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Partner</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('/partner/delete/'.$data->id) }}" method="POST">
+                            <form action="{{ url('/event/destroy/'.$data->id) }}" method="POST">
                             @csrf
                             @method('delete')
                             <div class="modal-body">
@@ -481,7 +477,6 @@
                         </div>
                     </div>
                     {{--Modal Add Contract --}}
-
 
                      {{--Modal Edit Contract --}}
                      <div class="modal fade" id="modal-editContract{{ $data->id }}" tabindex="-1" aria-labelledby="modal-editContract{{ $data->id }}-label" aria-hidden="true">
@@ -571,7 +566,7 @@
 <!-- For Datatables -->
 <script>
     $(document).ready(function() {
-      var table = $("#tablePartner").DataTable({
+      var table = $("#tableEvent").DataTable({
         "responsive": true,
         "lengthChange": false,
         "autoWidth": false,
@@ -579,63 +574,6 @@
       });
     });
   </script>
-
-{{-- <script>
-    // Mendapatkan referensi ke elemen input NPWP
-    var npwpInput = document.getElementById('npwp');
-
-    // Menambahkan event listener untuk memvalidasi NPWP saat input berubah
-    npwpInput.addEventListener('input', formatNPWP);
-    npwpInput.addEventListener('blur', validateNPWP);
-
-    // Fungsi untuk memformat NPWP
-    function formatNPWP() {
-        // Mendapatkan nilai input NPWP
-        var npwpValue = npwpInput.value;
-
-        // Menghapus karakter non-angka dari NPWP
-        var formattedNPWP = npwpValue.replace(/\D/g, '');
-
-        // Memastikan NPWP hanya terdiri dari angka
-        npwpInput.value = formattedNPWP;
-
-        // Memformat NPWP dengan memasukkan pemisah
-        if (formattedNPWP.length > 2) {
-            npwpInput.value = formattedNPWP.substring(0, 2) + '.' + formattedNPWP.substring(2);
-        }
-        if (formattedNPWP.length > 5) {
-            npwpInput.value = formattedNPWP.substring(0, 5) + '.' + formattedNPWP.substring(5);
-        }
-        if (formattedNPWP.length > 8) {
-            npwpInput.value = formattedNPWP.substring(0, 8) + '.' + formattedNPWP.substring(8);
-        }
-        if (formattedNPWP.length > 10) {
-            npwpInput.value = formattedNPWP.substring(0, 10) + '-' + formattedNPWP.substring(10);
-        }
-        if (formattedNPWP.length > 15) {
-            npwpInput.value = formattedNPWP.substring(0, 15);
-        }
-    }
-
-    // Fungsi untuk memvalidasi NPWP
-    function validateNPWP() {
-        // Mendapatkan nilai input NPWP
-        var npwpValue = npwpInput.value;
-
-        // Regex untuk memvalidasi NPWP (format: 12.345.678.9-012.345)
-        var npwpRegex = /^\d{2}\.\d{3}\.\d{3}\.\d{1}-\d{3}\.\d{3}$/;
-
-        // Memeriksa apakah nilai input sesuai dengan regex NPWP
-        if (npwpRegex.test(npwpValue)) {
-            // NPWP valid
-            npwpInput.setCustomValidity('');
-        } else {
-            // NPWP tidak valid
-            npwpInput.setCustomValidity('NPWP tidak valid. Format yang benar: 12.345.678.9-012.345');
-        }
-    }
-</script> --}}
-
 
 <script type="text/javascript">
     //ajax mapping city

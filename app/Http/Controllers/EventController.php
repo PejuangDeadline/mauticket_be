@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\Event;
 use App\Models\Rule;
+use App\Models\MstPartner;
+use App\Models\Dropdown;
 use App\Traits\searchAreaTrait;
 
 class EventController extends Controller
@@ -17,6 +19,15 @@ class EventController extends Controller
     {
         $event = Event::select('*')
         ->get();
+
+        //getPartner
+        $getPartner = MstPartner::orderBy('partner_name', 'asc')->get();
+
+        //getEventCategory
+        $getEventCategory = Dropdown::where('category', 'Event Category')
+        ->orderBy('name_value', 'asc')
+        ->get();
+
         //API Regional
         $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
         $url_AuthRegional = $ruleAuthRegional->rule_value;
@@ -44,7 +55,7 @@ class EventController extends Controller
         $provinces = $getProvince['data'];
         //End API Regional
 
-        return view('event.index',compact('event','provinces'));
+        return view('event.index',compact('event','provinces','getPartner','getEventCategory'));
     }
 
     public function storeEvent(Request $request)
@@ -58,20 +69,16 @@ class EventController extends Controller
             "highlight" => "required",
             "description" => "required",
             "event_address" => "required",
-            "province" => "required",
+            "province_by_id" => "required",
             "city" => "required",
             "district" => "required",
-            "sub_district" => "required",
+            "subdistrict" => "required",
             "zip_code" => "required",
             "exchange_ticket_info" => "required",
             "tc_info" => "required",
             "including_info" => "required",
             "excluding_info" => "required",
             "facility" => "required",
-            "start_date" => "required",
-            "end_date" => "required",
-            "showtime_start" => "required",
-            "showtime_end" => "required",
         ]);
 
         //get Token Area
@@ -124,10 +131,6 @@ class EventController extends Controller
                 'including_info' => $request->including_info,
                 'excluding_info' => $request->excluding_info,
                 'facility' => $request->facility,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'showtime_start' => $request->showtime_start,
-                'showtime_end' => $request->showtime_end,
                 'is_active' => $request->is_active,
                 'created_by' => $request->created_by,
             ]);
@@ -137,6 +140,7 @@ class EventController extends Controller
 
             return redirect('/event')->with('status','Success Create Event');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollback();
             // something went wrong
 
