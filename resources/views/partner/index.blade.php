@@ -19,7 +19,7 @@
         </div>
     </header>
 <!-- Main page content-->
-<div class="container-xl px-4 mt-n10">       
+<div class="container-xl px-4 mt-n10">
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -42,15 +42,15 @@
               <div class="card-header">
                 <h3 class="card-title">List of Partner</h3>
               </div>
-              
+
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-sm-6">
                         <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
-                            <i class="fas fa-plus-square"></i> 
+                            <i class="fas fa-plus-square"></i>
                           </button>
-                          
+
                           <!-- Modal -->
                           <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
@@ -62,17 +62,14 @@
                                 <div class="modal-body">
                                         <form action="{{ url('/partner/store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        
+
                                         <div class="mb-3">
                                             <div class="form-group">
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-control" id="name_branch" name="name_branch" type="text" placeholder="Input Partner Name"/>
+                                            <input class="form-control" id="partner_name" name="partner_name" type="text" placeholder="Input Partner Name"/>
                                         </div>
-                                            <div class="mb-3">
-                                            <input class="form-control" id="pic_name" name="pic_name" type="text" placeholder="Input PIC Name"/>
-                                            </div>
                                         <div class="row mb-3" align="left">
                                             <div class="col-md-3">
                                                 <span><b>Provinsi</b></span>  <br/>
@@ -129,23 +126,23 @@
                                                 <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="" autocomplete="off">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="mb-3">
                                             <label><b>Address</b></label>
-                                            <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control" id="partner_addr" name="partner_addr" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-3">
-                                                <span><b>PIC</b></span>
+                                                <span><b>PIC Name</b></span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" id="pic" name="pic" class="form-control" value="" autocomplete="off">
+                                                <input type="text" id="pic_name" name="pic_name" class="form-control" value="" autocomplete="off">
                                             </div>
                                             <div class="col-md-3">
                                                 <span><b>PIC Phone</b></span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" id="pic_no" name="pic_no" class="form-control" value="" autocomplete="off">
+                                                <input type="text" id="pic_contact" name="pic_contact" class="form-control" value="" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -153,13 +150,13 @@
                                                 <span><b>Phone 1</b></span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" id="phone1" name="phone1" class="form-control" value="" autocomplete="off">
+                                                <input type="text" id="contact_1" name="contact_1" class="form-control" value="" autocomplete="off">
                                             </div>
                                             <div class="col-md-3">
                                                 <span><b>Phone 2</b></span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" id="phone2" name="phone2" class="form-control" value="" autocomplete="off">
+                                                <input type="text" id="contact_2" name="contact_2" class="form-control" value="" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -175,7 +172,7 @@
                               </div>
                             </div>
                           </div>
-                          
+
 
                     <div class="col-sm-6">
                       <!--alert success -->
@@ -183,16 +180,16 @@
                       <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>{{ session('status') }}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div> 
+                      </div>
                     @endif
 
                     @if (session('failed'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                       <strong>{{ session('failed') }}</strong>
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div> 
+                    </div>
                   @endif
-                    
+
                       <!--alert success -->
                       <!--validasi form-->
                         @if (count($errors)>0)
@@ -209,7 +206,7 @@
                       <!--end validasi form-->
                     </div>
                 </div>
-                <div class="table-responsive"> 
+                <div class="table-responsive">
                 <table id="tablePartner" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -236,7 +233,7 @@
                             <strong>{{ $data->province }},</strong>
                             <i>{{$data->city}},{{$data->district}},{{$data->sub_district}}</i>
                              <p>{{$data->partner_addr}}</p>
-                        
+
                         </td>
                         <td>
                             @if ($data->is_active == '1')
@@ -253,10 +250,10 @@
                             <button title="Edit Partner" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                 <i class="fas fa-edit"></i>
                               </button>
-                              
+
                               <button title="Show Contract" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-showContract{{ $data->id }}">
                                 <i class="fas fa-eye"></i>
-                              </button> 
+                              </button>
                               @if ($data->start_date == null)
                               <button title="Add Contract" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-addContract{{ $data->id }}">
                                 <i class="fas fa-plus"></i>
@@ -265,7 +262,7 @@
                               <button title="Edit Contract" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-editContract{{ $data->id }}">
                                 <i class="fas fa-edit"></i>
                               </button>
-                              @endif     
+                              @endif
                             <button title="Delete Partner" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
@@ -283,18 +280,15 @@
                             <div class="modal-body">
                                 <form action="{{ url('/partner/update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                
+
                                 <div class="mb-3">
                                     <div class="form-group">
-                                        <input hidden value="{{$data->id}}" class="form-control" id="id" name="id" type="text" placeholder="Input Partner Name"/>
+                                        <input hidden value="{{$data->id}}" class="form-control" id="id_partner" name="id_partner"/>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <input value="{{$data->partner_name}}" class="form-control" id="partner_name" name="partner_name" type="text" placeholder="Input Partner Name"/>
                                 </div>
-                                    <div class="mb-3">
-                                    <input value="{{$data->pic_name}}" class="form-control" id="pic_name" name="pic_name" type="text" placeholder="Input PIC Name"/>
-                                    </div>
                                 <div class="row mb-3" align="left">
                                     <div class="col-md-3">
                                         <span><b>Provinsi</b></span>  <br/>
@@ -302,9 +296,9 @@
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-control" name="province_by_id" id="province_by_id">
-                                            <option class="text-center" value="{{$data->partner_name}}" selected>{{$data->partner_name}}</option>
+                                            <option class="text-center" value="{{$data->province}}" selected>{{$data->province}}</option>
                                             @foreach ($provinces as $province)
-                                            <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
+                                            <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $data->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -315,7 +309,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <select name="city" id="city" class="form-control" required>
-                                            <option class="text-center" value="{{$data->city}}">{{$data->city}}</option>
+                                            <option class="text-center" value="{{ $data->city }}" {{ $data->city ? 'selected' : '' }}>{{ $data->city }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -327,7 +321,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <select id="district" name="district" class="form-control">
-                                            <option class="text-center" value="{{$data->district}}">{{$data->district}}</option>
+                                            <option class="text-center" value="{{ $data->district }}" {{ $data->district ? 'selected' : '' }}>{{ $data->district }}</option>
                                         </select>
                                     </div>
                                     @csrf
@@ -336,8 +330,8 @@
                                         <small class="text-muted" style="font-style: italic;">Subdistrict</small>
                                     </div>
                                     <div class="col-md-3">
-                                        <select id="subdistrict" name="subdistrict" class="form-control">
-                                            <option class="text-center" value="{{$data->subdistrict}}">{{$data->subdistrict}}</option>
+                                        <select id="sub_district" name="sub_district" class="form-control">
+                                            <option class="text-center" value="{{ $data->sub_district }}" {{ $data->sub_district ? 'selected' : '' }}>{{ $data->sub_district }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -351,14 +345,14 @@
                                         <input  value="{{$data->zip_code}}" type="text" id="zip_code" name="zip_code" class="form-control text-center" value="" autocomplete="off">
                                     </div>
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <label><b>Address</b></label>
                                     <textarea  value="{{$data->partner_addr}}" class="form-control" id="partner_addr" name="partner_addr" cols="30" rows="3" placeholder="">{{$data->partner_addr}}</textarea>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-3">
-                                        <span><b>PIC</b></span>
+                                        <span><b>PIC Name</b></span>
                                     </div>
                                     <div class="col-md-3">
                                         <input  value="{{$data->pic_name}}" type="text" id="pic_name" name="pic_name" class="form-control" value="" autocomplete="off">
@@ -388,6 +382,35 @@
                                     <label><b>NPWP</b></label>
                                     <input  value="{{$data->npwp}}" class="form-control" id="npwp" name="npwp" type="text" placeholder="12.345.678.9-012.345" />
                                 </div>
+                                <script>
+                                    const NPWP = document.getElementById("npwp")
+
+                                    NPWP.oninput = (e) => {
+                                        e.target.value = autoFormatNPWP(e.target.value);
+                                    }
+
+                                    function autoFormatNPWP(NPWPString) {
+                                        try {
+                                            var cleaned = ("" + NPWPString).replace(/\D/g, "");
+                                            var match = cleaned.match(/(\d{0,2})?(\d{0,3})?(\d{0,3})?(\d{0,1})?(\d{0,3})?(\d{0,3})$/);
+                                            return [
+                                                    match[1],
+                                                    match[2] ? ".": "",
+                                                    match[2],
+                                                    match[3] ? ".": "",
+                                                    match[3],
+                                                    match[4] ? ".": "",
+                                                    match[4],
+                                                    match[5] ? "-": "",
+                                                    match[5],
+                                                    match[6] ? ".": "",
+                                                    match[6]].join("")
+
+                                        } catch(err) {
+                                            return "";
+                                        }
+                                    }
+                                  </script>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
                                     <button class="btn btn-primary" type="submit">Save</button>
@@ -436,14 +459,17 @@
                             <form action="{{ url('/contract') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
+                                    <div class="form-group">
+                                        <input hidden value="{{$data->id}}" class="form-control" id="id_partner" name="id_partner"/>
+                                    </div>
                                   <div class="form-group">
                                     <label for="date-from">From</label>
-                                    <input type="date" class="form-control" id="dateFrom" name="dateFrom" required>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" required>
                                   </div>
                                   <br>
                                   <div class="form-group">
                                     <label for="date-to">To</label>
-                                    <input type="date" class="form-control" id="dateTo" name="dateTo" required>
+                                    <input type="date" class="form-control" id="end_date" name="end_date" required>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
@@ -468,15 +494,15 @@
                             <form action="{{ url('/contract/update') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
-                                    <input type="text" name="id" id="id" value="{{$data->id}}" hidden>
+                                    <input type="hidden" name="id_partner" id="id_partner" value="{{$data->id_partner}}" hidden>
                                   <div class="form-group">
                                     <label for="date-from">From</label>
-                                    <input value="{{\Carbon\Carbon::parse($data->start_date)->format('Y-m-d')}}" type="date" class="form-control" id="dateFrom" name="dateFrom" required>
+                                    <input value="{{\Carbon\Carbon::parse($data->start_date)->format('Y-m-d')}}" type="date" class="form-control" id="start_date" name="start_date" required>
                                   </div>
                                   <br>
                                   <div class="form-group">
                                     <label for="date-to">To</label>
-                                    <input value="{{\Carbon\Carbon::parse($data->end_date)->format('Y-m-d')}}" type="date" class="form-control" id="dateTo" name="dateTo" required>
+                                    <input value="{{\Carbon\Carbon::parse($data->end_date)->format('Y-m-d')}}" type="date" class="form-control" id="end_date" name="end_date" required>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
@@ -489,7 +515,7 @@
                     </div>
                     {{--Modal Add Contract --}}
 
-                    
+
                     {{-- Modal Show --}}
                     <div class="modal fade" id="modal-showContract{{ $data->id }}" tabindex="-1" aria-labelledby="modal-showContract{{ $data->id }}-label" aria-hidden="true">
                         <div class="modal-dialog">
@@ -500,7 +526,7 @@
                             </div>
                             <form action="{{ url('/'.$data->id) }}" method="POST">
                             @csrf
-                            
+
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="date-from">From</label>
@@ -518,7 +544,7 @@
                     </div>
                     {{-- Modal Delete --}}
 
-                   
+
 
                     @endforeach
                   </tbody>
@@ -540,21 +566,21 @@
   <!-- /.content-wrapper -->
 </div>
 
-     
+
 </main>
 <!-- For Datatables -->
 <script>
     $(document).ready(function() {
       var table = $("#tablePartner").DataTable({
-        "responsive": true, 
-        "lengthChange": false, 
+        "responsive": true,
+        "lengthChange": false,
         "autoWidth": false,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
     });
   </script>
 
-<script>
+{{-- <script>
     // Mendapatkan referensi ke elemen input NPWP
     var npwpInput = document.getElementById('npwp');
 
@@ -608,7 +634,7 @@
             npwpInput.setCustomValidity('NPWP tidak valid. Format yang benar: 12.345.678.9-012.345');
         }
     }
-</script>
+</script> --}}
 
 
 <script type="text/javascript">
