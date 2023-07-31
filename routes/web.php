@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\MstPartnerController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
@@ -55,6 +56,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/contract', [MstPartnerController::class, 'storeContract']);
     Route::post('/contract/update', [MstPartnerController::class, 'updateContract']);
 
+    //Event
+    Route::get('/event', [EventController::class, 'index']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
