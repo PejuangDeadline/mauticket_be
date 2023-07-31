@@ -13,6 +13,10 @@
                     <div class="nav-link-icon"><i class="fas fa-file-signature"></i></div>
                     Administration
                 </a>
+                <a class="nav-link" href="{{url('/event')}}">
+                    <div class="nav-link-icon"><i class="fas fa-file-signature"></i></div>
+                    Event
+                </a>
 
                 <!-- Sidenav Menu Heading (Core)-->
                 <div class="sidenav-menu-heading">Configuration</div>
