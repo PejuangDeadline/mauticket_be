@@ -40,7 +40,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Ticket Payment</h3>
+                <h3 class="card-title">List of Ticket Payment <i>({{$event->event_name}})</i></h3>
               </div>
               
               <!-- /.card-header -->
@@ -65,22 +65,18 @@
                                         <div class="form-group">
                                             <select class="form-control" name="payment_method" id="payment_method" required>
                                                 <option class="text-center" value="" selected>- Select Payment Method -</option>
-                                                <option class="text-center" value="VVIP" >VVIP</option>
-                                                <option class="text-center" value="Reguler" >Reguler</option>
-                                                {{-- @foreach ($provinces as $province)
-                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                                @endforeach --}}
+                                                @foreach ($dropdownPaymentMethod as $data)
+                                                <option class="text-center" value="{{ $data->name_value }}">{{ $data->name_value }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <br>
                                         <div class="form-group">
                                             <select class="form-control" name="bank_name" id="bank_name" required>
                                                 <option class="text-center" value="" selected>- Select Bank Name -</option>
-                                                <option class="text-center" value="1" >True</option>
-                                                <option class="text-center" value="2" >False</option>
-                                                {{-- @foreach ($provinces as $province)
-                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                                @endforeach --}}
+                                                @foreach ($dropdownBankTransfer as $data)
+                                                <option class="text-center" value="{{ $data->name_value }}">{{ $data->name_value }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <br>

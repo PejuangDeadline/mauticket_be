@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TicketPayment;
+use App\Models\Event;
+use App\Models\Dropdown;
 
 class TicketPaymentController extends Controller
 {
     public function index($id){
-        //need Query for eventName in scheme event->event_name
         $id = decrypt($id);
+        $event = Event::where('id',$id)
+        ->first();
         $ticketPayment = TicketPayment::where('id_event',$id)->get();
-        return view('ticket.indexPayment',compact('ticketPayment','id'));
+        $dropdownPaymentMethod = Dropdown::where('category','Payment Method')->get();
+        $dropdownBankTransfer = Dropdown::where('category','Bank Transfer')->get();
+        return view('ticket.indexPayment',compact('ticketPayment','id','event','dropdownPaymentMethod','dropdownBankTransfer'));
     }
     public function store(Request $request, $id){    
         dd($request);

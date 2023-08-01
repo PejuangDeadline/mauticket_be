@@ -40,7 +40,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Ticket Category</h3>
+                <h3 class="card-title">List of Ticket Category <i>({{$event->event_name}})</i></h3>
               </div>
               
               <!-- /.card-header -->
@@ -65,8 +65,8 @@
                                         <div class="form-group">
                                             <select class="form-control" name="category" id="category">
                                                 <option class="text-center" value="" selected>- Select Category -</option>
-                                                <option class="text-center" value="VVIP" selected>VVIP</option>
-                                                <option class="text-center" value="Reguler" selected>Reguler</option>
+                                                <option class="text-center" value="VVIP">VVIP</option>
+                                                <option class="text-center" value="Reguler">Reguler</option>
                                                 {{-- @foreach ($provinces as $province)
                                                 <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
                                                 @endforeach --}}
@@ -75,9 +75,9 @@
                                         <br>
                                         <div class="form-group">
                                             <select class="form-control" name="inc_seat" id="inc_seat">
-                                                <option class="text-center" value="" selected>- Select Category -</option>
-                                                <option class="text-center" value="1" selected>True</option>
-                                                <option class="text-center" value="2" selected>False</option>
+                                                <option class="text-center" value="" selected>- Include Seat -</option>
+                                                <option class="text-center" value="1">True</option>
+                                                <option class="text-center" value="2">False</option>
                                                 {{-- @foreach ($provinces as $province)
                                                 <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
                                                 @endforeach --}}
