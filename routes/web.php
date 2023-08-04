@@ -8,6 +8,9 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MstPartnerController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TicketPaymentController;
+use App\Http\Controllers\TicketCategoryController;
+use App\Http\Controllers\ShowtimeController;
 
 
 /*
@@ -58,6 +61,26 @@ Route::middleware(['auth'])->group(function () {
 
     //Event
     Route::get('/event', [EventController::class, 'index']);
+    Route::post('/event/store', [EventController::class, 'storeEvent']);
+    Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent']);
+
+    //Ticket Category
+    Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index']);
+    Route::post('/ticket-category/store/{id}', [TicketCategoryController::class, 'store']);
+    Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit']);
+    Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy']);
+
+    //Ticket Payment 
+    Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
+    Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store']);
+    Route::patch('/ticket-payment/edit/{id}', [TicketPaymentController::class, 'edit']);
+    Route::delete('/ticket-payment/destroy/{id}', [TicketPaymentController::class, 'destroy']);
+
+     //Show Time 
+     Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
+     Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
+     Route::patch('/show-time/edit/{id}', [ShowtimeController::class, 'edit']);
+     Route::delete('/show-time/destroy/{id}', [ShowtimeController::class, 'destroy']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');

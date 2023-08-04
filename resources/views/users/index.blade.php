@@ -46,7 +46,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
-                    <div class="mb-3 col-sm-6">
+                    <div class="mb-3 col-sm-12">
                         <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
                             <i class="fas fa-plus-square"></i> 
                           </button>
@@ -93,7 +93,7 @@
                           </div>
                           
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                       <!--alert success -->
                       @if (session('status'))
                       <div class="alert alert-success alert-dismissible fade show" role="alert">
