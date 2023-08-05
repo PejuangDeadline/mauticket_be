@@ -71,7 +71,7 @@
                                                 <select name="id_partner" id="id_partner" class="form-control" required>
                                                     <option class="text-center" value="">Select Partner</option>
                                                     @foreach ($getPartner as $item)
-                                                    <option class="text-center" value="{{$item->partner_name}}">{{$item->partner_name}}</option>
+                                                    <option class="text-center" value="{{$item->id}}">{{$item->partner_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -267,9 +267,12 @@
                                             <i class="fas fa-edit"></i> Edit Detail
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
+                                    {{-- <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
                                     <li><a class="dropdown-item" href="{{ url('ticket-payment/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Payment</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li> --}}
+                                    <li><a class="dropdown-item" href="{{ url('ticket-category/'.$data->id ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('ticket-payment/'.$data->id ) }}"><i class="fas fa-plus"></i> Ticket Payment</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('show-time/'.$data->id ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
                                     <li>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                             <i class="fas fa-trash-alt"></i>Delete
@@ -290,7 +293,7 @@
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ url('/partner/update') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ url('/event/update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div hidden>
                                     <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
@@ -298,18 +301,18 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <select name="id_partner" id="id_partner" class="form-control" required>
-                                            <option class="text-center" value="{{ $data->id_partner }}">{{ $data->id_partner }}</option>
+                                        <select name="id_partner" id="id_partner" class="form-control" value="{{ $data->id_partner }}">
+                                            <option class="text-center" value="{{ $data->id_partner }}" selected>{{$item->partner_name}}</option>
                                             @foreach ($getPartner as $item)
-                                            <option class="text-center" value="{{$item->partner_name}}">{{$item->partner_name}}</option>
+                                            <option class="text-center" value="{{$item->id_partner}}" {{ $item->id_partner == $data->id_partner ? 'selected' : '' }}>{{$item->partner_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <select name="event_category" id="event_category" class="form-control" required>
+                                        <select name="event_category" id="event_category" class="form-control">
                                             <option class="text-center" value="{{ $data->event_category }}">{{ $data->event_category }}</option>
                                             @foreach ($getEventCategory as $item)
-                                            <option class="text-center" value="{{$item->name_value}}">{{$item->name_value}}</option>
+                                            <option class="text-center" value="{{$item->name_value}}" {{ $item->name_value == $data->event_category ? 'selected' : '' }}>{{$item->name_value}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -333,7 +336,7 @@
                                         <select class="form-control" name="province_by_id" id="province_by_id">
                                             <option class="text-center" value="{{$data->province}}" selected>{{$data->province}}</option>
                                             @foreach ($provinces as $province)
-                                            <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
+                                            <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $data->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -405,7 +408,7 @@
                                     <label><b>Facility</b></label>
                                     <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder="">{{$data->facility}}</textarea>
                                 </div>
-                                
+
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
@@ -423,7 +426,7 @@
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Partner</h4>
+                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Event</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form action="{{ url('/event/destroy/'.$data->id) }}" method="POST">
@@ -431,7 +434,7 @@
                             @method('delete')
                             <div class="modal-body">
                                 <div class="form-group">
-                                Are you sure you want to delete <label for="partner">{{ $data->partner_name }}</label>?
+                                Are you sure you want to delete <label for="partner">{{ $data->event_name }}</label>?
                                 </div>
                             </div>
                             <div class="modal-footer">

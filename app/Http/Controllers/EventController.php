@@ -17,8 +17,12 @@ class EventController extends Controller
     //
     public function index()
     {
-        $event = Event::select('*')
+        $id_partner= auth()->user()->id_partner;
+        $event = Event::leftJoin('mst_partners', 'events.id_partner', '=', 'mst_partners.id')
+        ->select('events.*', 'mst_partners.partner_name')
+        ->where('id_partner','1')
         ->get();
+        //dd($event);
 
         //getPartner
         $getPartner = MstPartner::orderBy('partner_name', 'asc')->get();
@@ -60,7 +64,7 @@ class EventController extends Controller
 
     public function storeEvent(Request $request)
     {
-        // dd($request->all());
+         //dd($request->all());
 
         $request->validate([
             "id_partner" => "required",
@@ -140,7 +144,7 @@ class EventController extends Controller
 
             return redirect('/event')->with('status','Success Create Event');
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             DB::rollback();
             // something went wrong
 
@@ -150,7 +154,7 @@ class EventController extends Controller
 
     public function storeUpdateEvent(Request $request)
     {
-        // dd($request->all());
+         //dd($request->all());
 
         $request->validate([
             "id_partner" => "required",
@@ -159,20 +163,16 @@ class EventController extends Controller
             "highlight" => "required",
             "description" => "required",
             "event_address" => "required",
-            "province" => "required",
+            "province_by_id" => "required",
             "city" => "required",
             "district" => "required",
-            "sub_district" => "required",
+            "subdistrict" => "required",
             "zip_code" => "required",
             "exchange_ticket_info" => "required",
             "tc_info" => "required",
             "including_info" => "required",
             "excluding_info" => "required",
             "facility" => "required",
-            "start_date" => "required",
-            "end_date" => "required",
-            "showtime_start" => "required",
-            "showtime_end" => "required",
         ]);
 
         $id_partner = $request->id_partner;
@@ -217,13 +217,13 @@ class EventController extends Controller
             {
                 //dd('berubah');
                 //Area Province by ID
-                $province_name = $this->provinceName($token, $request->province_by_id);
+                $province_name = $this->provinceName($token, $province_id);
                 //Area City by ID
-                $city_name = $this->cityName($token, $request->city);
+                $city_name = $this->cityName($token, $city_id);
                 //Area District by ID
-                $district_name = $this->districtName($token, $request->district);
+                $district_name = $this->districtName($token, $district_id);
                 //Area Subdistrict by ID
-                $subdistrict_name = $this->subdistrictName($token, $request->subdistrict);
+                $subdistrict_name = $this->subdistrictName($token, $subdistrict_id);
 
                 $query =  Event:: where('id',$request->id_partner)
                     ->update([
@@ -243,16 +243,13 @@ class EventController extends Controller
                     'including_info' => $request->including_info,
                     'excluding_info' => $request->excluding_info,
                     'facility' => $request->facility,
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                    'showtime_start' => $request->showtime_start,
-                    'showtime_end' => $request->showtime_end,
                     'is_active' => $request->is_active,
                     'created_by' => $request->created_by,
                 ]);
             }
             else
             {
+                //dd('tidak berubah');
                 $query =  Event:: where('id',$request->id_partner)
                     ->update([
                     'id_partner' => $request->id_partner,
@@ -267,24 +264,46 @@ class EventController extends Controller
                     'including_info' => $request->including_info,
                     'excluding_info' => $request->excluding_info,
                     'facility' => $request->facility,
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                    'showtime_start' => $request->showtime_start,
-                    'showtime_end' => $request->showtime_end,
                     'is_active' => $request->is_active,
                     'created_by' => $request->created_by,
                 ]);
-                //dd('tidak berubah');
             }
             DB::commit();
             // all good
 
             return redirect('/event')->with('status','Success Update Event');
         } catch (\Exception $e) {
+            //dd($e);
             DB::rollback();
             // something went wrong
 
             return redirect('/event')->with('failed','Failed Update Event');
+        }
+    }
+
+    public function destroyEvent($id){
+        // dd('destroy');
+        // create by email
+        $created_by = auth()->user()->email;
+
+        DB::beginTransaction();
+        try {
+
+            $query =  Event::where('id',$id)
+                    ->update([
+                        'is_active' => '0',
+                        'created_by' => $created_by,
+                    ]);
+            DB::commit();
+            // all good
+
+            return redirect('/event')->with('status','Success Delete Event');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/event')->with('failed','Failed Delete Event');
         }
     }
 }
