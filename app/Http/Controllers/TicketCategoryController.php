@@ -90,14 +90,14 @@ class TicketCategoryController extends Controller
             }
             DB::commit();
             // all good
-            $id_en = encrypt($id);
+            $id_en = encrypt($id_event);
 
             return redirect('/ticket-category/'.$id_en)->with('status','Success Update Ticket Category');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
-            $id_en = encrypt($id);
+            $id_en = encrypt($id_event);
 
             return redirect('/ticket-category/'.$id_en)->with('failed','Failed Update Ticket Category');
         }
