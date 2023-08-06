@@ -220,7 +220,7 @@
                             <form action="{{ url('ticket-category/destroy/'.$data->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <input type="text" hidden value="{{$data->id}}">
+                            <input type="text" name="id_event" hidden value="{{$data->id_event}}">
                             <div class="modal-body">
                                 <div class="form-group">
                                 Are you sure you want to delete <label for="rule">{{ $data->category }}</label>?

@@ -267,12 +267,9 @@
                                             <i class="fas fa-edit"></i> Edit Detail
                                         </a>
                                     </li>
-                                    {{-- <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
                                     <li><a class="dropdown-item" href="{{ url('ticket-payment/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Payment</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li> --}}
-                                    <li><a class="dropdown-item" href="{{ url('ticket-category/'.$data->id ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('ticket-payment/'.$data->id ) }}"><i class="fas fa-plus"></i> Ticket Payment</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('show-time/'.$data->id ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
                                     <li>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                             <i class="fas fa-trash-alt"></i>Delete

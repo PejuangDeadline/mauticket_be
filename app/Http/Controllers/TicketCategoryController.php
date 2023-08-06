@@ -11,7 +11,8 @@ class TicketCategoryController extends Controller
 {
     public function index($id){
         //need Query for eventName in scheme event->event_name
-        //$id = decrypt($id);
+        $id = decrypt($id);
+        //dd($id);
         $event = Event::where('id',$id)
         ->first();
         $ticketCategory = TicketCategory::where('id_event',$id)->get();
@@ -20,10 +21,9 @@ class TicketCategoryController extends Controller
     }
 
     public function store(Request $request, $id){
-        //dd($request);
         //$id = decrypt($id);
         //$ticketCategory = TicketCategory::where('id_event',$id)->get();
-
+        //dd($id);
         // create by email
         $created_by = auth()->user()->email;
         // convert price value
@@ -41,14 +41,16 @@ class TicketCategoryController extends Controller
                     ]);
             DB::commit();
             // all good
+            $id_en = encrypt($id);
 
-            return redirect('/ticket-category/'.$id)->with('status','Success Create Ticket Category');
+            return redirect('/ticket-category/'.$id_en)->with('status','Success Create Ticket Category');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
+            $id_en = encrypt($id);
 
-            return redirect('/ticket-category/'.$id)->with('failed','Failed Create Ticket Category');
+            return redirect('/ticket-category/'.$id_en)->with('failed','Failed Create Ticket Category');
         }
     }
 
@@ -88,14 +90,16 @@ class TicketCategoryController extends Controller
             }
             DB::commit();
             // all good
+            $id_en = encrypt($id);
 
-            return redirect('/ticket-category/'.$id_event)->with('status','Success Update Ticket Category');
+            return redirect('/ticket-category/'.$id_en)->with('status','Success Update Ticket Category');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
+            $id_en = encrypt($id);
 
-            return redirect('/ticket-category/'.$id_event)->with('failed','Failed Update Ticket Category');
+            return redirect('/ticket-category/'.$id_en)->with('failed','Failed Update Ticket Category');
         }
 
     }
@@ -115,14 +119,16 @@ class TicketCategoryController extends Controller
             $query =  TicketCategory::where('id',$id)->delete();
             DB::commit();
             // all good
+            $id_en = encrypt($request->id_event);
 
-            return redirect('/ticket-category/'.$id)->with('status','Success Delete Ticket Category');
+            return redirect('/ticket-category/'.$id_en)->with('status','Success Delete Ticket Category');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
+            $id_en = encrypt($request->id_event);
 
-            return redirect('/ticket-category/'.$id)->with('failed','Failed Delete Ticket Category');
+            return redirect('/ticket-category/'.$id_en)->with('failed','Failed Delete Ticket Category');
         }
     }
 }

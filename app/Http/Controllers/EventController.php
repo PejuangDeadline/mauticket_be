@@ -20,7 +20,9 @@ class EventController extends Controller
         $id_partner= auth()->user()->id_partner;
         $event = Event::leftJoin('mst_partners', 'events.id_partner', '=', 'mst_partners.id')
         ->select('events.*', 'mst_partners.partner_name')
-        ->where('id_partner','1')
+        ->where('events.id_partner', $id_partner)
+        ->where('events.is_active','1')
+        ->where('mst_partners.is_active','1')
         ->get();
         //dd($event);
 
