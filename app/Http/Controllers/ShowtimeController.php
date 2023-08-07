@@ -7,6 +7,7 @@ use App\Models\Showtime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 
 class ShowtimeController extends Controller
@@ -24,12 +25,19 @@ class ShowtimeController extends Controller
     public function store(Request $request, $id)
     {
         // dd($request);
-        // $id = decrypt($id);
 
-        $request->validate([
-            "showtime_start" => "required",
-            "showtime_finish" => "required"
+        $validator = Validator::make($request->all(), [
+            "showtime_start" => "required|date_format:Y-m-d\TH:i",
+            "showtime_finish" => "required|date_format:Y-m-d\TH:i|after:showtime_start|ends_after_start:showtime_start",
         ]);
+
+
+
+        if ($validator->fails()) {
+            // Tangani jika validasi gagal
+            $id_en = encrypt($id);
+            return redirect('/show-time/' . $id_en)->withErrors($validator)->withInput();
+        }
 
         DB::beginTransaction();
         try {
