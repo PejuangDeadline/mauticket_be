@@ -37,6 +37,8 @@ class ShowtimeController extends Controller
             return redirect('/show-time/' . $id_en)->withErrors($validator)->withInput();
         }
 
+        // validasi db 
+
         DB::beginTransaction();
         try {
 

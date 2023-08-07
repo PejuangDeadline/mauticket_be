@@ -74,8 +74,8 @@ Route::middleware(['auth'])->group(function () {
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
     Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store']);
-    Route::patch('/ticket-payment/edit/{id}', [TicketPaymentController::class, 'edit']);
-    Route::delete('/ticket-payment/destroy/{id}', [TicketPaymentController::class, 'destroy']);
+    Route::patch('/ticket-payment/edit/{idEvent}/{id}', [TicketPaymentController::class, 'edit']);
+    Route::delete('/ticket-payment/destroy/{idEvent}/{id}', [TicketPaymentController::class, 'destroy']);
 
     //Show Time
     Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
