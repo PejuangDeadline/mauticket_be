@@ -50,7 +50,7 @@
                         <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
                             <i class="fas fa-plus-square"></i>
                           </button>
-
+                          
                           <!-- Modal -->
                           <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
                             <div class="modal-dialog">
@@ -66,26 +66,23 @@
                                         <input class="form-control" id="id_event" name="id_event" value="{{$id}}"/>
                                     </div>
                                         <div class="form-group">
-                                            <select class="form-control" name="category" id="category">
-                                                <option class="text-center" value="" selected>- Select Category -</option>
-                                                <option class="text-center" value="VVIP">VVIP</option>
-                                                <option class="text-center" value="Reguler">Reguler</option>
-                                                {{-- @foreach ($provinces as $province)
-                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                                @endforeach --}}
-                                            </select>
+                                          <label class="mb-3" for="">Input Category</label>
+                                          <textarea class="form-control" id="category" name="category" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <br>
                                         <div class="form-group">
-                                            <select class="form-control" name="inc_seat" id="inc_seat">
-                                                <option class="text-center" value="" selected>- Include Seat -</option>
-                                                <option class="text-center" value="1">True</option>
-                                                <option class="text-center" value="2">False</option>
-                                                {{-- @foreach ($provinces as $province)
-                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                                @endforeach --}}
-                                            </select>
+                                          <label class="mb-3" for="">Include Seat?</label>
+                                          <br>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptions" id="inlineRadio1" value="option1">
+                                            <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptions" id="inlineRadio2" value="option2">
+                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                          </div>
                                         </div>
+                                        
                                         <br>
                                         <div class="form-group">
                                             {{-- <input type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
@@ -101,7 +98,7 @@
                               </div>
                             </div>
                           </div>
-
+                          
 
                       <!--alert success -->
                       @if (session('status'))
