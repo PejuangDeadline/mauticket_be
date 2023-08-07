@@ -16,8 +16,8 @@ class ShowtimeController extends Controller
     {
         //need Query for eventName in scheme event->event_name
         $id = decrypt($id);
-        // dd('test');
         $event = Event::where('id', $id)->first();
+        // dd($id, $event);
         $showTime = Showtime::where('id_event', $id)->get();
         return view('show-time.index', compact('showTime', 'id', 'event'));
     }
@@ -30,8 +30,6 @@ class ShowtimeController extends Controller
             "showtime_start" => "required|date_format:Y-m-d\TH:i",
             "showtime_finish" => "required|date_format:Y-m-d\TH:i|after:showtime_start|ends_after_start:showtime_start",
         ]);
-
-
 
         if ($validator->fails()) {
             // Tangani jika validasi gagal
@@ -66,7 +64,17 @@ class ShowtimeController extends Controller
 
     public function edit(Request $request, $idEvent, $id)
     {
-        // dd($request);
+        $validator = Validator::make($request->all(), [
+            "showtime_start" => "required|date_format:Y-m-d\TH:i",
+            "showtime_finish" => "required|date_format:Y-m-d\TH:i|after:showtime_start|ends_after_start:showtime_start",
+        ]);
+
+        if ($validator->fails()) {
+            // Tangani jika validasi gagal
+            $idEvent_en = encrypt($idEvent);
+            return redirect('/show-time/' . $idEvent_en)->withErrors($validator)->withInput();
+        }
+
         $showTime = Showtime::where('id', $id)->first();
         // dd($id, $showTime);
 
