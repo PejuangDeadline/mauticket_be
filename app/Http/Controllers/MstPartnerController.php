@@ -236,7 +236,7 @@ class MstPartnerController extends Controller
     }
 
 
-    public function deletePartner($id){
+    public function destroyPartner($id){
         //dd('hi');
         // create by email
         $created_by = auth()->user()->email;

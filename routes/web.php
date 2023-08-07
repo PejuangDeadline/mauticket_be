@@ -55,13 +55,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/partner', [MstPartnerController::class, 'index']);
     Route::post('/partner/store', [MstPartnerController::class, 'storePartner']);
     Route::post('/partner/update', [MstPartnerController::class, 'StoreUpdatePartner']);
-    Route::delete('/partner/delete/{id}', [MstPartnerController::class, 'deletePartner']);
+    Route::delete('/partner/delete/{id}', [MstPartnerController::class, 'destroyPartner']);
     Route::post('/contract', [MstPartnerController::class, 'storeContract']);
     Route::post('/contract/update', [MstPartnerController::class, 'updateContract']);
 
     //Event
     Route::get('/event', [EventController::class, 'index']);
     Route::post('/event/store', [EventController::class, 'storeEvent']);
+    Route::post('/event/update', [EventController::class, 'storeUpdateEvent']);
     Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent']);
 
     //Ticket Category
@@ -70,13 +71,13 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit']);
     Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy']);
 
-    //Ticket Payment 
+    //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
     Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store']);
     Route::patch('/ticket-payment/edit/{id}', [TicketPaymentController::class, 'edit']);
     Route::delete('/ticket-payment/destroy/{id}', [TicketPaymentController::class, 'destroy']);
 
-     //Show Time 
+     //Show Time
      Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
      Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
      Route::patch('/show-time/edit/{id}', [ShowtimeController::class, 'edit']);
