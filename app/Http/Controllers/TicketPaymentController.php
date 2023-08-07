@@ -10,7 +10,7 @@ use App\Models\Dropdown;
 class TicketPaymentController extends Controller
 {
     public function index($id){
-        $id = decrypt($id);
+        //$id = decrypt($id);
         $event = Event::where('id',$id)
         ->first();
         $ticketPayment = TicketPayment::where('id_event',$id)->get();
@@ -18,24 +18,24 @@ class TicketPaymentController extends Controller
         $dropdownBankTransfer = Dropdown::where('category','Bank Transfer')->get();
         return view('ticket.indexPayment',compact('ticketPayment','id','event','dropdownPaymentMethod','dropdownBankTransfer'));
     }
-    public function store(Request $request, $id){    
+    public function store(Request $request, $id){
         dd($request);
-        $id = decrypt($id);
-       $ticketPayment = TicketPayment::where('id_event',$id)->get();
-        return view('ticket.index',compact('ticketPayment'));
+        //$id = decrypt($id);
+        // $ticketPayment = TicketPayment::where('id_event',$id)->get();
+        // return view('ticket.index',compact('ticketPayment'));
     }
 
-    public function edit(Request $request,$id){  
-        dd($request);  
-        $id = decrypt($id);
-       $ticketPayment = TicketPayment::where('id_event',$id)->get();
-        return view('ticket.index',compact('ticketPayment'));
+    public function edit(Request $request,$id){
+        dd($request);
+        // $id = decrypt($id);
+        // $ticketPayment = TicketPayment::where('id_event',$id)->get();
+        // return view('ticket.index',compact('ticketPayment'));
     }
 
-    public function destroy(Request $request,$id){  
-        dd($request);  
-        $id = decrypt($id);
-       $ticketPayment = TicketPayment::where('id_event',$id)->get();
-        return view('ticket.index',compact('ticketPayment'));
+    public function destroy(Request $request,$id){
+        dd($request);
+        // $id = decrypt($id);
+        // $ticketPayment = TicketPayment::where('id_event',$id)->get();
+        // return view('ticket.index',compact('ticketPayment'));
     }
 }
