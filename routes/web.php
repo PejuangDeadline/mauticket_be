@@ -47,9 +47,9 @@ Route::middleware(['auth'])->group(function () {
     //User Controller
     Route::get('/user', [UserController::class, 'index']);
     Route::post('/user/store', [UserController::class, 'store']);
-    Route::patch('/user/update/{user}',[UserController::class, 'update']);
-    Route::get('/user/revoke/{user}',[UserController::class, 'revoke']);
-    Route::get('/user/access/{user}',[UserController::class, 'access']);
+    Route::patch('/user/update/{user}', [UserController::class, 'update']);
+    Route::get('/user/revoke/{user}', [UserController::class, 'revoke']);
+    Route::get('/user/access/{user}', [UserController::class, 'access']);
 
     //Partner
     Route::get('/partner', [MstPartnerController::class, 'index']);
@@ -77,11 +77,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/ticket-payment/edit/{id}', [TicketPaymentController::class, 'edit']);
     Route::delete('/ticket-payment/destroy/{id}', [TicketPaymentController::class, 'destroy']);
 
-     //Show Time
-     Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
-     Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
-     Route::patch('/show-time/edit/{id}', [ShowtimeController::class, 'edit']);
-     Route::delete('/show-time/destroy/{id}', [ShowtimeController::class, 'destroy']);
+    //Show Time
+    Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
+    Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
+    Route::patch('/show-time/edit/{idEvent}/{id}', [ShowtimeController::class, 'edit']);
+    Route::delete('/show-time/destroy/{idEvent}/{id}', [ShowtimeController::class, 'destroy']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');

@@ -43,35 +43,36 @@ class ShowtimeController extends Controller
 
             DB::commit();
             // all good
+            $id_en = encrypt($id);
 
-            return redirect('/show-time/' . $id)->with('status', 'Success Create Show Time');
+            return redirect('/show-time/' . $id_en)->with('status', 'Success Create Show Time');
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
             // something went wrong
+            $id_en = encrypt($id);
 
-            return redirect('/show-time/' . $id)->with('failed', 'Failed Create Show Time');
+            return redirect('/show-time/' . $id_en)->with('failed', 'Failed Create Show Time');
         }
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $idEvent, $id)
     {
         // dd($request);
-        // $id = decrypt($id);
-        $showTime = Showtime::where('id_event', $id)->first();
-        dd($id, $showTime);
+        $showTime = Showtime::where('id', $id)->first();
+        // dd($id, $showTime);
 
         DB::beginTransaction();
         try {
             if ($showTime->isDirty()) {
                 //dd('berubah');
-                $query =  Showtime::where('id_event', $id)
+                $query =  Showtime::where('id', $id)
                     ->update([
                         'showtime_start' => $request->showtime_start,
                         'showtime_finish' => $request->showtime_finish
                     ]);
             } else {
-                $query =  Showtime::where('id_event', $id)
+                $query =  Showtime::where('id', $id)
                     ->update([
                         'showtime_start' => $request->showtime_start,
                         'showtime_finish' => $request->showtime_finish
@@ -80,20 +81,19 @@ class ShowtimeController extends Controller
             }
             DB::commit();
             // all good
+            $idEvent_en = encrypt($idEvent);
 
-            return redirect('/show-time/' . $id)->with('status', 'Success Update Show Time');
+            return redirect('/show-time/' . $idEvent_en)->with('status', 'Success Update Show Time');
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong
-            return redirect('/show-time/' . $id)->with('failed', 'Failed Update Show Time');
+            $idEvent_en = encrypt($idEvent);
+            return redirect('/show-time/' . $idEvent_en)->with('failed', 'Failed Update Show Time');
         }
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($idEvent, $id)
     {
-        // dd($request);
-        // $id = decrypt($id);
-
         DB::beginTransaction();
         try {
 
@@ -101,14 +101,14 @@ class ShowtimeController extends Controller
 
             DB::commit();
             // all good
-
-            return redirect('/show-time/' . $id)->with('status', 'Success Delete Show Time');
+            $idEvent_en = encrypt($idEvent);
+            return redirect('/show-time/' . $idEvent_en)->with('status', 'Success Delete Show Time');
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
             // something went wrong
-
-            return redirect('/show-time/' . $id)->with('failed', 'Failed Delete Show Time');
+            $idEvent_en = encrypt($idEvent);
+            return redirect('/show-time/' . $idEvent_en)->with('failed', 'Failed Delete Show Time');
         }
     }
 }
