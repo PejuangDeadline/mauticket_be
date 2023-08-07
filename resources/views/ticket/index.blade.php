@@ -66,27 +66,26 @@
                                         <input class="form-control" id="id_event" name="id_event" value="{{$id}}"/>
                                     </div>
                                         <div class="form-group">
-                                          <label class="mb-3" for="">Input Category</label>
-                                          <textarea class="form-control" id="category" name="category" cols="30" rows="3" placeholder=""></textarea>
+    
+                                          <input class="form-control" id="category" name="category" cols="30" rows="3" placeholder="Enter Category">
                                         </div>
                                         <br>
                                         <div class="form-group">
                                           <label class="mb-3" for="">Include Seat?</label>
                                           <br>
                                           <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="radioOptions" id="inlineRadio1" value="option1">
+                                            <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1">
                                             <label class="form-check-label" for="inlineRadio1">Yes</label>
                                           </div>
                                           <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="radioOptions" id="inlineRadio2" value="option2">
+                                            <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0">
                                             <label class="form-check-label" for="inlineRadio2">No</label>
                                           </div>
                                         </div>
                                         
                                         <br>
                                         <div class="form-group">
-                                            {{-- <input type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
-                                            <input type="text" id="price" name="price" class="form-control" value="{{ old('price') }}" autocomplete="off" placeholder="Enter Price">
+                                            <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
                                         </div>
 
                                   </div>
@@ -156,8 +155,45 @@
                             <button title="Delete Ticket Category" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
+                              @if ($data->inc_seat == 1)
+                              <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
+                                Upload Seat
+                              </button>
+                              @endif
+                             
                         </td>
                     </tr>
+
+                     {{-- modal include --}}
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="modal-include{{ $data->id }}" tabindex="-1" aria-labelledby="modal-include{{ $data->id }}-label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modal-include-label">Upload Seat</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url('ticket-category/store/'.$id) }}" method="POST">
+                                  @csrf
+                                  <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="file" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required>
+                                        </div>
+                                        <div class="form-group">
+                                          <a href="#">Download Template Here</a>
+                                      </div>
+
+
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
 
                     {{-- Modal Update --}}
                     <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
@@ -171,30 +207,30 @@
                               @csrf
                               @method('patch')
                               <div class="modal-body">
-                                <div class="form-group">
-                                    <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
-                                    <select class="form-control" name="category" id="category">
-                                        <option class="text-center" value="{{$data->category}}" selected>{{$data->category}}</option>
-                                        {{-- @foreach ($provinces as $province)
-                                        <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                        @endforeach --}}
-                                    </select>
-                                </div>
-                                <br>
-                                <select class="form-control" name="inc_seat" id="inc_seat">
-                                    <option class="text-center" value="{{$data->inc_seat}}" selected>{{$data->inc_seat}}</option>
-                                    <option class="text-center" value="1" selected>True</option>
-                                    <option class="text-center" value="2" selected>False</option>
-                                    {{-- @foreach ($provinces as $province)
-                                    <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                    @endforeach --}}
-                                </select>
-                                <br>
-                                <div class="form-group">
-                                    {{-- <input value="{{$data->price}}" type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
-                                    {{-- <input type="text" id="price" name="price" class="form-control" value="{{$data->price}}" autocomplete="off" placeholder="Enter Price"> --}}
+
+                                <div hidden>
+                                  <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
+                              </div>
+                                  <div class="form-group">
+                                    <input class="form-control" id="category" name="category" cols="30" rows="3" value="{{$data->category}}" placeholder="{{$data->category}}">
+                                  </div>
+                                  <br>
+                                  <div class="form-group">
+                                    <label class="mb-3" for="">Include Seat?</label>
+                                    <br>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1" @if ($data->inc_seat == 1) checked @endif>
+                                      <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0" @if ($data->inc_seat == 0) checked @endif>
+                                      <label class="form-check-label" for="inlineRadio2">No</label>
+                                    </div>
+                                  </div>
+                                  <br>
+                                  <div class="form-group">
                                     <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
-                                </div>
+                                  </div>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
