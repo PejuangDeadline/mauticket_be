@@ -47,9 +47,12 @@
               <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-sm-12">
+                        @if ($getPartner->is_active == '1')
                         <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
                             <i class="fas fa-plus-square"></i>
                           </button>
+                        @endif
+                       
 
                           <!-- Modal -->
                           <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
@@ -65,17 +68,10 @@
                                         <div hidden>
                                             <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
                                             <input class="form-control" id="is_active" name="is_active" value="1"/>
+                                            <input class="form-control" id="id_partner" name="id_partner" value="{{$getPartner->id}}"/>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <select name="id_partner" id="id_partner" class="form-control" required>
-                                                    <option class="text-center" value="">Select Partner</option>
-                                                    @foreach ($getPartner as $item)
-                                                    <option class="text-center" value="{{$item->id}}">{{$item->partner_name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <select name="event_category" id="event_category" class="form-control" required>
                                                     <option class="text-center" value="">Select Event Category</option>
                                                     @foreach ($getEventCategory as $item)
@@ -256,12 +252,13 @@
                             @endif
                         </td>
                         <td>
+                            @if ($getPartner->is_active == '1')
                             <div class="dropdown">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
                                   </button>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle"></i> Detail</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('event/detail/'.encrypt($data->id) ) }}"><i class="fas fa-info-circle"></i> Detail</a></li>
                                     <li>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                             <i class="fas fa-edit"></i> Edit Detail
@@ -277,6 +274,7 @@
                                     </li>
                                 </ul>
                                </div>
+                            @endif
                             </div>
                         </td>
                     </tr>
@@ -295,17 +293,11 @@
                                 <div hidden>
                                     <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
                                     <input class="form-control" id="is_active" name="is_active" value="1"/>
+                                    <input class="form-control" id="id_partner" name="id_partner" value="{{$data->id_partner}}"/>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <select name="id_partner" id="id_partner" class="form-control" value="{{ $data->id_partner }}">
-                                            <option class="text-center" value="{{ $data->id_partner }}" selected>{{$item->partner_name}}</option>
-                                            @foreach ($getPartner as $item)
-                                            <option class="text-center" value="{{$item->id_partner}}" {{ $item->id_partner == $data->id_partner ? 'selected' : '' }}>{{$item->partner_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
+                                  
+                                    <div class="col-md-12">
                                         <select name="event_category" id="event_category" class="form-control">
                                             <option class="text-center" value="{{ $data->event_category }}">{{ $data->event_category }}</option>
                                             @foreach ($getEventCategory as $item)
@@ -415,7 +407,7 @@
                       </div>
                           </div>
                         </div>
-                      </div>
+                      
                     {{-- Modal Update --}}
 
                     {{-- Modal Delete --}}
@@ -544,6 +536,7 @@
                     @endforeach
                   </tbody>
                 </table>
+            </div>
               </div>
               </div>
               <!-- /.card-body -->
