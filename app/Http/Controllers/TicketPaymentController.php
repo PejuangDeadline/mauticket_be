@@ -10,14 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class TicketPaymentController extends Controller
 {
-    public function index($id){
-        $id = decrypt($id);
-        $event = Event::where('id',$id)
-        ->first();
-        $ticketPayment = TicketPayment::where('id_event',$id)->get();
-        $dropdownPaymentMethod = Dropdown::where('category','Payment Method')->get();
-        $dropdownBankTransfer = Dropdown::where('category','Bank Transfer')->get();
-        return view('ticket.indexPayment',compact('ticketPayment','id','event','dropdownPaymentMethod','dropdownBankTransfer'));
+    public function index($id)
+    {
+        //$id = decrypt($id);
+        $event = Event::where('id', $id)
+            ->first();
+        $ticketPayment = TicketPayment::where('id_event', $id)->get();
+        $dropdownPaymentMethod = Dropdown::where('category', 'Payment Method')->get();
+        $dropdownBankTransfer = Dropdown::where('category', 'Bank Transfer')->get();
+        return view('ticket.indexPayment', compact('ticketPayment', 'id', 'event', 'dropdownPaymentMethod', 'dropdownBankTransfer'));
     }
     public function store(Request $request, $id)
     {
@@ -96,8 +97,9 @@ class TicketPaymentController extends Controller
         }
     }
 
-    public function destroy(Request $request,$id){  
-        dd($request);  
+    public function destroy(Request $request, $id)
+    {
+        dd($request);
         $id = decrypt($id);
 
         DB::beginTransaction();

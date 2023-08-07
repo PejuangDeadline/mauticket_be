@@ -19,7 +19,7 @@
         </div>
     </header>
 <!-- Main page content-->
-<div class="container-xl px-4 mt-n10">       
+<div class="container-xl px-4 mt-n10">
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -42,15 +42,15 @@
               <div class="card-header">
                 <h3 class="card-title">List of Ticket Category <i>({{$event->event_name}})</i></h3>
               </div>
-              
+
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-sm-12">
                         <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
-                            <i class="fas fa-plus-square"></i> 
+                            <i class="fas fa-plus-square"></i>
                           </button>
-                          
+
                           <!-- Modal -->
                           <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
                             <div class="modal-dialog">
@@ -62,6 +62,9 @@
                                 <form action="{{ url('ticket-category/store/'.$id) }}" method="POST">
                                   @csrf
                                   <div class="modal-body">
+                                    <div hidden>
+                                        <input class="form-control" id="id_event" name="id_event" value="{{$id}}"/>
+                                    </div>
                                         <div class="form-group">
                                             <select class="form-control" name="category" id="category">
                                                 <option class="text-center" value="" selected>- Select Category -</option>
@@ -85,9 +88,10 @@
                                         </div>
                                         <br>
                                         <div class="form-group">
-                                            <input type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required>
+                                            {{-- <input type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
+                                            <input type="text" id="price" name="price" class="form-control" value="{{ old('price') }}" autocomplete="off" placeholder="Enter Price">
                                         </div>
-                                        
+
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -97,23 +101,23 @@
                               </div>
                             </div>
                           </div>
-                          
+
 
                       <!--alert success -->
                       @if (session('status'))
                       <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>{{ session('status') }}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div> 
+                      </div>
                     @endif
 
                     @if (session('failed'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                       <strong>{{ session('failed') }}</strong>
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div> 
+                    </div>
                   @endif
-                    
+
                       <!--alert success -->
                       <!--validasi form-->
                         @if (count($errors)>0)
@@ -129,7 +133,7 @@
                         @endif
                       <!--end validasi form-->
                 </div>
-                <div class="table-responsive"> 
+                <div class="table-responsive">
                 <table id="tableTicketCategory" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -147,14 +151,14 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $data->category }}</td>
-                        <td>{{ $data->price }}</td>
+                        <td>Rp. {{ number_format($data->price) }}</td>
                         <td>
-                            <button title="Edit Rule" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id_event }}">
+                            <button title="Edit Ticket Category" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                 <i class="fas fa-edit"></i>
                               </button>
-                            <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id_event }}">
+                            <button title="Delete Ticket Category" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                 <i class="fas fa-trash-alt"></i>
-                              </button>   
+                              </button>
                         </td>
                     </tr>
 
@@ -163,15 +167,15 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title" id="modal-update{{ $data->id_event }}-label">Edit Rule</h4>
+                              <h4 class="modal-title" id="modal-update{{ $data->id }}-label">Edit Ticket Category</h4>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('ticket-category/edit/'.$data->id_event) }}" method="POST">
+                            <form action="{{ url('ticket-category/edit/'.$data->id) }}" method="POST">
                               @csrf
                               @method('patch')
                               <div class="modal-body">
                                 <div class="form-group">
-                                    <input type="text" name="id" value="{{$data->id}}" hidden>
+                                    <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
                                     <select class="form-control" name="category" id="category">
                                         <option class="text-center" value="{{$data->category}}" selected>{{$data->category}}</option>
                                         {{-- @foreach ($provinces as $province)
@@ -190,7 +194,9 @@
                                 </select>
                                 <br>
                                 <div class="form-group">
-                                    <input value="{{$data->price}}" type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required>
+                                    {{-- <input value="{{$data->price}}" type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
+                                    {{-- <input type="text" id="price" name="price" class="form-control" value="{{$data->price}}" autocomplete="off" placeholder="Enter Price"> --}}
+                                    <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
                                 </div>
                               </div>
                               <div class="modal-footer">
@@ -208,16 +214,16 @@
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h4 class="modal-title" id="modal-delete{{ $data->id_event }}-label">Delete Rule</h4>
+                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Ticket Category</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('ticket-category/destroy/'.$data->id_event) }}" method="POST">
+                            <form action="{{ url('ticket-category/destroy/'.$data->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <input type="text" hidden value="{{$data->id}}">
+                            <input type="text" name="id_event" hidden value="{{$data->id_event}}">
                             <div class="modal-body">
                                 <div class="form-group">
-                                Are you sure you want to delete <label for="rule">{{ $data->rule_name }}</label>?
+                                Are you sure you want to delete <label for="rule">{{ $data->category }}</label>?
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -250,7 +256,7 @@
   <!-- /.content-wrapper -->
 </div>
 
-     
+
 </main>
 
 <script>
@@ -283,17 +289,41 @@
     rupiahInputs.forEach((input) => {
         input.addEventListener('input', handlePriceInput);
     });
+
+
 </script>
 
 <!-- For Datatables -->
 <script>
     $(document).ready(function() {
       var table = $("#tableTicketCategory").DataTable({
-        "responsive": true, 
-        "lengthChange": false, 
+        "responsive": true,
+        "lengthChange": false,
         "autoWidth": false,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
+      var price = document.getElementById('price');
+
+        price.addEventListener('keyup',function(e){
+            price.value = formatCurrency(this.value,' ');
+        });
+
+    function formatCurrency(number,prefix)
+        {
+            var number_string = number.replace(/[^.\d]/g, '').toString(),
+                split	= number_string.split('.'),
+                sisa 	= split[0].length % 3,
+                rupiah 	= split[0].substr(0, sisa),
+                ribuan 	= split[0].substr(sisa).match(/\d{1,3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? ',' : '';
+                rupiah += separator + ribuan.join(',');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + '.' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+        }
     });
   </script>
 @endsection
