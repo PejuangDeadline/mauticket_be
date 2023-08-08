@@ -66,30 +66,26 @@
                                   <input class="form-control" id="id_event" name="id_event" value="{{$id}}" />
                                 </div>
                                 <div class="form-group">
-                                  <select class="form-control" name="category" id="category">
-                                    <option class="text-center" value="" selected>- Select Category -</option>
-                                    <option class="text-center" value="VVIP">VVIP</option>
-                                    <option class="text-center" value="Reguler">Reguler</option>
-                                    {{-- @foreach ($provinces as $province)
-                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                    @endforeach --}}
-                                  </select>
+
+                                  <input class="form-control" id="category" name="category" cols="30" rows="3" placeholder="Enter Category">
                                 </div>
                                 <br>
                                 <div class="form-group">
-                                  <select class="form-control" name="inc_seat" id="inc_seat">
-                                    <option class="text-center" value="" selected>- Include Seat -</option>
-                                    <option class="text-center" value="1">True</option>
-                                    <option class="text-center" value="2">False</option>
-                                    {{-- @foreach ($provinces as $province)
-                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                    @endforeach --}}
-                                  </select>
+                                  <label class="mb-3" for="">Include Seat?</label>
+                                  <br>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1">
+                                    <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0">
+                                    <label class="form-check-label" for="inlineRadio2">No</label>
+                                  </div>
                                 </div>
+
                                 <br>
                                 <div class="form-group">
-                                  {{-- <input type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
-                                  <input type="text" id="price" name="price" class="form-control" value="{{ old('price') }}" autocomplete="off" placeholder="Enter Price">
+                                  <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
                                 </div>
 
                               </div>
@@ -162,6 +158,11 @@
                               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-addShowTime">
                                 <i class="fas fa-clock"></i></i>
                               </button>
+                              @if ($data->inc_seat == 1)
+                              <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
+                                Upload Seat
+                              </button>
+                                        @endif
                             </td>
                           </tr>
 
@@ -190,7 +191,6 @@
                                       <label for="">Qty</label>
                                       <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" required>
                                     </div>
-
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -201,6 +201,39 @@
                             </div>
                           </div>
                           {{-- Modal Add Show Time --}}
+
+                          {{-- modal include --}}
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="modal-include{{ $data->id }}" tabindex="-1" aria-labelledby="modal-include{{ $data->id }}-label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modal-include-label">Upload Seat</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url('ticket-category/store/'.$id) }}" method="POST">
+                                  @csrf
+                                  <div class="modal-body">
+                                    <div class="form-group">
+                                      <input type="file" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required>
+                                    </div>
+                                    <div class="form-group">
+                                      <a href="#">Download Template Here</a>
+                                    </div>
+
+
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                                      
+                          </div>
+                          {{-- modal include --}}
 
                           {{-- Modal Update --}}
                           <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
@@ -214,28 +247,28 @@
                                   @csrf
                                   @method('patch')
                                   <div class="modal-body">
-                                    <div class="form-group">
+
+                                    <div hidden>
                                       <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
-                                      <select class="form-control" name="category" id="category">
-                                        <option class="text-center" value="{{$data->category}}" selected>{{$data->category}}</option>
-                                        {{-- @foreach ($provinces as $province)
-                                        <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                        @endforeach --}}
-                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <input class="form-control" id="category" name="category" cols="30" rows="3" value="{{$data->category}}" placeholder="{{$data->category}}">
                                     </div>
                                     <br>
-                                    <select class="form-control" name="inc_seat" id="inc_seat">
-                                      <option class="text-center" value="{{$data->inc_seat}}" selected>{{$data->inc_seat}}</option>
-                                      <option class="text-center" value="1" selected>True</option>
-                                      <option class="text-center" value="2" selected>False</option>
-                                      {{-- @foreach ($provinces as $province)
-                                    <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                      @endforeach --}}
-                                    </select>
+                                    <div class="form-group">
+                                      <label class="mb-3" for="">Include Seat?</label>
+                                      <br>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1" @if ($data->inc_seat == 1) checked @endif>
+                                        <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0" @if ($data->inc_seat == 0) checked @endif>
+                                        <label class="form-check-label" for="inlineRadio2">No</label>
+                                      </div>
+                                    </div>
                                     <br>
                                     <div class="form-group">
-                                      {{-- <input value="{{$data->price}}" type="text" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required> --}}
-                                      {{-- <input type="text" id="price" name="price" class="form-control" value="{{$data->price}}" autocomplete="off" placeholder="Enter Price"> --}}
                                       <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
                                     </div>
                                   </div>
@@ -243,40 +276,38 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                   </div>
-                                </form>
                               </div>
                             </div>
-                          </div>
-                          {{-- Modal Update --}}
+                            {{-- Modal Update --}}
 
-                          {{-- Modal Delete --}}
-                          <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Ticket Category</h4>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{{ url('ticket-category/destroy/'.$data->id) }}" method="POST">
-                                  @csrf
-                                  @method('delete')
-                                  <input type="text" name="id_event" hidden value="{{$data->id_event}}">
-                                  <div class="modal-body">
-                                    <div class="form-group">
-                                      Are you sure you want to delete <label for="rule">{{ $data->category }}</label>?
+                            {{-- Modal Delete --}}
+                            <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Ticket Category</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <form action="{{ url('ticket-category/destroy/'.$data->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <input type="text" name="id_event" hidden value="{{$data->id_event}}">
+                                    <div class="modal-body">
+                                      <div class="form-group">
+                                        Are you sure you want to delete <label for="rule">{{ $data->category }}</label>?
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                  </div>
-                                </form>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                  </form>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          {{-- Modal Delete --}}
+                            {{-- Modal Delete --}}
 
-                          @endforeach
+                            @endforeach
                         </tbody>
                       </table>
                     </div>

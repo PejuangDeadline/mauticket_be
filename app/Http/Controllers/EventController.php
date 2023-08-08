@@ -10,6 +10,9 @@ use App\Models\Rule;
 use App\Models\MstPartner;
 use App\Models\Dropdown;
 use App\Traits\searchAreaTrait;
+use App\Models\TicketCategory;
+use App\Models\Showtime;
+use App\Models\TicketPayment;
 
 class EventController extends Controller
 {
@@ -22,13 +25,13 @@ class EventController extends Controller
         ->select('events.*', 'mst_partners.partner_name')
         ->where('events.id_partner', $id_partner)
         ->where('events.is_active','1')
-        ->where('mst_partners.is_active','1')
         ->get();
         //dd($event);
 
         //getPartner
-        $getPartner = MstPartner::orderBy('partner_name', 'asc')->get();
-
+        $id_partner = auth()->user()->id_partner;
+        $getPartner = MstPartner::where('id',$id_partner)->orderBy('partner_name', 'asc')->first();
+        
         //getEventCategory
         $getEventCategory = Dropdown::where('category', 'Event Category')
         ->orderBy('name_value', 'asc')
@@ -307,5 +310,17 @@ class EventController extends Controller
 
             return redirect('/event')->with('failed','Failed Delete Event');
         }
+    }
+
+    public function detailEvent($id){
+        $id = decrypt($id);
+        $event = Event::leftJoin('mst_partners', 'events.id_partner', '=', 'mst_partners.id')
+        ->select('events.*', 'mst_partners.partner_name')
+        ->where('events.id', $id)
+        ->first();
+        $ticketCategory = TicketCategory::where('id_event',$id)->get();
+        $showTime = Showtime::where('id_event',$id)->get();
+        $ticketPayment = TicketPayment::where('id_event',$id)->get();
+        return view('event.detail',compact('event','ticketCategory','id','showTime','ticketPayment'));
     }
 }

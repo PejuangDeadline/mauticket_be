@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/event/store', [EventController::class, 'storeEvent']);
     Route::post('/event/update', [EventController::class, 'storeUpdateEvent']);
     Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent']);
+    Route::get('/event/detail/{id}', [EventController::class, 'detailEvent']);
 
     //Ticket Category
     Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index']);
