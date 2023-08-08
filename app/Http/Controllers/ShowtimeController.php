@@ -22,8 +22,10 @@ class ShowtimeController extends Controller
         ->where('is_active', 1)
         ->orderby('id_category')
         ->get();
-
-        return view('show-time.index', compact('showTime', 'id', 'event'));
+        $id_en = encrypt($id);
+        return view('show-time.index', compact('showTime', 'id', 'id_en',
+            'event'
+        ));
     }
 
     public function store(Request $request, $id)
@@ -49,12 +51,17 @@ class ShowtimeController extends Controller
 
             $existingShowtime = Showtime::where('id_event', $id)
                 ->where(function ($query) use ($showtimeStart, $showtimeFinish) {
-                    $query->where('showtime_start', '>=', $showtimeStart)
-                        ->where('showtime_start', '<=', $showtimeFinish)
-                        ->orWhere('showtime_finish', '>=', $showtimeStart)
-                        ->where('showtime_finish', '<=', $showtimeFinish);
+                $query->where(function ($q) use ($showtimeStart, $showtimeFinish) {
+                    $q->where('showtime_start', '>=', $showtimeStart)
+                        ->where('showtime_start', '<=', $showtimeFinish);
+                })
+                    ->orWhere(function ($q) use ($showtimeStart, $showtimeFinish) {
+                        $q->where('showtime_finish', '>=', $showtimeStart)
+                            ->where('showtime_finish', '<=', $showtimeFinish);
+                    });
                 })
                 ->first();
+            
             // dd($existingShowtime);
             if ($existingShowtime) {
                 $id_en = encrypt($id);

@@ -41,7 +41,7 @@
               <div class="card">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                   <h3 class="card-title">List of Show Time <i>({{$event->event_name}})</i></h3>
-                  <a href="{{ URL::previous() }}" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
+                  <a href="{{ url('ticket-category/'.$id_en) }}" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
                 </div>
 
                 <!-- /.card-header -->
