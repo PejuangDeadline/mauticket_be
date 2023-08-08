@@ -42,7 +42,7 @@
               <div class="card-header  p-2 d-flex justify-content-between align-items-center">
                 <h3 class="card-title">List of Event</h3>
                 @if ($getPartner->is_active == '0')
-                <small class="badge bg-danger">Unactive</small>
+                <small class="badge bg-danger">Inactive</small>
                 @endif
               </div>
 
