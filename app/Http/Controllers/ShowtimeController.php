@@ -18,7 +18,11 @@ class ShowtimeController extends Controller
         $id = decrypt($id);
         $event = Event::where('id', $id)->first();
         // dd($id, $event);
-        $showTime = Showtime::where('id_event', $id)->get();
+        $showTime = Showtime::where('id_event', $id)
+        ->where('is_active', 1)
+        ->orderby('id_category')
+        ->get();
+
         return view('show-time.index', compact('showTime', 'id', 'event'));
     }
 
@@ -59,8 +63,11 @@ class ShowtimeController extends Controller
 
                 Showtime::create([
                     'id_event' => $id,
+                    'id_category' => $request->category,
                     'showtime_start' => $request->showtime_start,
-                    'showtime_finish' => $request->showtime_finish
+                    'showtime_finish' => $request->showtime_finish,
+                    'qty' => $request->qty,
+                    'is_active' => '1',
                 ]);
             }
 
@@ -128,7 +135,11 @@ class ShowtimeController extends Controller
         DB::beginTransaction();
         try {
 
-            $deleteShowTime = Showtime::where('id', $id)->delete();
+            Showtime::where('id', $id)
+                ->update([
+                    'is_active' => '0'
+                ]);
+            // $deleteShowTime = Showtime::where('id', $id)->delete();
 
             DB::commit();
             // all good

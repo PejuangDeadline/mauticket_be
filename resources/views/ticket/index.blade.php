@@ -176,6 +176,7 @@
                                 <form action="{{ url('show-time/store/'.$id) }}" method="POST">
                                   @csrf
                                   <div class="modal-body">
+                                    <input type="hidden" class="form-control" name="category" value="{{ $data->category }}">
                                     <div class="form-group">
                                       <label for="">Start Show</label>
                                       <input type="datetime-local" class="form-control" id="showtime_start" name="showtime_start" placeholder="Enter Account Number" required>
@@ -184,6 +185,10 @@
                                     <div class="form-group">
                                       <label for="">Finish Show</label>
                                       <input type="datetime-local" class="form-control" id="showtime_finish" name="showtime_finish" placeholder="Enter Account Name" required>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                      <label for="">Qty</label>
+                                      <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" required>
                                     </div>
 
                                   </div>

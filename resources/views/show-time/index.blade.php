@@ -39,8 +39,9 @@
           <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                   <h3 class="card-title">List of Show Time <i>({{$event->event_name}})</i></h3>
+                  <a href="{{ URL::previous() }}" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
                 </div>
 
                 <!-- /.card-header -->
@@ -84,6 +85,8 @@
                             <th>No</th>
                             <th>Show Time Start</th>
                             <th>Show Time Finish</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -96,6 +99,18 @@
                             <td>{{ $no++ }}</td>
                             <td>{{ $data->showtime_start }}</td>
                             <td>{{ $data->showtime_finish }}</td>
+                            <td>{{ $data->qty }}</td>
+                            <td>
+                              @if ($data->is_active == '1')
+                              <div class="text-success">
+                                <b><i>Active</i></b>
+                              </div>
+                              @else
+                              <div class="text-danger">
+                                <b><i>Inactive</i></b>
+                              </div>
+                              @endif
+                            </td>
                             <td>
                               <button title="Edit Rule" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                 <i class="fas fa-edit"></i>
