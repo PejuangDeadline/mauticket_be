@@ -27,39 +27,52 @@ class ShowtimeController extends Controller
         // dd($request);
 
         $validator = Validator::make($request->all(), [
-            "showtime_start" => "required|date_format:Y-m-d\TH:i",
+            "showtime_start" => "required|date_format:Y-m-d\TH:i|after_or_equal:today",
             "showtime_finish" => "required|date_format:Y-m-d\TH:i|after:showtime_start|ends_after_start:showtime_start",
         ]);
 
         if ($validator->fails()) {
-            // Tangani jika validasi gagal
             $id_en = encrypt($id);
             return redirect('/show-time/' . $id_en)->withErrors($validator)->withInput();
         }
 
-        // validasi db 
-
         DB::beginTransaction();
         try {
 
-            $query = Showtime::create([
-                'id_event' => $id,
-                'showtime_start' => $request->showtime_start,
-                'showtime_finish' => $request->showtime_finish
-            ]);
+            // validasi db existingShowtime
+            $showtimeStart = $request->showtime_start;
+            $showtimeFinish = $request->showtime_finish;
 
+            $existingShowtime = Showtime::where('id_event', $id)
+                ->where(function ($query) use ($showtimeStart, $showtimeFinish) {
+                    $query->where('showtime_start', '>=', $showtimeStart)
+                        ->where('showtime_start', '<=', $showtimeFinish)
+                        ->orWhere('showtime_finish', '>=', $showtimeStart)
+                        ->where('showtime_finish', '<=', $showtimeFinish);
+                })
+                ->first();
+            // dd($existingShowtime);
+            if ($existingShowtime) {
+                $id_en = encrypt($id);
+                return redirect('/show-time/' . $id_en)->with('failed', 'Showtime range must be unique for this event !');
+            } else {
+
+                Showtime::create([
+                    'id_event' => $id,
+                    'showtime_start' => $request->showtime_start,
+                    'showtime_finish' => $request->showtime_finish
+                ]);
+            }
 
             DB::commit();
             // all good
             $id_en = encrypt($id);
-
             return redirect('/show-time/' . $id_en)->with('status', 'Success Create Show Time');
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             DB::rollback();
             // something went wrong
             $id_en = encrypt($id);
-
             return redirect('/show-time/' . $id_en)->with('failed', 'Failed Create Show Time');
         }
     }

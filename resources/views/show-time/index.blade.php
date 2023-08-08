@@ -47,42 +47,6 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="mb-3 col-sm-12">
-                      <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
-                        <i class="fas fa-plus-square"></i>
-                      </button>
-
-                      <!-- Modal -->
-                      <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="modal-add-label">Add Show Time</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="{{ url('show-time/store/'.$id) }}" method="POST">
-                              @csrf
-                              <div class="modal-body">
-                                <div class="form-group">
-                                  <label for="">Start Show</label>
-                                  <input type="datetime-local" class="form-control" id="showtime_start" name="showtime_start" placeholder="Enter Account Number" required>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                  <label for="">Finish Show</label>
-                                  <input type="datetime-local" class="form-control" id="showtime_finish" name="showtime_finish" placeholder="Enter Account Name" required>
-                                </div>
-
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-
-
                       <!--alert success -->
                       @if (session('status'))
                       <div class="alert alert-success alert-dismissible fade show" role="alert">
