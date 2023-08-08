@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Description</b></label>
-                                            <textarea class="form-control" id="description" name="description" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="my-editor form-control" id="my-editor" name="description" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="row mb-3" align="left">
                                             <div class="col-md-3">
@@ -152,27 +152,27 @@
 
                                         <div class="mb-3">
                                             <label><b>Address</b></label>
-                                            <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="event_address" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Exchange Ticket Info</b></label>
-                                            <textarea class="form-control" id="exchange_ticket_info" name="exchange_ticket_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="exchange_ticket_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>TC Info</b></label>
-                                            <textarea class="form-control" id="tc_info" name="tc_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="tc_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Including Info</b></label>
-                                            <textarea class="form-control" id="including_info" name="including_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="including_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Excluding Info</b></label>
-                                            <textarea class="form-control" id="excluding_info" name="excluding_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="excluding_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Facility</b></label>
-                                            <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="facility" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                               </div>
                               <div class="modal-footer">
@@ -317,7 +317,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Description</b></label>
-                                    <textarea class="form-control" id="description" name="description" cols="30" rows="3" placeholder="">{{$data->description}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="description" cols="30" rows="3" placeholder="">{{$data->description}}</textarea>
                                 </div>
                                 <div class="row mb-3" align="left">
                                     <div class="col-md-3">
@@ -378,27 +378,27 @@
 
                                 <div class="mb-3">
                                     <label><b>Address</b></label>
-                                    <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
+                                    <textarea class="form-control" id="address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Exchange Ticket Info</b></label>
-                                    <textarea class="form-control" id="exchange_ticket_info" name="exchange_ticket_info" cols="30" rows="3" placeholder="">{{$data->exchange_ticket_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="exchange_ticket_info" cols="30" rows="3" placeholder="">{{$data->exchange_ticket_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>TC Info</b></label>
-                                    <textarea class="form-control" id="tc_info" name="tc_info" cols="30" rows="3" placeholder="">{{$data->tc_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="tc_info" cols="30" rows="3" placeholder="">{{$data->tc_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Including Info</b></label>
-                                    <textarea class="form-control" id="including_info" name="including_info" cols="30" rows="3" placeholder="">{{$data->including_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="including_info" cols="30" rows="3" placeholder="">{{$data->including_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Excluding Info</b></label>
-                                    <textarea class="form-control" id="excluding_info" name="excluding_info" cols="30" rows="3" placeholder="">{{$data->excluding_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="excluding_info" cols="30" rows="3" placeholder="">{{$data->excluding_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Facility</b></label>
-                                    <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder="">{{$data->facility}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="facility" cols="30" rows="3" placeholder="">{{$data->facility}}</textarea>
                                 </div>
 
                                 </div>
@@ -559,6 +559,9 @@
 
 
 </main>
+<script>
+    CKEDITOR.replaceAll('my-editor');
+</script>
 <!-- For Datatables -->
 <script>
     $(document).ready(function() {
