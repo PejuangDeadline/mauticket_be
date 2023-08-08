@@ -39,8 +39,11 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header  p-2 d-flex justify-content-between align-items-center">
                 <h3 class="card-title">List of Event</h3>
+                @if ($getPartner->is_active == '0')
+                <small class="badge bg-danger">Unactive</small>
+                @endif
               </div>
 
               <!-- /.card-header -->
