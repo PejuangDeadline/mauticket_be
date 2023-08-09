@@ -219,7 +219,7 @@
                                       <input type="file" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required>
                                     </div>
                                     <div class="form-group">
-                                      <a href="#">Download Template Here</a>
+                                      <a href="{{ url('download-template/'.$id.'/'.$data->id) }}">Download Template Here</a>
                                     </div>
 
 
@@ -231,7 +231,6 @@
                                 </form>
                               </div>
                             </div>
-                                      
                           </div>
                           {{-- modal include --}}
 

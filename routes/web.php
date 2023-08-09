@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DropdownController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\MstPartnerController;
-use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\RulesController;
+use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\ShowtimeController;
+use App\Http\Controllers\MstPartnerController;
 use App\Http\Controllers\TicketPaymentController;
 use App\Http\Controllers\TicketCategoryController;
-use App\Http\Controllers\ShowtimeController;
 
 
 /*
@@ -71,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ticket-category/store/{id}', [TicketCategoryController::class, 'store']);
     Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit']);
     Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy']);
+
+    //Ticket Excel
+    Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
 
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
