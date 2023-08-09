@@ -129,7 +129,12 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
-
+    'custom' => [
+        'showtime_finish' => [
+            'ends_after_start' => 'The finish must not exceed the start date.',
+        ],
+    ],
+    
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
