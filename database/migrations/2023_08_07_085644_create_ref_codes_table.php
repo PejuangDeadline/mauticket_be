@@ -15,6 +15,10 @@ class CreateRefCodesTable extends Migration
     {
         Schema::create('ref_codes', function (Blueprint $table) {
             $table->id();
+            $table->string('code');
+            $table->string('type');
+            $table->decimal('value',13,2);
+            $table->string('is_active');
             $table->timestamps();
         });
     }

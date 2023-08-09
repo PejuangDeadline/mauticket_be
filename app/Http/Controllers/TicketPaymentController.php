@@ -10,7 +10,7 @@ use App\Models\Dropdown;
 class TicketPaymentController extends Controller
 {
     public function index($id){
-        //$id = decrypt($id);
+        $id = decrypt($id);
         $event = Event::where('id',$id)
         ->first();
         $ticketPayment = TicketPayment::where('id_event',$id)->get();
