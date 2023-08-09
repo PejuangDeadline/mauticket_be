@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Show Time
     Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
-    Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
+    Route::post('/show-time/store/{id}/{idCategory}', [ShowtimeController::class, 'store']);
     Route::patch('/show-time/edit/{idEvent}/{id}', [ShowtimeController::class, 'edit']);
     Route::delete('/show-time/destroy/{idEvent}/{id}', [ShowtimeController::class, 'destroy']);
 

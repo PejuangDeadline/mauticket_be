@@ -162,7 +162,7 @@
                               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
                                 Upload Seat
                               </button>
-                                        @endif
+                              @endif
                             </td>
                           </tr>
 
@@ -174,10 +174,9 @@
                                   <h5 class="modal-title" id="modal-add-label">Add Show Time</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="{{ url('show-time/store/'.$id) }}" method="POST">
+                                <form action="{{ url('show-time/store/'.$id.'/'.$data->id) }}" method="POST">
                                   @csrf
                                   <div class="modal-body">
-                                    <input type="hidden" class="form-control" name="category" value="{{ $data->category }}">
                                     <div class="form-group">
                                       <label for="">Start Show</label>
                                       <input type="datetime-local" class="form-control" id="showtime_start" name="showtime_start" placeholder="Enter Account Number" required>

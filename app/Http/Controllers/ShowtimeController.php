@@ -18,17 +18,25 @@ class ShowtimeController extends Controller
         $id = decrypt($id);
         $event = Event::where('id', $id)->first();
         // dd($id, $event);
-        $showTime = Showtime::where('id_event', $id)
-        ->where('is_active', 1)
-        ->orderby('id_category')
+        $showTime = Showtime::select('*', 'showtimes.id as id_st', 'showtimes.is_active as isActiveSt')
+        ->where('showtimes.id_event', $id)
+        ->leftJoin(
+            'ticket_categories',
+            'ticket_categories.id',
+            '=',
+            'showtimes.id_category'
+        )
+        ->where('showtimes.is_active', 1)
+        ->orderby('showtimes.id_category')
         ->get();
+        // dd($showTime);
         $id_en = encrypt($id);
         return view('show-time.index', compact('showTime', 'id', 'id_en',
             'event'
         ));
     }
 
-    public function store(Request $request, $id)
+    public function store(Request $request, $id, $idCategory)
     {
         // dd($request);
 
@@ -50,15 +58,22 @@ class ShowtimeController extends Controller
             $showtimeFinish = $request->showtime_finish;
 
             $existingShowtime = Showtime::where('id_event', $id)
+                ->where('is_active', 1)
                 ->where(function ($query) use ($showtimeStart, $showtimeFinish) {
                 $query->where(function ($q) use ($showtimeStart, $showtimeFinish) {
-                    $q->where('showtime_start', '>=', $showtimeStart)
-                        ->where('showtime_start', '<=', $showtimeFinish);
+                    $q->where(function ($subQ) use ($showtimeStart, $showtimeFinish) {
+                        $subQ->where('showtime_start', '>=', $showtimeStart)
+                            ->where('showtime_start', '<=', $showtimeFinish);
+                    })
+                        ->orWhere(function ($subQ) use ($showtimeStart, $showtimeFinish) {
+                            $subQ->where('showtime_finish', '>=', $showtimeStart)
+                                ->where('showtime_finish', '<=', $showtimeFinish);
+                        });
                 })
                     ->orWhere(function ($q) use ($showtimeStart, $showtimeFinish) {
-                        $q->where('showtime_finish', '>=', $showtimeStart)
-                            ->where('showtime_finish', '<=', $showtimeFinish);
-                    });
+                            $q->where('showtime_start', '<=', $showtimeStart)
+                                ->where('showtime_finish', '>=', $showtimeStart);
+                        });
                 })
                 ->first();
             
@@ -70,7 +85,7 @@ class ShowtimeController extends Controller
 
                 Showtime::create([
                     'id_event' => $id,
-                    'id_category' => $request->category,
+                    'id_category' => $idCategory,
                     'showtime_start' => $request->showtime_start,
                     'showtime_finish' => $request->showtime_finish,
                     'qty' => $request->qty,
@@ -93,9 +108,11 @@ class ShowtimeController extends Controller
 
     public function edit(Request $request, $idEvent, $id)
     {
+        // dd($id, $request);
         $validator = Validator::make($request->all(), [
             "showtime_start" => "required|date_format:Y-m-d\TH:i",
             "showtime_finish" => "required|date_format:Y-m-d\TH:i|after:showtime_start|ends_after_start:showtime_start",
+            "qty" => "required"
         ]);
 
         if ($validator->fails()) {
@@ -104,26 +121,16 @@ class ShowtimeController extends Controller
             return redirect('/show-time/' . $idEvent_en)->withErrors($validator)->withInput();
         }
 
-        $showTime = Showtime::where('id', $id)->first();
-        // dd($id, $showTime);
-
         DB::beginTransaction();
         try {
-            if ($showTime->isDirty()) {
-                //dd('berubah');
-                $query =  Showtime::where('id', $id)
-                    ->update([
-                        'showtime_start' => $request->showtime_start,
-                        'showtime_finish' => $request->showtime_finish
-                    ]);
-            } else {
-                $query =  Showtime::where('id', $id)
-                    ->update([
-                        'showtime_start' => $request->showtime_start,
-                        'showtime_finish' => $request->showtime_finish
-                    ]);
-                //dd('tidak berubah');
-            }
+            Showtime::where('id', $id)
+                ->update([
+                    'showtime_start' => $request->showtime_start,
+                    'showtime_finish' => $request->showtime_finish,
+                    'qty' => $request->qty,
+                    'is_active' => '1',
+                ]);
+
             DB::commit();
             // all good
             $idEvent_en = encrypt($idEvent);
@@ -131,6 +138,7 @@ class ShowtimeController extends Controller
             return redirect('/show-time/' . $idEvent_en)->with('status', 'Success Update Show Time');
         } catch (\Exception $e) {
             DB::rollback();
+            // dd($e);
             // something went wrong
             $idEvent_en = encrypt($idEvent);
             return redirect('/show-time/' . $idEvent_en)->with('failed', 'Failed Update Show Time');
@@ -153,7 +161,7 @@ class ShowtimeController extends Controller
             $idEvent_en = encrypt($idEvent);
             return redirect('/show-time/' . $idEvent_en)->with('status', 'Success Delete Show Time');
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             DB::rollback();
             // something went wrong
             $idEvent_en = encrypt($idEvent);
