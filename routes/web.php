@@ -3,15 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\MstPartnerController;
 use App\Http\Controllers\RefCodeController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExcelController;
-use App\Http\Controllers\RulesController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\MstPartnerController;
