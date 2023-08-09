@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DropdownController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\MstPartnerController;
-use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\RulesController;
+use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\ShowtimeController;
+use App\Http\Controllers\MstPartnerController;
 use App\Http\Controllers\TicketPaymentController;
 use App\Http\Controllers\TicketCategoryController;
-use App\Http\Controllers\ShowtimeController;
 
 
 /*
@@ -47,9 +48,9 @@ Route::middleware(['auth'])->group(function () {
     //User Controller
     Route::get('/user', [UserController::class, 'index']);
     Route::post('/user/store', [UserController::class, 'store']);
-    Route::patch('/user/update/{user}',[UserController::class, 'update']);
-    Route::get('/user/revoke/{user}',[UserController::class, 'revoke']);
-    Route::get('/user/access/{user}',[UserController::class, 'access']);
+    Route::patch('/user/update/{user}', [UserController::class, 'update']);
+    Route::get('/user/revoke/{user}', [UserController::class, 'revoke']);
+    Route::get('/user/access/{user}', [UserController::class, 'access']);
 
     //Partner
     Route::get('/partner', [MstPartnerController::class, 'index']);
@@ -72,17 +73,20 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit']);
     Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy']);
 
+    //Ticket Excel
+    Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
+
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
     Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store']);
-    Route::patch('/ticket-payment/edit/{id}', [TicketPaymentController::class, 'edit']);
-    Route::delete('/ticket-payment/destroy/{id}', [TicketPaymentController::class, 'destroy']);
+    Route::patch('/ticket-payment/edit/{idEvent}/{id}', [TicketPaymentController::class, 'edit']);
+    Route::delete('/ticket-payment/destroy/{idEvent}/{id}', [TicketPaymentController::class, 'destroy']);
 
-     //Show Time
-     Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
-     Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
-     Route::patch('/show-time/edit/{id}', [ShowtimeController::class, 'edit']);
-     Route::delete('/show-time/destroy/{id}', [ShowtimeController::class, 'destroy']);
+    //Show Time
+    Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
+    Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
+    Route::patch('/show-time/edit/{idEvent}/{id}', [ShowtimeController::class, 'edit']);
+    Route::delete('/show-time/destroy/{idEvent}/{id}', [ShowtimeController::class, 'destroy']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
