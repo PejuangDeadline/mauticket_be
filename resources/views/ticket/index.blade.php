@@ -136,6 +136,7 @@
                     <th>No</th>
                     <th>Category</th>
                     <th>Price</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -148,6 +149,13 @@
                         <td>{{ $no++ }}</td>
                         <td>{{ $data->category }}</td>
                         <td>Rp. {{ number_format($data->price) }}</td>
+                        <td>
+                        @if ($event->is_active == '1')
+                        <small class="badge bg-success">Active</small>
+                        @else
+                        <small class="badge bg-danger">Unactive</small>
+                        @endif
+                      </td>
                         <td>
                             <button title="Edit Ticket Category" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                 <i class="fas fa-edit"></i>
