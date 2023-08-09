@@ -39,17 +39,23 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header  p-2 d-flex justify-content-between align-items-center">
                 <h3 class="card-title">List of Event</h3>
+                @if ($getPartner->is_active == '0')
+                <small class="badge bg-danger">Inactive</small>
+                @endif
               </div>
 
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-sm-12">
+                        @if ($getPartner->is_active == '1')
                         <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
                             <i class="fas fa-plus-square"></i>
                           </button>
+                        @endif
+                       
 
                           <!-- Modal -->
                           <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
@@ -65,17 +71,10 @@
                                         <div hidden>
                                             <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
                                             <input class="form-control" id="is_active" name="is_active" value="1"/>
+                                            <input class="form-control" id="id_partner" name="id_partner" value="{{$getPartner->id}}"/>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <select name="id_partner" id="id_partner" class="form-control" required>
-                                                    <option class="text-center" value="">Select Partner</option>
-                                                    @foreach ($getPartner as $item)
-                                                    <option class="text-center" value="{{$item->id}}">{{$item->partner_name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <select name="event_category" id="event_category" class="form-control" required>
                                                     <option class="text-center" value="">Select Event Category</option>
                                                     @foreach ($getEventCategory as $item)
@@ -92,7 +91,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Description</b></label>
-                                            <textarea class="form-control" id="description" name="description" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="my-editor form-control" id="my-editor" name="description" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="row mb-3" align="left">
                                             <div class="col-md-3">
@@ -153,27 +152,27 @@
 
                                         <div class="mb-3">
                                             <label><b>Address</b></label>
-                                            <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="event_address" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Exchange Ticket Info</b></label>
-                                            <textarea class="form-control" id="exchange_ticket_info" name="exchange_ticket_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="exchange_ticket_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>TC Info</b></label>
-                                            <textarea class="form-control" id="tc_info" name="tc_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="tc_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Including Info</b></label>
-                                            <textarea class="form-control" id="including_info" name="including_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="including_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Excluding Info</b></label>
-                                            <textarea class="form-control" id="excluding_info" name="excluding_info" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="excluding_info" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Facility</b></label>
-                                            <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder=""></textarea>
+                                            <textarea class="form-control my-editor" id="my-editor" name="facility" cols="30" rows="3" placeholder=""></textarea>
                                         </div>
                               </div>
                               <div class="modal-footer">
@@ -256,12 +255,13 @@
                             @endif
                         </td>
                         <td>
+                            @if ($getPartner->is_active == '1')
                             <div class="dropdown">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
                                   </button>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle"></i> Detail</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('event/detail/'.encrypt($data->id) ) }}"><i class="fas fa-info-circle"></i> Detail</a></li>
                                     <li>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                             <i class="fas fa-edit"></i> Edit Detail
@@ -277,6 +277,7 @@
                                     </li>
                                 </ul>
                                </div>
+                            @endif
                             </div>
                         </td>
                     </tr>
@@ -295,17 +296,11 @@
                                 <div hidden>
                                     <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
                                     <input class="form-control" id="is_active" name="is_active" value="1"/>
+                                    <input class="form-control" id="id_partner" name="id_partner" value="{{$data->id_partner}}"/>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <select name="id_partner" id="id_partner" class="form-control" value="{{ $data->id_partner }}">
-                                            <option class="text-center" value="{{ $data->id_partner }}" selected>{{$item->partner_name}}</option>
-                                            @foreach ($getPartner as $item)
-                                            <option class="text-center" value="{{$item->id_partner}}" {{ $item->id_partner == $data->id_partner ? 'selected' : '' }}>{{$item->partner_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
+                                  
+                                    <div class="col-md-12">
                                         <select name="event_category" id="event_category" class="form-control">
                                             <option class="text-center" value="{{ $data->event_category }}">{{ $data->event_category }}</option>
                                             @foreach ($getEventCategory as $item)
@@ -322,7 +317,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Description</b></label>
-                                    <textarea class="form-control" id="description" name="description" cols="30" rows="3" placeholder="">{{$data->description}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="description" cols="30" rows="3" placeholder="">{{$data->description}}</textarea>
                                 </div>
                                 <div class="row mb-3" align="left">
                                     <div class="col-md-3">
@@ -383,27 +378,27 @@
 
                                 <div class="mb-3">
                                     <label><b>Address</b></label>
-                                    <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
+                                    <textarea class="form-control" id="address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Exchange Ticket Info</b></label>
-                                    <textarea class="form-control" id="exchange_ticket_info" name="exchange_ticket_info" cols="30" rows="3" placeholder="">{{$data->exchange_ticket_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="exchange_ticket_info" cols="30" rows="3" placeholder="">{{$data->exchange_ticket_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>TC Info</b></label>
-                                    <textarea class="form-control" id="tc_info" name="tc_info" cols="30" rows="3" placeholder="">{{$data->tc_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="tc_info" cols="30" rows="3" placeholder="">{{$data->tc_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Including Info</b></label>
-                                    <textarea class="form-control" id="including_info" name="including_info" cols="30" rows="3" placeholder="">{{$data->including_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="including_info" cols="30" rows="3" placeholder="">{{$data->including_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Excluding Info</b></label>
-                                    <textarea class="form-control" id="excluding_info" name="excluding_info" cols="30" rows="3" placeholder="">{{$data->excluding_info}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="excluding_info" cols="30" rows="3" placeholder="">{{$data->excluding_info}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Facility</b></label>
-                                    <textarea class="form-control" id="facility" name="facility" cols="30" rows="3" placeholder="">{{$data->facility}}</textarea>
+                                    <textarea class="form-control my-editor" id="my-editor" name="facility" cols="30" rows="3" placeholder="">{{$data->facility}}</textarea>
                                 </div>
 
                                 </div>
@@ -415,7 +410,7 @@
                       </div>
                           </div>
                         </div>
-                      </div>
+                      
                     {{-- Modal Update --}}
 
                     {{-- Modal Delete --}}
@@ -544,6 +539,7 @@
                     @endforeach
                   </tbody>
                 </table>
+            </div>
               </div>
               </div>
               <!-- /.card-body -->
@@ -563,6 +559,9 @@
 
 
 </main>
+<script>
+    CKEDITOR.replaceAll('my-editor');
+</script>
 <!-- For Datatables -->
 <script>
     $(document).ready(function() {
