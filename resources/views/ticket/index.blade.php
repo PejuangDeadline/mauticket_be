@@ -150,10 +150,10 @@
                         <td>{{ $data->category }}</td>
                         <td>Rp. {{ number_format($data->price) }}</td>
                         <td>
-                        @if ($event->is_active == '1')
+                        @if ($data->is_active == '1')
                         <small class="badge bg-success">Active</small>
                         @else
-                        <small class="badge bg-danger">Unactive</small>
+                        <small class="badge bg-danger">Inactive</small>
                         @endif
                       </td>
                         <td>
