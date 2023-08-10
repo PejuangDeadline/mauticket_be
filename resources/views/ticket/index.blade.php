@@ -84,9 +84,12 @@
                                         </div>
                                         
                                         <br>
-                                        <div class="form-group">
+                                        <div class="form-group mb-4">
                                             <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
                                         </div>
+                                        <div class="form-group">
+                                          <input type="text" id="quantity" name="quantity" class="form-control" autocomplete="off" placeholder="Enter Quantity">
+                                      </div>
 
                                   </div>
                                   <div class="modal-footer">
@@ -147,7 +150,8 @@
                     @foreach ($ticketCategory as $data)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $data->category }}</td>
+                        <td>{{ $data->category }} <br>
+                              Qty : {{$data->quantity}}</td>
                         <td>Rp. {{ number_format($data->price) }}</td>
                         <td>
                         @if ($data->is_active == '1')
@@ -218,6 +222,11 @@
 
                                 <div hidden>
                                   <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
+                                  <input type="text" name="is_active" value="off" id="">
+                              </div>
+                              <div class="form-check form-switch mb-4">
+                                <input name="is_active" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if ($data->is_active == '1') checked @endif>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Status</label>
                               </div>
                                   <div class="form-group">
                                     <input class="form-control" id="category" name="category" cols="30" rows="3" value="{{$data->category}}" placeholder="{{$data->category}}">
@@ -236,9 +245,12 @@
                                     </div>
                                   </div>
                                   <br>
-                                  <div class="form-group">
+                                  <div class="form-group mb-4">
                                     <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
                                   </div>
+                                  <div class="form-group">
+                                    <input type="text" id="quantity" name="quantity" class="form-control" value="{{ old('',number_format($data->quantity)) }}" autocomplete="off">
+                                </div>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
