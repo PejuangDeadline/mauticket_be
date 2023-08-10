@@ -211,17 +211,15 @@
                                   <h5 class="modal-title" id="modal-include-label">Upload Seat</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="{{ url('ticket-category/store/'.$id) }}" method="POST">
+                                <form action="{{ url('import/'.$id.'/'.$data->id) }}" method="POST" enctype="multipart/form-data">
                                   @csrf
-                                  <div class="modal-body">
+                                  <div class=" modal-body">
                                     <div class="form-group">
-                                      <input type="file" class="form-control rupiah-input" id="price" name="price" placeholder="Enter Price" required>
+                                      <input type="file" class="form-control" name="file" required>
                                     </div>
                                     <div class="form-group">
                                       <a href="{{ url('download-template/'.$id.'/'.$data->id) }}">Download Template Here</a>
                                     </div>
-
-
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
