@@ -88,7 +88,7 @@
                                             <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
                                         </div>
                                         <div class="form-group">
-                                          <input type="text" id="quantity" name="quantity" class="form-control" autocomplete="off" placeholder="Enter Quantity">
+                                          <input type="number" id="quantity" name="quantity" class="form-control" autocomplete="off" placeholder="Enter Quantity">
                                       </div>
 
                                   </div>
@@ -249,7 +249,7 @@
                                     <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
                                   </div>
                                   <div class="form-group">
-                                    <input type="text" id="quantity" name="quantity" class="form-control" value="{{ old('',number_format($data->quantity)) }}" autocomplete="off">
+                                    <input type="number" id="quantity" name="quantity" class="form-control" value="{{ old('',number_format($data->quantity)) }}" autocomplete="off">
                                 </div>
                               </div>
                               <div class="modal-footer">
