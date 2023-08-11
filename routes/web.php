@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\RefCodeController;
 use App\Http\Controllers\RulesController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\MstPartnerController;
@@ -56,7 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/partner', [MstPartnerController::class, 'index']);
     Route::post('/partner/store', [MstPartnerController::class, 'storePartner']);
     Route::post('/partner/update', [MstPartnerController::class, 'StoreUpdatePartner']);
-    Route::delete('/partner/delete/{id}', [MstPartnerController::class, 'destroyPartner']);
+    Route::patch('/partner/active/{id}', [MstPartnerController::class, 'activePartner']);
+    Route::patch('/partner/inactive/{id}', [MstPartnerController::class, 'destroyPartner']);
     Route::post('/contract', [MstPartnerController::class, 'storeContract']);
     Route::post('/contract/update', [MstPartnerController::class, 'updateContract']);
 
@@ -85,9 +87,13 @@ Route::middleware(['auth'])->group(function () {
 
     //Show Time
     Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
-    Route::post('/show-time/store/{id}/{idCategory}', [ShowtimeController::class, 'store']);
-    Route::patch('/show-time/edit/{idEvent}/{id}', [ShowtimeController::class, 'edit']);
-    Route::delete('/show-time/destroy/{idEvent}/{id}', [ShowtimeController::class, 'destroy']);
+    Route::post('/show-time/store/{id}', [ShowtimeController::class, 'store']);
+    Route::patch('/show-time/edit/{id}', [ShowtimeController::class, 'edit']);
+    Route::delete('/show-time/destroy/{id}', [ShowtimeController::class, 'destroy']);
+
+    //Referral Code
+    Route::get('/ref-code', [RefCodeController::class, 'index']);
+    Route::post('/ref-code/store', [RefCodeController::class, 'store']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');

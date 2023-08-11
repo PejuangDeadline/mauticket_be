@@ -246,26 +246,38 @@
                                 </div>
                             @endif
                         </td>
-                        <td>
-                            <button title="Edit Partner" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
-                                <i class="fas fa-edit"></i>
-                              </button>
-
-                              <button title="Show Contract" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-showContract{{ $data->id }}">
-                                <i class="fas fa-eye"></i>
-                              </button>
-                              @if ($data->start_date == null)
-                              <button title="Add Contract" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-addContract{{ $data->id }}">
-                                <i class="fas fa-plus"></i>
-                              </button>
-                              @else
-                              <button title="Edit Contract" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-editContract{{ $data->id }}">
-                                <i class="fas fa-calendar-alt"></i>
-                              </button>
-                              @endif
-                            <button title="Delete Partner" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
-                                <i class="fas fa-trash-alt"></i>
-                              </button>
+                        <td>  
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                  </button>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-add-user{{ $data->id }}" href="#"><i class="fas fa-plus"></i> Add User</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}" href="#"><i class="fas fa-edit"></i> Edit Partner</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-showContract{{ $data->id }}" href="#"><i class="fas fa-eye"></i> Show Contract</a>
+                                    </li>
+                                    <li>
+                                        @if ($data->start_date == null)
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-addContract{{ $data->id }}" href="#"><i class="fas fa-plus"></i> Add Contract</a>
+                                        @else
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-editContract{{ $data->id }}" href="#"><i class="fas fa-calendar-alt"></i> Edit Contract</a>
+                                        @endif
+                                    </li>
+                                    <li>
+                                        @if ($data->is_active == '0')
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-active{{ $data->id }}" href="#"><i class="fas fa-check"></i> Activate Partner</a>
+                                        @else
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-inactive{{ $data->id }}" href="#"><i class="fas fa-times"></i> Inactive Partner</a>
+                                        @endif
+                                    </li>
+                                </ul>
+                               </div>
+                            </div>
                         </td>
                     </tr>
 
@@ -422,20 +434,20 @@
                       </div>
                     {{-- Modal Update --}}
 
-                    {{-- Modal Delete --}}
-                    <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                    {{-- Modal Active --}}
+                    <div class="modal fade" id="modal-active{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Partner</h4>
+                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Activate Partner</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('/partner/delete/'.$data->id) }}" method="POST">
+                            <form action="{{ url('/partner/active/'.$data->id) }}" method="POST">
                             @csrf
-                            @method('delete')
+                            @method('patch')
                             <div class="modal-body">
                                 <div class="form-group">
-                                Are you sure you want to delete <label for="partner">{{ $data->partner_name }}</label>?
+                                Are you sure you want to activate <label for="partner">{{ $data->partner_name }}</label>?
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -446,7 +458,33 @@
                         </div>
                         </div>
                     </div>
-                    {{-- Modal Delete --}}
+                    {{-- Modal Active --}}
+
+                    {{-- Modal Inactive --}}
+                    <div class="modal fade" id="modal-inactive{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Inactivate Partner</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ url('/partner/inactive/'.$data->id) }}" method="POST">
+                            @csrf
+                            @method('patch')
+                            <div class="modal-body">
+                                <div class="form-group">
+                                Are you sure you want to inactivate <label for="partner">{{ $data->partner_name }}</label>?
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    {{-- Modal Inactive --}}
 
                     {{--Modal Add Contract --}}
                     <div class="modal fade" id="modal-addContract{{ $data->id }}" tabindex="-1" aria-labelledby="modal-addContract{{ $data->id }}-label" aria-hidden="true">
@@ -482,9 +520,8 @@
                     </div>
                     {{--Modal Add Contract --}}
 
-
-                     {{--Modal Edit Contract --}}
-                     <div class="modal fade" id="modal-editContract{{ $data->id }}" tabindex="-1" aria-labelledby="modal-editContract{{ $data->id }}-label" aria-hidden="true">
+                    {{--Modal Edit Contract --}}
+                    <div class="modal fade" id="modal-editContract{{ $data->id }}" tabindex="-1" aria-labelledby="modal-editContract{{ $data->id }}-label" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -543,8 +580,6 @@
                         </div>
                     </div>
                     {{-- Modal Delete --}}
-
-
 
                     @endforeach
                   </tbody>
