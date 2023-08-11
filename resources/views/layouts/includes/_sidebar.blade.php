@@ -6,16 +6,20 @@
                 <div class="sidenav-menu-heading">Core</div>
                 <!-- Sidenav Link (Charts)-->
                 <a class="nav-link" href="{{url('/home')}}">
-                    <div class="nav-link-icon"><i data-feather="home"></i></div>
+                    <div class="nav-link-icon"><i class="fas fa-fw fa-home"></i></div>
                     Home
                 </a>
                 <a class="nav-link" href="{{url('/partner')}}">
-                    <div class="nav-link-icon"><i class="fas fa-file-signature"></i></div>
+                    <div class="nav-link-icon"><i class="fas fa-fw fa-file-signature"></i></div>
                     Administration
                 </a>
                 <a class="nav-link" href="{{url('/event')}}">
-                    <div class="nav-link-icon"><i class="fas fa-file-signature"></i></div>
+                    <div class="nav-link-icon"><i class="fas fa-fw fa-file-signature"></i></div>
                     Event
+                </a>
+                <a class="nav-link" href="{{url('/ref-code')}}">
+                    <div class="nav-link-icon"><i class="fas fa-fw fa-percent"></i></div>
+                    Referral Code
                 </a>
 
                 <!-- Sidenav Menu Heading (Core)-->

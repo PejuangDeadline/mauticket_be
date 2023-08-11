@@ -83,6 +83,7 @@
                         <thead>
                           <tr>
                             <th>No</th>
+                            <th>Category</th>
                             <th>Show Time Start</th>
                             <th>Show Time Finish</th>
                             <th>Quantity</th>
@@ -97,11 +98,12 @@
                           @foreach ($showTime as $data)
                           <tr>
                             <td>{{ $no++ }}</td>
+                            <td>{{ $data->category }}</td>
                             <td>{{ $data->showtime_start }}</td>
                             <td>{{ $data->showtime_finish }}</td>
                             <td>{{ $data->qty }}</td>
                             <td>
-                              @if ($data->is_active == '1')
+                              @if ($data->isActiveSt == '1')
                               <div class="text-success">
                                 <b><i>Active</i></b>
                               </div>
@@ -129,7 +131,7 @@
                                   <h4 class="modal-title" id="modal-update{{ $data->id_event }}-label">Edit Show Time</h4>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="{{ url('show-time/edit/'.$data->id_event.'/'.$data->id) }}" method="POST">
+                                <form action="{{ url('show-time/edit/'.$data->id_event.'/'.$data->id_st) }}" method="POST">
                                   @csrf
                                   @method('patch')
                                   <div class="modal-body">
@@ -142,6 +144,10 @@
                                       <div class="form-group">
                                         <label for="">Finish Show</label>
                                         <input type="datetime-local" class="form-control" id="showtime_finish" name="showtime_finish" value="{{$data->showtime_finish}}" required>
+                                      </div>
+                                      <div class="form-group mt-3">
+                                        <label for="">Qty</label>
+                                        <input type="text" class="form-control" id="qty" name="qty" value="{{$data->qty}}" required>
                                       </div>
 
                                     </div>
@@ -164,7 +170,7 @@
                                   <h4 class="modal-title" id="modal-delete{{ $data->id_event }}-label">Delete Rule</h4>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="{{ url('show-time/destroy/'.$data->id_event.'/'.$data->id) }}" method="POST">
+                                <form action="{{ url('show-time/destroy/'.$data->id_event.'/'.$data->id_st) }}" method="POST">
                                   @csrf
                                   @method('delete')
                                   <input type="text" hidden value="{{$data->id}}">
