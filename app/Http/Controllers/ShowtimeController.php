@@ -49,7 +49,7 @@ class ShowtimeController extends Controller
             $id_en = encrypt($id);
             return redirect('/show-time/' . $id_en)->withErrors($validator)->withInput();
         }
-
+        
         DB::beginTransaction();
         try {
 
@@ -98,7 +98,7 @@ class ShowtimeController extends Controller
             $id_en = encrypt($id);
             return redirect('/show-time/' . $id_en)->with('status', 'Success Create Show Time');
         } catch (\Exception $e) {
-            // dd($e);
+            //dd($e);
             DB::rollback();
             // something went wrong
             $id_en = encrypt($id);
