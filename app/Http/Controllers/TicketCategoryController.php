@@ -16,7 +16,7 @@ class TicketCategoryController extends Controller
         $event = Event::where('id',$id)
         ->first();
         $ticketCategory = TicketCategory::where('id_event',$id)->get();
-        //dd($ticketCategory);
+        // dd($ticketCategory);
         return view('ticket.index',compact('ticketCategory','id','event'));
     }
 
