@@ -31,7 +31,7 @@ class EventController extends Controller
         //getPartner
         $id_partner = auth()->user()->id_partner;
         $getPartner = MstPartner::where('id',$id_partner)->orderBy('partner_name', 'asc')->first();
-        
+        //dd($getPartner);
         //getEventCategory
         $getEventCategory = Dropdown::where('category', 'Event Category')
         ->orderBy('name_value', 'asc')

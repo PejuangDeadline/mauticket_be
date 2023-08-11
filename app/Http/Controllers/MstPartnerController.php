@@ -108,6 +108,7 @@ class MstPartnerController extends Controller
                 'is_active' => $request->is_active,
                 'npwp' => $request->npwp,
                 'created_by' => $created_by,
+                'is_active' => '1',
             ]);
 
             DB::commit();

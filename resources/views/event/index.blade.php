@@ -41,8 +41,10 @@
             <div class="card">
               <div class="card-header  p-2 d-flex justify-content-between align-items-center">
                 <h3 class="card-title">List of Event</h3>
-                @if ($getPartner->is_active == '0')
-                <small class="badge bg-danger">Inactive</small>
+                @if(isset($getPartner->is_active))
+                    @if ($getPartner->is_active == '0')
+                    <small class="badge bg-danger">Inactive</small>
+                    @endif
                 @endif
               </div>
 
@@ -50,12 +52,11 @@
               <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-sm-12">
-                        @if ($getPartner->is_active == '1')
-                        <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
-                            <i class="fas fa-plus-square"></i>
-                          </button>
-                        @endif
-                       
+                            @if ($getPartner->is_active == '1')
+                            <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
+                                <i class="fas fa-plus-square"></i>
+                            </button>
+                            @endif
 
                           <!-- Modal -->
                           <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
@@ -71,7 +72,9 @@
                                         <div hidden>
                                             <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
                                             <input class="form-control" id="is_active" name="is_active" value="1"/>
-                                            <input class="form-control" id="id_partner" name="id_partner" value="{{$getPartner->id}}"/>
+                                            @if(isset($getPartner->id))
+                                                <input class="form-control" id="id_partner" name="id_partner" value="{{$getPartner->id}}"/>
+                                            @endif
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-12">
@@ -299,7 +302,7 @@
                                     <input class="form-control" id="id_partner" name="id_partner" value="{{$data->id_partner}}"/>
                                 </div>
                                 <div class="row mb-3">
-                                  
+
                                     <div class="col-md-12">
                                         <select name="event_category" id="event_category" class="form-control">
                                             <option class="text-center" value="{{ $data->event_category }}">{{ $data->event_category }}</option>
@@ -410,7 +413,7 @@
                       </div>
                           </div>
                         </div>
-                      
+
                     {{-- Modal Update --}}
 
                     {{-- Modal Delete --}}
