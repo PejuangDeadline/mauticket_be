@@ -77,6 +77,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Ticket Excel
     Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
+    Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData']);
 
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
