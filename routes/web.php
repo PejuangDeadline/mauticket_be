@@ -94,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
     //Referral Code
     Route::get('/ref-code', [RefCodeController::class, 'index']);
     Route::post('/ref-code/store', [RefCodeController::class, 'store']);
+    Route::patch('/ref-code/edit/{id}', [RefCodeController::class, 'edit']);
+    Route::delete('/ref-code/destroy/{id}', [RefCodeController::class, 'destroy']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
