@@ -108,6 +108,7 @@ class MstPartnerController extends Controller
                 'is_active' => $request->is_active,
                 'npwp' => $request->npwp,
                 'created_by' => $created_by,
+                'is_active' => '1',
             ]);
 
             DB::commit();
@@ -235,9 +236,34 @@ class MstPartnerController extends Controller
         }
     }
 
+    public function activePartner($id){
+        // dd('active');
+        // create by email
+        $created_by = auth()->user()->email;
+
+        DB::beginTransaction();
+        try {
+
+            $query =  MstPartner::where('id',$id)
+                    ->update([
+                        'is_active' => '1',
+                        'created_by' => $created_by,
+                    ]);
+            DB::commit();
+            // all good
+
+            return redirect('/partner')->with('status','Success Activate Partner');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/partner')->with('failed','Failed Activate Partner');
+        }
+    }
 
     public function destroyPartner($id){
-        //dd('hi');
+        // dd('hi');
         // create by email
         $created_by = auth()->user()->email;
 
@@ -252,13 +278,13 @@ class MstPartnerController extends Controller
             DB::commit();
             // all good
 
-            return redirect('/partner')->with('status','Success Delete Partner');
+            return redirect('/partner')->with('status','Success Inactive Partner');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
 
-            return redirect('/partner')->with('failed','Failed Delete Partner');
+            return redirect('/partner')->with('failed','Failed Inactive Partner');
         }
     }
 

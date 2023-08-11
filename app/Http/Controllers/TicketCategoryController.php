@@ -37,6 +37,8 @@ class TicketCategoryController extends Controller
                         'category' => $request->category,
                         'inc_seat' => $request->inc_seat,
                         'price' => $price,
+                        'quantity' => $request->quantity,
+                        'is_active' => '1',
                         //'created_by' => $created_by,
                     ]);
             DB::commit();
@@ -71,6 +73,7 @@ class TicketCategoryController extends Controller
         $ticket_category->category = $request->category;
         $ticket_category->inc_seat = $request->inc_seat;
         $ticket_category->price = $request->price;
+        $ticket_category->quantity = $request->quantity;
 
         $created_by = auth()->user()->email;
         DB::beginTransaction();
@@ -83,6 +86,7 @@ class TicketCategoryController extends Controller
                     'category' => $request->category,
                     'inc_seat' => $request->inc_seat,
                     'price' => $price,
+                    'quantity' => $request->quantity
                 ]);
             }
             else
@@ -117,7 +121,11 @@ class TicketCategoryController extends Controller
         DB::beginTransaction();
         try {
 
-            $query =  TicketCategory::where('id',$id)->delete();
+            $query =  TicketCategory::where('id',$id)
+            ->update([
+                'is_active' => '0',
+                'created_by' => $created_by,
+            ]);
             DB::commit();
             // all good
             $id_en = encrypt($request->id_event);
