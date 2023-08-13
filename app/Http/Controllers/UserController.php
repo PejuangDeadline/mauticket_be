@@ -47,6 +47,34 @@ class UserController extends Controller
         }
     }
 
+    public function storePartner(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        
+        $password = bcrypt($request->password);
+        //dd($password);
+        $addUser=User::create([
+            'id_partner' => $request->id_partner,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $password,
+            'role' => 'User',
+            'last_login' => null,
+            'is_active' => '1',
+
+        ]);
+        if ($addUser) {
+            return redirect('/partner')->with('status','Success Add User');
+        }else{
+            return redirect('/partner')->with('status','Failed Add User');
+        }
+    }
+
     public function revoke($id)
     {
         $revoke= User::where('id',$id)

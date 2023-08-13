@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\ApiAuthController;
+use App\Http\Controllers\API\ApiEventController;
 use App\Http\Controllers\API\ApiRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('signup/store', [ApiAuthController::class, 'storesignup']);
     Route::post('send-token', [ApiAuthController::class, 'sendToken']);
     Route::post('verify-email', [ApiAuthController::class, 'verifemail']);
+
+    //API Event
+    Route::post('event/search', [ApiEventController::class, 'eventSearch']);
 });
