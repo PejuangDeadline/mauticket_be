@@ -248,14 +248,10 @@
                         </td>
                         <td>
                             @if ($data->is_active == '1')
-                                <div class="text-success">
-                                    <b><i>Active</i></b>
-                                </div>
-                            @else
-                                <div class="text-danger">
-                                    <b><i>Inactive</i></b>
-                                </div>
-                            @endif
+                        <small class="badge bg-success">Active</small>
+                        @else
+                        <small class="badge bg-danger">Inactive</small>
+                        @endif
                         </td>
                         <td>
                             @if ($getPartner->is_active == '1')

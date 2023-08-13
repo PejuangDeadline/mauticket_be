@@ -57,6 +57,7 @@ class TicketCategoryController extends Controller
     }
 
     public function edit(Request $request,$id){
+        dd($request);
         //dd($request->id_event);
         // $id = decrypt($id);
         // $ticketCategory = TicketCategory::where('id_event',$id)->get();

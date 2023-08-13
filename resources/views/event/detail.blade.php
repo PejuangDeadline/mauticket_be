@@ -36,7 +36,7 @@
                 @if ($event->is_active == '1')
                 <small class="badge bg-success">Active</small>
                 @else
-                <small class="badge bg-danger">Unactive</small>
+                <small class="badge bg-danger">Inactive</small>
                 @endif
             </div><!-- /.card-header -->
             {{-- <div class="card-header d-flex justify-content-between align-items-center">
@@ -151,24 +151,32 @@
                                 @endphp
                                 @foreach ($ticketCategory as $data)
                                 <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $data->category }}</td>
-                                    <td>Rp. {{ number_format($data->price) }}</td>
-                                    {{-- <td>
-                                        <button title="Edit Ticket Category" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
-                                            <i class="fas fa-edit"></i>
-                                          </button>
-                                        <button title="Delete Ticket Category" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
-                                            <i class="fas fa-trash-alt"></i>
-                                          </button>
-                                          @if ($data->inc_seat == 1)
-                                          <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
-                                            Upload Seat
-                                          </button>
-                                          @endif
-                                         
-                                    </td> --}}
-                                </tr>
+                                  <td>{{ $no++ }}</td>
+                                  <td>{{ $data->category }} <br>
+                                        Qty : {{$data->quantity}}</td>
+                                  <td>Rp. {{ number_format($data->price) }}</td>
+                                  <td>
+                                  @if ($data->is_active == '1')
+                                  <small class="badge bg-success">Active</small>
+                                  @else
+                                  <small class="badge bg-danger">Inactive</small>
+                                  @endif
+                                </td>
+                                  {{-- <td>
+                                      <button title="Edit Ticket Category" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
+                                          <i class="fas fa-edit"></i>
+                                        </button>
+                                      <button title="Delete Ticket Category" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
+                                          <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        @if ($data->inc_seat == 1)
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
+                                          Upload Seat
+                                        </button>
+                                        @endif
+                                       
+                                  </td> --}}
+                              </tr>
             
                                  {{-- modal include --}}
             
