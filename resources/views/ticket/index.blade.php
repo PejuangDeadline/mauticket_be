@@ -162,7 +162,7 @@
                               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
                                 Upload Seat
                               </button>
-                              <a href="{{ url('list-seats/'.$id)}}" class="btn btn-warning btn-sm">View Seats</a>
+                              <a href="{{ url('list-seats/'.$data->id)}}" class="btn btn-warning btn-sm">View Seats</a>
                               @endif
                             </td>
                           </tr>
