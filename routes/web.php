@@ -11,6 +11,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\MstPartnerController;
+use App\Http\Controllers\SeatController;
 use App\Http\Controllers\TicketPaymentController;
 use App\Http\Controllers\TicketCategoryController;
 
@@ -79,6 +80,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
     Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData']);
 
+    //Ticket Seats 
+    Route::get('/list-seats/{id}', [SeatController::class, 'index']);
+
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
     Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store']);
@@ -94,6 +98,8 @@ Route::middleware(['auth'])->group(function () {
     //Referral Code
     Route::get('/ref-code', [RefCodeController::class, 'index']);
     Route::post('/ref-code/store', [RefCodeController::class, 'store']);
+    Route::patch('/ref-code/edit/{id}', [RefCodeController::class, 'edit']);
+    Route::delete('/ref-code/destroy/{id}', [RefCodeController::class, 'destroy']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
