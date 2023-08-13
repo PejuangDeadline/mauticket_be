@@ -102,33 +102,33 @@
             
                             <div class="row">
                                 <div class="col-md-6">
-                                    <strong>exchange_ticket_info</strong>
-                                    <p>{{$event->exchange_ticket_info}}</p>
+                                    <strong>Exchange Ticket Info</strong>
+                                    <p>{!!$event->exchange_ticket_info!!}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <strong>tc_info</strong>
-                                    <p>{{$event->tc_info}}</p>
-                                </div>
-                            </div>
-            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <strong>including_info</strong>
-                                    <p>{{$event->including_info}}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <strong>excluding_info</strong>
-                                    <p>{{$event->excluding_info}}</p>
+                                    <strong>Tc Info</strong>
+                                    <p>{!!$event->tc_info!!}</p>
                                 </div>
                             </div>
             
                             <div class="row">
                                 <div class="col-md-6">
-                                    <strong>facility</strong>
-                                    <p>{{$event->facility}}</p>
+                                    <strong>Including Info</strong>
+                                    <p>{!!$event->including_info!!}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <strong>attach_venue</strong>
+                                    <strong>Excluding Info</strong>
+                                    <p>{!!$event->excluding_info!!}</p>
+                                </div>
+                            </div>
+            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Facility</strong>
+                                    <p>{!!$event->facility!!}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Attach Venue</strong>
                                     <p>{{$event->attach_venue}}</p>
                                 </div>
                             </div>
