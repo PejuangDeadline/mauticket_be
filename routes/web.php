@@ -11,6 +11,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\MstPartnerController;
+use App\Http\Controllers\SeatController;
 use App\Http\Controllers\TicketPaymentController;
 use App\Http\Controllers\TicketCategoryController;
 
@@ -78,6 +79,9 @@ Route::middleware(['auth'])->group(function () {
     //Ticket Excel
     Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
     Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData']);
+
+    //Ticket Seats 
+    Route::get('/list-seats/{id}', [SeatController::class, 'index']);
 
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
