@@ -220,7 +220,7 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title" id="modal-delete{{ $data->id_event }}-label">Delete Rule</h4>
+                                  <h4 class="modal-title" id="modal-delete{{ $data->id_event }}-label">Delete Ticket Payment</h4>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <form action="{{ url('ticket-payment/destroy/'.$data->id_event.'/'.$data->id) }}" method="POST">
@@ -229,7 +229,7 @@
                                   <input type="text" hidden value="{{$data->id}}">
                                   <div class="modal-body">
                                     <div class="form-group">
-                                      Are you sure you want to delete <label for="rule">{{ $data->rule_name }}</label>?
+                                      Are you sure you want to delete <label for="rule">{{ $data->account_name }}</label>?
                                     </div>
                                   </div>
                                   <div class="modal-footer">
