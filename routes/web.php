@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     //User Controller
     Route::get('/user', [UserController::class, 'index']);
     Route::post('/user/store', [UserController::class, 'store']);
+    Route::post('/user/store-partner', [UserController::class, 'storePartner']);
     Route::patch('/user/update/{user}', [UserController::class, 'update']);
     Route::get('/user/revoke/{user}', [UserController::class, 'revoke']);
     Route::get('/user/access/{user}', [UserController::class, 'access']);

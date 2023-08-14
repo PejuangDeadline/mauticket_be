@@ -211,7 +211,7 @@
                       <!--end validasi form-->
                     </div>
                 </div>
-                <div class="table-responsive">
+                
                 <table id="tablePartner" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -281,6 +281,40 @@
                             </div>
                         </td>
                     </tr>
+
+                    {{-- Modal Add User --}}
+                    <div class="modal fade" id="modal-add-user{{ $data->id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Add User for Partner {{ $data->partner_name }}</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ url('/user/store-partner') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="hidden" name="id_partner" id="id_partner" value="{{ $data->id }}">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter User Name" required>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter User Email" required>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter User Password" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    {{-- Modal Add User --}}
 
                     {{-- Modal Update --}}
                     <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
@@ -557,7 +591,6 @@
                     </div>
                     {{--Modal Add Contract --}}
 
-
                     {{-- Modal Show --}}
                     <div class="modal fade" id="modal-showContract{{ $data->id }}" tabindex="-1" aria-labelledby="modal-showContract{{ $data->id }}-label" aria-hidden="true">
                         <div class="modal-dialog">
@@ -589,7 +622,7 @@
                     @endforeach
                   </tbody>
                 </table>
-              </div>
+              
               </div>
               <!-- /.card-body -->
             </div>
