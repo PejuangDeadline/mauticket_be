@@ -66,10 +66,10 @@
                                                                     <input class="form-control" id="ref_code" name="ref_code" type="text" placeholder="Input Code" />
                                                                 </div>
                                                                 {{-- <div class="mb-3">
-                                        <select class="form-control" name="ref_type" id="ref_type">
-                                            <option class="text-center" value="" selected>- Select Referral Type -</option>
-                                            @foreach ($refTypes as $refType)
-                                            <option class="text-center" value="{{ $refType['name_value'] }}">{{ $refType['name_value'] }}</option>
+                                                                <select class="form-control" name="ref_type" id="ref_type">
+                                                                    <option class="text-center" value="" selected>- Select Referral Type -</option>
+                                                                    @foreach ($refTypes as $refType)
+                                                                    <option class="text-center" value="{{ $refType['name_value'] }}">{{ $refType['name_value'] }}</option>
                                                                 @endforeach
                                                                 </select>
                                                         </div> --}}
@@ -153,56 +153,97 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                Action
-                                                            </button>
-                                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                                <li>
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-add-user{{ $data->id }}" href="#"><i class="fas fa-plus"></i> Add User</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}" href="#"><i class="fas fa-edit"></i> Edit Partner</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-showContract{{ $data->id }}" href="#"><i class="fas fa-eye"></i> Show Contract</a>
-                                                                </li>
-                                                                <li>
-                                                                    @if ($data->start_date == null)
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-addContract{{ $data->id }}" href="#"><i class="fas fa-plus"></i> Add Contract</a>
-                                                                    @else
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-editContract{{ $data->id }}" href="#"><i class="fas fa-calendar-alt"></i> Edit Contract</a>
-                                                                    @endif
-                                                                </li>
-                                                                <li>
-                                                                    @if ($data->is_active == '0')
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-active{{ $data->id }}" href="#"><i class="fas fa-check"></i> Activate Partner</a>
-                                                                    @else
-                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-inactive{{ $data->id }}" href="#"><i class="fas fa-times"></i> Inactive Partner</a>
-                                                                    @endif
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                        <button title="Edit Rule" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
                                     </div>
                                     </td>
                                     </tr>
 
-                                    @endforeach
-                                    </tbody>
-                                    </table>
+                                    {{-- Modal Update --}}
+                                    <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="modal-update{{ $data->id_event }}-label">Edit Referral Code</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ url('ref-code/edit/'.$data->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('patch')
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <input class="form-control" id="ref_code" name="ref_code" type="text" value="{{ $data->code }}" />
+                                                        </div>
+                                                        {{-- <div class="mb-3">
+                                                                <select class="form-control" name="ref_type" id="ref_type">
+                                                                    <option class="text-center" value="" selected>- Select Referral Type -</option>
+                                                                    @foreach ($refTypes as $refType)
+                                                                    <option class="text-center" value="{{ $refType['name_value'] }}">{{ $refType['name_value'] }}</option>
+                                                        @endforeach
+                                                        </select>
+                                                    </div> --}}
+                                                    <div class="mb-3">
+                                                        <input class="form-control" id="ref_value" name="ref_value" type="text" value="{{ $data->value }}" />
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
+                                {{-- Modal Update --}}
+
+                                {{-- Modal Delete --}}
+                                <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete Referral Code</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ url('ref-code/destroy/'.$data->id) }}" method="POST">
+                                                @csrf
+                                                @method('delete')
+                                                <input type="text" hidden value="{{$data->id}}">
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        Are you sure you want to delete <label for="rule">{{ $data->code }}</label>?
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- Modal Delete --}}
+
+                                @endforeach
+                                </tbody>
+                                </table>
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.col -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.row -->
+                <!-- /.col -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     </div>
