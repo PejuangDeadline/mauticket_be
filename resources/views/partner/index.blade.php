@@ -211,7 +211,7 @@
                       <!--end validasi form-->
                     </div>
                 </div>
-                <div class="table-responsive">
+                
                 <table id="tablePartner" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -622,7 +622,7 @@
                     @endforeach
                   </tbody>
                 </table>
-              </div>
+              
               </div>
               <!-- /.card-body -->
             </div>
