@@ -266,6 +266,11 @@
                                             <i class="fas fa-edit"></i> Edit Detail
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-venue{{ $data->id }}">
+                                            <i class="fas fa-plus"></i> Venue Attachment
+                                        </a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
                                     <li><a class="dropdown-item" href="{{ url('ticket-payment/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Payment</a></li>
                                     <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
@@ -280,6 +285,33 @@
                             </div>
                         </td>
                     </tr>
+
+                    
+                    {{-- Modal Venue --}}
+                    <div class="modal fade" id="modal-venue{{ $data->id }}" tabindex="-1" aria-labelledby="modal-venue{{ $data->id }}-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="modal-venue{{ $data->id }}-label">Venue Attachment</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url('/event/venue/'.$data->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="file" name="venue" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Modal Venue --}}
+
 
                     {{-- Modal Update --}}
                     <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
