@@ -39,8 +39,9 @@
           <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                   <h3 class="card-title">List of Ticket Category <i>({{$event->event_name}})</i></h3>
+                  <a href="{{ url('/event') }}" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
                 </div>
 
                 <!-- /.card-header -->
