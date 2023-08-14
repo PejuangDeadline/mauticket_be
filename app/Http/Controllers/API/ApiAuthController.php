@@ -45,7 +45,7 @@ class ApiAuthController extends ApiBaseController
                 'phonenumber' => $phone,
                 'email' => $email,
                 'password' => Hash::make($password),
-                'role' => "User",
+                'role' => "Customer",
                 'is_active' => 0,
             ]);
 
