@@ -47,46 +47,49 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="mb-3 col-sm-12">
-                      <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
-                        <i class="fas fa-plus-square"></i>
-                      </button>
-
-                      <!-- Modal -->
-                      <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="modal-add-label">Add Ticket Category</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="{{ url('ticket-category/store/'.$id) }}" method="POST">
-                              @csrf
-                              <div class="modal-body">
-                                <div hidden>
-                                  <input class="form-control" id="id_event" name="id_event" value="{{$id}}" />
+                        <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-add">
+                            <i class="fas fa-plus-square"></i>
+                          </button>
+                          
+                          <!-- Modal -->
+                          <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modal-add-label">Add Ticket Category</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="form-group">
-
-                                  <input class="form-control" id="category" name="category" cols="30" rows="3" placeholder="Enter Category">
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                  <label class="mb-3" for="">Include Seat?</label>
-                                  <br>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1">
-                                    <label class="form-check-label" for="inlineRadio1">Yes</label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0">
-                                    <label class="form-check-label" for="inlineRadio2">No</label>
-                                  </div>
-                                </div>
-
-                                <br>
-                                <div class="form-group">
-                                  <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
-                                </div>
+                                <form action="{{ url('ticket-category/store/'.$id) }}" method="POST">
+                                  @csrf
+                                  <div class="modal-body">
+                                    <div hidden>
+                                        <input class="form-control" id="id_event" name="id_event" value="{{$id}}"/>
+                                    </div>
+                                        <div class="form-group">
+    
+                                          <input class="form-control" id="category" name="category" cols="30" rows="3" placeholder="Enter Category">
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                          <label class="mb-3" for="">Include Seat?</label>
+                                          <br>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1">
+                                            <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                          </div>
+                                        </div>
+                                        
+                                        <br>
+                                        <div class="form-group mb-4">
+                                            <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
+                                        </div>
+                                        <div class="form-group">
+                                          <input type="text" id="quantity" name="quantity" class="form-control" autocomplete="off" placeholder="Enter Quantity">
+                                      </div>
 
                               </div>
                               <div class="modal-footer">
@@ -162,7 +165,7 @@
                               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
                                 Upload Seat
                               </button>
-                              <a href="{{ url('list-seats/'.$id)}}" class="btn btn-warning btn-sm">View Seats</a>
+                              <a href="{{ url('list-seats/'.$data->id)}}" class="btn btn-warning btn-sm">View Seats</a>
                               @endif
                             </td>
                           </tr>
@@ -245,37 +248,47 @@
                                   @method('patch')
                                   <div class="modal-body">
 
-                                    <div hidden>
-                                      <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
-                                    </div>
-                                    <div class="form-group">
-                                      <input class="form-control" id="category" name="category" cols="30" rows="3" value="{{$data->category}}" placeholder="{{$data->category}}">
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
-                                      <label class="mb-3" for="">Include Seat?</label>
-                                      <br>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1" @if ($data->inc_seat == 1) checked @endif>
-                                        <label class="form-check-label" for="inlineRadio1">Yes</label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0" @if ($data->inc_seat == 0) checked @endif>
-                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
-                                      <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
-                                    </div>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                  </div>
+                                <div hidden>
+                                  <input type="text" name="id_event" value="{{$data->id_event}}" hidden>
+                                  <input type="text" name="is_active" value="off" id="">
                               </div>
-                            </div>
-                            {{-- Modal Update --}}
+                              <div class="form-check form-switch mb-4">
+                                <input name="is_active" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if ($data->is_active == '1') checked @endif>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Status</label>
+                              </div>
+                                  <div class="form-group">
+                                    <input class="form-control" id="category" name="category" cols="30" rows="3" value="{{$data->category}}" placeholder="{{$data->category}}">
+                                  </div>
+                                  <br>
+                                  <div class="form-group">
+                                    <label class="mb-3" for="">Include Seat?</label>
+                                    <br>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio1" value="1" @if ($data->inc_seat == 1) checked @endif>
+                                      <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="inc_seat" id="inlineRadio2" value="0" @if ($data->inc_seat == 0) checked @endif>
+                                      <label class="form-check-label" for="inlineRadio2">No</label>
+                                    </div>
+                                  </div>
+                                  <br>
+                                  <div class="form-group mb-4">
+                                    <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" id="quantity" name="quantity" class="form-control" value="{{ old('',number_format($data->quantity)) }}" autocomplete="off">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    {{-- Modal Update --}}
 
                             {{-- Modal Delete --}}
                             <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">

@@ -163,6 +163,11 @@
                                             <label><b>NPWP</b></label>
                                             <input class="form-control" id="npwp" name="npwp" type="text" placeholder="12.345.678.9-012.345" />
                                         </div>
+                                        <div class="mb-3">
+                                            <label><b>Platform Fee(%)</b></label>
+                                            <input class="form-control" id="fee" name="fee" type="number" placeholder="5%" />
+                                        </div>
+
                               </div>
                               <div class="modal-footer">
                                   <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
@@ -237,14 +242,10 @@
                         </td>
                         <td>
                             @if ($data->is_active == '1')
-                                <div class="text-success">
-                                    <b><i>Active</i></b>
-                                </div>
-                            @else
-                                <div class="text-danger">
-                                    <b><i>Inactive</i></b>
-                                </div>
-                            @endif
+                        <small class="badge bg-success">Active</small>
+                        @else
+                        <small class="badge bg-danger">Inactive</small>
+                        @endif
                         </td>
                         <td>  
                             <div class="dropdown">
@@ -427,6 +428,10 @@
                                 <div class="mb-3">
                                     <label><b>NPWP</b></label>
                                     <input  value="{{$data->npwp}}" class="form-control" id="npwp" name="npwp" type="text" placeholder="12.345.678.9-012.345" />
+                                </div>
+                                <div class="mb-3">
+                                    <label><b>Platform Fee(%)</b></label>
+                                    <input value="{{$data->platform_fee}}" class="form-control" id="fee" name="fee" type="number" placeholder="5%" />
                                 </div>
                                 <script>
                                     const NPWP = document.getElementById("npwp")
