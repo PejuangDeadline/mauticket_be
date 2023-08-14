@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/event/update', [EventController::class, 'storeUpdateEvent']);
     Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent']);
     Route::get('/event/detail/{id}', [EventController::class, 'detailEvent']);
+    Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue']);
 
     //Ticket Category
     Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index']);
@@ -81,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
     Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData']);
 
-    //Ticket Seats 
+    //Ticket Seats
     Route::get('/list-seats/{id}', [SeatController::class, 'index']);
 
     //Ticket Payment
