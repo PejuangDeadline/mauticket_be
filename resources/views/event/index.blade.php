@@ -226,6 +226,7 @@
                     <th>No</th>
                     <th>Event Name</th>
                     <th>Address</th>
+                    <th>Image Venue</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
@@ -245,6 +246,34 @@
                             <i>{{$data->city}},{{$data->district}},{{$data->sub_district}}</i>
                              <p>{{$data->partner_addr}}</p>
 
+                        </td>
+                        <td>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#imageVenue{{ $data->id }}">
+                                View
+                            </button>
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="imageVenue{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        @if (isset($data->attach_venue))
+                                            <img src="{{ asset($data->attach_venue) }}" class="img-fluid" alt="">
+                                        @else
+                                            <img src="{{ asset('img/image_not_available.png') }}" class="img-fluid" alt="">
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </td>
                         <td>
                             @if ($data->is_active == '1')
