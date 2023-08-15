@@ -108,6 +108,7 @@ class MstPartnerController extends Controller
                 'is_active' => $request->is_active,
                 'npwp' => $request->npwp,
                 'created_by' => $created_by,
+                'platform_fee' => $request->platform_fee,
                 'is_active' => '1',
             ]);
 
@@ -200,9 +201,8 @@ class MstPartnerController extends Controller
                         'district' => $district_name,
                         'sub_district' => $subdistrict_name,
                         'zip_code' => $request->zip_code,
-                        'is_active' => $request->is_active,
                         'npwp' => $request->npwp,
-                        'created_by' => $created_by,
+                        'platform_fee' => $request->platform_fee,
                     ]);
             }
             else
@@ -217,9 +217,8 @@ class MstPartnerController extends Controller
                         'contact_2' => $request->contact_2,
                         'partner_addr' => $request->partner_addr,
                         'zip_code' => $request->zip_code,
-                        'is_active' => $request->is_active,
                         'npwp' => $request->npwp,
-                        'created_by' => $request->created_by,
+                        'platform_fee' => $request->platform_fee,
                     ]);
             }
 

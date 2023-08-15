@@ -323,4 +323,42 @@ class EventController extends Controller
         $ticketPayment = TicketPayment::where('id_event',$id)->get();
         return view('event.detail',compact('event','ticketCategory','id','showTime','ticketPayment'));
     }
+
+    public function UploadAttachmentVenue(Request $request,$id)
+    {
+        //dd($request->id);
+        $request->validate([
+            'venue' => 'required|mimes:jpeg,jpg,png,pdf|max:3048'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            if ($request->hasFile('venue')) {
+                $path_attach = $request->file('venue');
+                $url = $path_attach->move('storage/venue', $path_attach->hashName());
+                // $image = "data:image/png;base64,".base64_encode(file_get_contents($request->file('attach')->path()));
+            }
+
+            // dd($image);
+
+            $store =  Event::where('id',$id)
+                    ->update([
+                        'attach_venue' => $url
+                    ]);
+
+
+            DB::commit();
+            // all good
+
+            return redirect('/event')->with('status', 'Success Add Venue Image');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/event')->with('failed', 'Failed Add Venue Image');
+        }
+    }
 }
