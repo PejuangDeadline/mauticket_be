@@ -9,10 +9,13 @@
                     <div class="nav-link-icon"><i class="fas fa-fw fa-home"></i></div>
                     Home
                 </a>
+                @if(\Auth::user()->role === 'Super Admin')
                 <a class="nav-link" href="{{url('/partner')}}">
                     <div class="nav-link-icon"><i class="fas fa-fw fa-file-signature"></i></div>
                     Administration
                 </a>
+                @endif
+                @if(\Auth::user()->role === 'User')
                 <a class="nav-link" href="{{url('/event')}}">
                     <div class="nav-link-icon"><i class="fas fa-fw fa-file-signature"></i></div>
                     Event
@@ -21,7 +24,8 @@
                     <div class="nav-link-icon"><i class="fas fa-fw fa-percent"></i></div>
                     Referral Code
                 </a>
-
+                @endif
+                @if(\Auth::user()->role === 'Super Admin')
                 <!-- Sidenav Menu Heading (Core)-->
                 <div class="sidenav-menu-heading">Configuration</div>
                 <!-- Sidenav Accordion (Utilities)-->
@@ -37,6 +41,7 @@
                         <a class="nav-link" href="{{url('/user')}}">User</a>
                     </nav>
                 </div>
+                @endif
             </div>
         </div>
         <!-- Sidenav Footer-->
