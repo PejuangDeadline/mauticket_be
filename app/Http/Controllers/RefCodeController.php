@@ -12,7 +12,7 @@ class RefCodeController extends Controller
 {
     public function index(){
         //dd('hi');
-        $refCodes = RefCode::where('is_active', 1)->orderBy('id')->get();
+        $refCodes = RefCode::orderBy('id')->get();
         $refTypes = Dropdown::where('category', 'Type Referral')->get();
         // dd($refTypes);
         return view('ref_code.index', compact('refTypes', 'refCodes'));
