@@ -165,7 +165,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Platform Fee(%)</b></label>
-                                            <input class="form-control" id="fee" name="fee" type="number" placeholder="5%" />
+                                            <input class="form-control" id="platform_fee" name="platform_fee" type="number" placeholder="5%" />
                                         </div>
 
                               </div>
@@ -247,7 +247,7 @@
                         <small class="badge bg-danger">Inactive</small>
                         @endif
                         </td>
-                        <td>  
+                        <td>
                             <div class="dropdown">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
@@ -431,7 +431,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Platform Fee(%)</b></label>
-                                    <input value="{{$data->platform_fee}}" class="form-control" id="fee" name="fee" type="number" placeholder="5%" />
+                                    <input value="{{$data->platform_fee}}" class="form-control" id="platform_fee" name="platform_fee" type="number" placeholder="5%" />
                                 </div>
                                 <script>
                                     const NPWP = document.getElementById("npwp")
