@@ -58,28 +58,27 @@ class ShowtimeController extends Controller
             $showtimeFinish = $request->showtime_finish;
 
             $existingShowtime = Showtime::where('id_event', $id)
-                ->where(function ($query) use ($showtimeStart, $showtimeFinish, $idCategory) {
-                    $query->where('id_category', $idCategory)
-                        ->where(function ($q) use ($showtimeStart, $showtimeFinish) {
-                            $q->where(function ($subQ) use ($showtimeStart, $showtimeFinish) {
-                                $subQ->where('showtime_start', '>=', $showtimeStart)
-                                    ->where('showtime_start', '<=', $showtimeFinish);
-                            })
-                                ->orWhere(function ($subQ) use ($showtimeStart, $showtimeFinish) {
-                                    $subQ->where('showtime_finish', '>=', $showtimeStart)
-                                        ->where('showtime_finish', '<=', $showtimeFinish);
-                                });
+                ->where('id_category', $idCategory) // Tambahkan kondisi id_category di sini
+                ->where('is_active', 1)
+                ->where(function ($query) use ($showtimeStart, $showtimeFinish) {
+                    $query->where(function ($q) use ($showtimeStart, $showtimeFinish) {
+                        $q->where(function ($subQ) use ($showtimeStart, $showtimeFinish) {
+                            $subQ->where('showtime_start', '>=', $showtimeStart)
+                                ->where('showtime_start', '<=', $showtimeFinish);
                         })
+                            ->orWhere(function ($subQ) use ($showtimeStart, $showtimeFinish) {
+                                $subQ->where('showtime_finish', '>=', $showtimeStart)
+                                    ->where('showtime_finish', '<=', $showtimeFinish);
+                            });
+                    })
                         ->orWhere(function ($q) use ($showtimeStart, $showtimeFinish) {
                             $q->where('showtime_start', '<=', $showtimeStart)
                                 ->where('showtime_finish', '>=', $showtimeStart);
                         });
-                })
-                ->where('is_active', 1)
+            })
                 ->first();
 
-
-            dd($existingShowtime);
+            // dd($existingShowtime);
             if ($existingShowtime) {
                 $id_en = encrypt($id);
                 return redirect('/show-time/' . $id_en)->with('failed', 'Showtime range must be unique for this event !');
