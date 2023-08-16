@@ -66,42 +66,42 @@ Route::middleware(['auth'])->group(function () {
 
     //Event
     Route::get('/event', [EventController::class, 'index'])->middleware(['checkRole:User']);
-    Route::post('/event/store', [EventController::class, 'storeEvent'])->middleware(['checkRole:Super Admin']);
-    Route::post('/event/update', [EventController::class, 'storeUpdateEvent'])->middleware(['checkRole:Super Admin']);
-    Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent'])->middleware(['checkRole:Super Admin']);
-    Route::get('/event/detail/{id}', [EventController::class, 'detailEvent'])->middleware(['checkRole:Super Admin']);
-    Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue'])->middleware(['checkRole:Super Admin']);
+    Route::post('/event/store', [EventController::class, 'storeEvent'])->middleware(['checkRole:User']);
+    Route::post('/event/update', [EventController::class, 'storeUpdateEvent'])->middleware(['checkRole:User']);
+    Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent'])->middleware(['checkRole:User']);
+    Route::get('/event/detail/{id}', [EventController::class, 'detailEvent'])->middleware(['checkRole:User']);
+    Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue'])->middleware(['checkRole:User']);
 
     //Ticket Category
-    Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/ticket-category/store/{id}', [TicketCategoryController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit'])->middleware(['checkRole:Super Admin']);
-    Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
+    Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/ticket-category/store/{id}', [TicketCategoryController::class, 'store'])->middleware(['checkRole:User']);
+    Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit'])->middleware(['checkRole:User']);
+    Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy'])->middleware(['checkRole:User']);
 
     //Ticket Excel
-    Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate'])->middleware(['checkRole:Super Admin']);
-    Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData'])->middleware(['checkRole:Super Admin']);
+    Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate'])->middleware(['checkRole:User']);
+    Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData'])->middleware(['checkRole:User']);
 
     //Ticket Seats
-    Route::get('/list-seats/{id}', [SeatController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::get('/list-seats/{id}', [SeatController::class, 'index'])->middleware(['checkRole:User']);
 
     //Ticket Payment
-    Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::patch('/ticket-payment/edit/{idEvent}/{id}', [TicketPaymentController::class, 'edit'])->middleware(['checkRole:Super Admin']);
-    Route::delete('/ticket-payment/destroy/{idEvent}/{id}', [TicketPaymentController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
+    Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store'])->middleware(['checkRole:User']);
+    Route::patch('/ticket-payment/edit/{idEvent}/{id}', [TicketPaymentController::class, 'edit'])->middleware(['checkRole:User']);
+    Route::delete('/ticket-payment/destroy/{idEvent}/{id}', [TicketPaymentController::class, 'destroy'])->middleware(['checkRole:User']);
 
     //Show Time
-    Route::get('/show-time/{id}', [ShowtimeController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/show-time/store/{id}/{idCategory}', [ShowtimeController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::patch('/show-time/edit/{id}/{idEvent}', [ShowtimeController::class, 'edit'])->middleware(['checkRole:Super Admin']);
-    Route::delete('/show-time/destroy/{id}/{idEvent}', [ShowtimeController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
+    Route::get('/show-time/{id}', [ShowtimeController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/show-time/store/{id}/{idCategory}', [ShowtimeController::class, 'store'])->middleware(['checkRole:User']);
+    Route::patch('/show-time/edit/{id}/{idEvent}', [ShowtimeController::class, 'edit'])->middleware(['checkRole:User']);
+    Route::delete('/show-time/destroy/{id}/{idEvent}', [ShowtimeController::class, 'destroy'])->middleware(['checkRole:User']);
 
     //Referral Code
-    Route::get('/ref-code', [RefCodeController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/ref-code/store', [RefCodeController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::patch('/ref-code/edit/{id}', [RefCodeController::class, 'edit'])->middleware(['checkRole:Super Admin']);
-    Route::delete('/ref-code/destroy/{id}', [RefCodeController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
+    Route::get('/ref-code', [RefCodeController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/ref-code/store', [RefCodeController::class, 'store'])->middleware(['checkRole:User']);
+    Route::patch('/ref-code/edit/{id}', [RefCodeController::class, 'edit'])->middleware(['checkRole:User']);
+    Route::delete('/ref-code/destroy/{id}', [RefCodeController::class, 'destroy'])->middleware(['checkRole:User']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
