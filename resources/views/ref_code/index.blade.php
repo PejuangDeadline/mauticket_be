@@ -145,7 +145,7 @@
                                                     <td>{{ $data->code }}</td>
                                                     <td>{{ $data->type }}</td>
                                                     <td>{{ $data->value }}</td>
-                                                    <td>{{ $data->max_discount }}</td>
+                                                    <td>Rp. {{ number_format($data->max_discount) }}</td>
                                                     <td>
                                                         @if ($data->is_active == '1')
                                                         <div class="text-success">

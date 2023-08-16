@@ -58,7 +58,7 @@ class ShowtimeController extends Controller
             $showtimeFinish = $request->showtime_finish;
 
             $existingShowtime = Showtime::where('id_event', $id)
-                ->where('id_category', $idCategory) // Tambahkan kondisi id_category di sini
+                ->where('id_category', $idCategory) 
                 ->where('is_active', 1)
                 ->where(function ($query) use ($showtimeStart, $showtimeFinish) {
                     $query->where(function ($q) use ($showtimeStart, $showtimeFinish) {
