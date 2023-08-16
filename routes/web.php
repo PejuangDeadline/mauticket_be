@@ -36,72 +36,72 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index']);
 
     //Dropdown Controller
-    Route::get('/dropdown', [DropdownController::class, 'index']);
-    Route::post('/dropdown/store', [DropdownController::class, 'store']);
-    Route::patch('/dropdown/update/{id}', [DropdownController::class, 'update']);
-    Route::delete('/dropdown/delete/{id}', [DropdownController::class, 'delete']);
+    Route::get('/dropdown', [DropdownController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/dropdown/store', [DropdownController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/dropdown/update/{id}', [DropdownController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/dropdown/delete/{id}', [DropdownController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //Rules Controller
-    Route::get('/rule', [RulesController::class, 'index']);
-    Route::post('/rule/store', [RulesController::class, 'store']);
-    Route::patch('/rule/update/{id}', [RulesController::class, 'update']);
-    Route::delete('/rule/delete/{id}', [RulesController::class, 'delete']);
+    Route::get('/rule', [RulesController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/rule/store', [RulesController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/rule/update/{id}', [RulesController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/rule/delete/{id}', [RulesController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //User Controller
-    Route::get('/user', [UserController::class, 'index']);
-    Route::post('/user/store', [UserController::class, 'store']);
-    Route::post('/user/store-partner', [UserController::class, 'storePartner']);
-    Route::patch('/user/update/{user}', [UserController::class, 'update']);
-    Route::get('/user/revoke/{user}', [UserController::class, 'revoke']);
-    Route::get('/user/access/{user}', [UserController::class, 'access']);
+    Route::get('/user', [UserController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/user/store', [UserController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::post('/user/store-partner', [UserController::class, 'storePartner'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/user/update/{user}', [UserController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::get('/user/revoke/{user}', [UserController::class, 'revoke'])->middleware(['checkRole:Super Admin']);
+    Route::get('/user/access/{user}', [UserController::class, 'access'])->middleware(['checkRole:Super Admin']);
 
     //Partner
-    Route::get('/partner', [MstPartnerController::class, 'index']);
-    Route::post('/partner/store', [MstPartnerController::class, 'storePartner']);
-    Route::post('/partner/update', [MstPartnerController::class, 'StoreUpdatePartner']);
-    Route::patch('/partner/active/{id}', [MstPartnerController::class, 'activePartner']);
-    Route::patch('/partner/inactive/{id}', [MstPartnerController::class, 'destroyPartner']);
-    Route::post('/contract', [MstPartnerController::class, 'storeContract']);
-    Route::post('/contract/update', [MstPartnerController::class, 'updateContract']);
+    Route::get('/partner', [MstPartnerController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/partner/store', [MstPartnerController::class, 'storePartner'])->middleware(['checkRole:Super Admin']);
+    Route::post('/partner/update', [MstPartnerController::class, 'StoreUpdatePartner'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/partner/active/{id}', [MstPartnerController::class, 'activePartner'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/partner/inactive/{id}', [MstPartnerController::class, 'destroyPartner'])->middleware(['checkRole:Super Admin']);
+    Route::post('/contract', [MstPartnerController::class, 'storeContract'])->middleware(['checkRole:Super Admin']);
+    Route::post('/contract/update', [MstPartnerController::class, 'updateContract'])->middleware(['checkRole:Super Admin']);
 
     //Event
-    Route::get('/event', [EventController::class, 'index']);
-    Route::post('/event/store', [EventController::class, 'storeEvent']);
-    Route::post('/event/update', [EventController::class, 'storeUpdateEvent']);
-    Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent']);
-    Route::get('/event/detail/{id}', [EventController::class, 'detailEvent']);
-    Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue']);
+    Route::get('/event', [EventController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/event/store', [EventController::class, 'storeEvent'])->middleware(['checkRole:Super Admin']);
+    Route::post('/event/update', [EventController::class, 'storeUpdateEvent'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent'])->middleware(['checkRole:Super Admin']);
+    Route::get('/event/detail/{id}', [EventController::class, 'detailEvent'])->middleware(['checkRole:Super Admin']);
+    Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue'])->middleware(['checkRole:Super Admin']);
 
     //Ticket Category
-    Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index']);
-    Route::post('/ticket-category/store/{id}', [TicketCategoryController::class, 'store']);
-    Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit']);
-    Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy']);
+    Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/ticket-category/store/{id}', [TicketCategoryController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/ticket-category/edit/{id}', [TicketCategoryController::class, 'edit'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/ticket-category/destroy/{id}', [TicketCategoryController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
 
     //Ticket Excel
-    Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate']);
-    Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData']);
+    Route::get('/download-template/{idEvent}/{idCategory}', [ExcelController::class, 'downloadTemplate'])->middleware(['checkRole:Super Admin']);
+    Route::post('/import/{idEvent}/{idCategory}', [ExcelController::class, 'importData'])->middleware(['checkRole:Super Admin']);
 
     //Ticket Seats
-    Route::get('/list-seats/{id}', [SeatController::class, 'index']);
+    Route::get('/list-seats/{id}', [SeatController::class, 'index'])->middleware(['checkRole:Super Admin']);
 
     //Ticket Payment
-    Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index']);
-    Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store']);
-    Route::patch('/ticket-payment/edit/{idEvent}/{id}', [TicketPaymentController::class, 'edit']);
-    Route::delete('/ticket-payment/destroy/{idEvent}/{id}', [TicketPaymentController::class, 'destroy']);
+    Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/ticket-payment/store/{id}', [TicketPaymentController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/ticket-payment/edit/{idEvent}/{id}', [TicketPaymentController::class, 'edit'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/ticket-payment/destroy/{idEvent}/{id}', [TicketPaymentController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
 
     //Show Time
-    Route::get('/show-time/{id}', [ShowtimeController::class, 'index']);
-    Route::post('/show-time/store/{id}/{idCategory}', [ShowtimeController::class, 'store']);
-    Route::patch('/show-time/edit/{id}/{idEvent}', [ShowtimeController::class, 'edit']);
-    Route::delete('/show-time/destroy/{id}/{idEvent}', [ShowtimeController::class, 'destroy']);
+    Route::get('/show-time/{id}', [ShowtimeController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/show-time/store/{id}/{idCategory}', [ShowtimeController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/show-time/edit/{id}/{idEvent}', [ShowtimeController::class, 'edit'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/show-time/destroy/{id}/{idEvent}', [ShowtimeController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
 
     //Referral Code
-    Route::get('/ref-code', [RefCodeController::class, 'index']);
-    Route::post('/ref-code/store', [RefCodeController::class, 'store']);
-    Route::patch('/ref-code/edit/{id}', [RefCodeController::class, 'edit']);
-    Route::delete('/ref-code/destroy/{id}', [RefCodeController::class, 'destroy']);
+    Route::get('/ref-code', [RefCodeController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/ref-code/store', [RefCodeController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/ref-code/edit/{id}', [RefCodeController::class, 'edit'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/ref-code/destroy/{id}', [RefCodeController::class, 'destroy'])->middleware(['checkRole:Super Admin']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
