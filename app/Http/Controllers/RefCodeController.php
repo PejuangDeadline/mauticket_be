@@ -29,7 +29,7 @@ class RefCodeController extends Controller
         ]);
 
         $refCode = strtoupper($request->ref_code);
-
+        $max_discount = str_replace(',', '', $request->max_discount);
         $checkCode = RefCode::where('code', $refCode)->where('is_active', 1)->count();
 
         if($checkCode > 0){
@@ -46,6 +46,7 @@ class RefCodeController extends Controller
                 'code' => $refCode,
                 'type' => 'Per Item',
                 'value' => $request->ref_value,
+                'max_discount' => $max_discount,
                 'is_active' => '1',
             ]);
 
@@ -55,6 +56,7 @@ class RefCodeController extends Controller
             return redirect('/ref-code')->with('status','Success Add Refferal Code');
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             // something went wrong
 
             return redirect('/ref-code')->with('failed','Failed Add Refferal Code');
@@ -65,8 +67,13 @@ class RefCodeController extends Controller
     {
         // dd($id, $request);
         $refCode = strtoupper($request->ref_code);
+        $max_discount = str_replace(',',
+            '',
+            $request->max_discount
+        );
         $id_partner = auth()->user()->id_partner;
-
+        
+        
         DB::beginTransaction();
         try {
 
@@ -76,6 +83,7 @@ class RefCodeController extends Controller
                     'code' => $refCode,
                     'type' => 'Per Item',
                     'value' => $request->ref_value,
+                'max_discount' => $max_discount,
                     'is_active' => '1',
                 ]);
 

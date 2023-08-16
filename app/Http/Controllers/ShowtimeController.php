@@ -79,7 +79,7 @@ class ShowtimeController extends Controller
                 ->first();
 
 
-            // dd($existingShowtime);
+            dd($existingShowtime);
             if ($existingShowtime) {
                 $id_en = encrypt($id);
                 return redirect('/show-time/' . $id_en)->with('failed', 'Showtime range must be unique for this event !');

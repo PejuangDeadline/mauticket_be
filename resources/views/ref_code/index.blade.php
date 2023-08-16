@@ -76,6 +76,9 @@
                                                         <div class="mb-3">
                                                             <input class="form-control" id="ref_value" name="ref_value" type="text" placeholder="Input Value Ref Code in Percentage" />
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <input type="text" id="price" name="max_discount" class="form-control" autocomplete="off" placeholder="Input Max Discount">
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
@@ -120,13 +123,14 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive">
-                                        <table id="tablePartner" class="table table-bordered table-striped">
+                                        <table id="tableRefCode" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Code</th>
                                                     <th>Type</th>
                                                     <th>Value</th>
+                                                    <th>Max Discount</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -141,6 +145,7 @@
                                                     <td>{{ $data->code }}</td>
                                                     <td>{{ $data->type }}</td>
                                                     <td>{{ $data->value }}</td>
+                                                    <td>{{ $data->max_discount }}</td>
                                                     <td>
                                                         @if ($data->is_active == '1')
                                                         <div class="text-success">
@@ -189,6 +194,9 @@
                                                     </div> --}}
                                                     <div class="mb-3">
                                                         <input class="form-control" id="ref_value" name="ref_value" type="text" value="{{ $data->value }}" />
+                                                    </div>
+                                                    <div class="form-group mb-3">
+                                                        <input type="text" id="price" name="max_discount" class="form-control" value="{{ old('',number_format($data->max_discount)) }}" autocomplete="off">
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
@@ -252,152 +260,67 @@
 </main>
 <!-- For Datatables -->
 <script>
+    // Function to format the price in rupiah format
+    function formatRupiah(amount) {
+        const formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+        });
+        return formatter.format(amount);
+    }
+
+    // Function to remove non-numeric characters from the input
+    function removeNonNumeric(input) {
+        return input.replace(/\D/g, '');
+    }
+
+    // Function to handle price input
+    function handlePriceInput(event) {
+        const input = event.target;
+        const value = removeNonNumeric(input.value);
+        const formattedValue = formatRupiah(value);
+
+        input.value = formattedValue;
+    }
+
+    // Attach event listener to all elements with the class "rupiah-input"
+    const rupiahInputs = document.querySelectorAll('.rupiah-input');
+    rupiahInputs.forEach((input) => {
+        input.addEventListener('input', handlePriceInput);
+    });
+</script>
+
+<!-- For Datatables -->
+<script>
     $(document).ready(function() {
-        var table = $("#tablePartner").DataTable({
+        var table = $("#tableRefCode").DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": false,
             // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         });
-    });
-</script>
+        var price = document.getElementById('price');
 
-<script type="text/javascript">
-    //ajax mapping city
-    // CSRF Token
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    $(document).ready(function() {
-        $('select[name="province_by_id"]').on('change', function() {
-            var provinceID = $(this).val();
-            var url = '{{ route("mappingCity", ":id") }}';
-            // console.log(url);
-            url = url.replace(':id', provinceID);
-            // alert(url);
-            if (provinceID) {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $('select[name="city"]').empty();
-                        $('select[name="city"]').append(
-                            '<option class="text-center" value="">- Select City -</option>'
-                        );
-                        $.each(data, function(province, value) {
-                            $('select[name="city"]').append(
-                                '<option class="text-center" value="' + value.id + '">' + value.nama + '</option>'
-                            );
-                        });
-
-                    }
-                });
-            } else {
-                $('select[name="city"]').empty('<option class="text-center" value="">- Select City -</option>');
-            }
+        price.addEventListener('keyup', function(e) {
+            price.value = formatCurrency(this.value, ' ');
         });
 
-    });
-</script>
-<script type="text/javascript">
-    //ajax mapping district
-    // CSRF Token
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    $(document).ready(function() {
-        $('select[name="city"]').on('change', function() {
-            var cityID = $(this).val();
-            var url = '{{ route("mappingDistrict", ":id") }}';
-            url = url.replace(':id', cityID);
-            // alert(url);
-            if (cityID) {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
+        function formatCurrency(number, prefix) {
+            var number_string = number.replace(/[^.\d]/g, '').toString(),
+                split = number_string.split('.'),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{1,3}/gi);
 
-                        $('select[name="district"]').empty();
-                        $('select[name="district"]').append(
-                            '<option class="text-center" value="">- Select District -</option>'
-                        );
-                        $.each(data, function(city, value) {
-                            $('select[name="district"]').append(
-                                '<option class="text-center" value="' + value.id + '">' + value.nama + '</option>'
-                            );
-                        });
-
-                    }
-                });
-            } else {
-                $('select[name="district"]').empty('<option class="text-center" value="">- Select District -</option>');
-            }
-        });
-
-    });
-</script>
-<script type="text/javascript">
-    // ajax mapping subdistric
-    // CSRF Token
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    $(document).ready(function() {
-        $('select[name="district"]').on('change', function() {
-            var districtID = $(this).val();
-            var url = '{{ route("mappingSubDistrict", ":id") }}';
-            url = url.replace(':id', districtID);
-
-            if (districtID) {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-
-                        $('select[name="subdistrict"]').empty();
-                        $('select[name="subdistrict"]').append(
-                            '<option class="text-center" value="">- Select Subdistrict -</option>'
-                        );
-                        $.each(data, function(district, value) {
-                            $('select[name="subdistrict"]').append(
-                                '<option class="text-center" value="' + value.id + '">' + value.nama + '</option>'
-                            );
-                        });
-
-                    }
-                });
-            } else {
-                $('select[name="subdistrict"]').empty('<option class="text-center" value="">- Select Subdistrict -</option>');
-            }
-        });
-
-    });
-</script>
-
-<script type="text/javascript">
-    //ajax mapping postal code
-    // CSRF Token
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    $(document).ready(function() {
-        $('select[name="subdistrict"]').on('change', function() {
-            var subdistrictID = $(this).val();
-            var url = '{{ route("mappingZipcode", ":id") }}';
-            url = url.replace(':id', subdistrictID);
-
-            if (subdistrictID) {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $.each(data, function(subdistrict, value) {
-                            $('#zip_code').val(value.kodepos);
-                        });
-                    }
-                });
-            } else {
-                $('#zip_code').val("");
+            if (ribuan) {
+                separator = sisa ? ',' : '';
+                rupiah += separator + ribuan.join(',');
             }
 
-        });
-
+            rupiah = split[1] != undefined ? rupiah + '.' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+        }
     });
 </script>
 
