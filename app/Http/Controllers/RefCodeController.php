@@ -47,6 +47,7 @@ class RefCodeController extends Controller
                 'type' => 'Per Item',
                 'value' => $request->ref_value,
                 'max_discount' => $max_discount,
+                'qty' => $request->qty,
                 'is_active' => '1',
             ]);
 
@@ -84,6 +85,7 @@ class RefCodeController extends Controller
                     'type' => 'Per Item',
                     'value' => $request->ref_value,
                 'max_discount' => $max_discount,
+                'qty' => $request->qty,
                     'is_active' => '1',
                 ]);
 
