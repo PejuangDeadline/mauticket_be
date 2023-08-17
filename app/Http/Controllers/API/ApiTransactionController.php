@@ -129,7 +129,10 @@ class ApiTransactionController extends ApiBaseController
         $queryTransactionTempsumPrice = $queryTransactionTemp->sum('price');
         $getTransactionTempCount = $queryTransactionTemp->count();
         $getTransactionTempInfo = $queryTransactionTemp->get();
-        
+       // Check if the collection is empty
+        if ($getTransactionTempInfo->isEmpty()) {
+            return $this->sendError('Transaction not found', 404);
+        }
         // Perform calculations
         $grand_total = $queryTransactionTempsumPrice - $discount + ( ($queryTransactionTempsumPrice - $discount) * $tax / 100);
         $partner_portion = $grand_total - ($grand_total * ($platform_fee / 100));
@@ -167,6 +170,9 @@ class ApiTransactionController extends ApiBaseController
                     'no_seat' => $seatNumber,
                 ]);
             }
+
+            // Delete records from TransactionTemp
+            $queryTransactionTemp->delete();
 
             // Commit the transaction
             DB::commit();
