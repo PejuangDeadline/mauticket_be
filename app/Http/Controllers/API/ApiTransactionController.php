@@ -13,6 +13,7 @@ use App\Models\TransactionHeader;
 use App\Models\TransactionDetail;
 use App\Models\Rule;
 use App\Models\Event;
+use App\Models\Payment;
 
 class ApiTransactionController extends ApiBaseController
 {
@@ -189,13 +190,102 @@ class ApiTransactionController extends ApiBaseController
     }
 
 
-    public function paymentUpload(Request $request){
-        
+    public function paymentUpload(Request $request)
+    {
+        // Initialize variables
+        $no_transaction = $request->no_transaction;
+        $payment_file = $request->file('payment_file');
+    
+        // Validate request data using the validate method
+        $validator = Validator::make($request->all(), [
+            'no_transaction' => 'required|integer',
+            'payment_file' => 'required|file|mimes:jpeg,png,pdf|max:2048', // Adjust allowed file types and size as needed
+        ]);
+    
+        // Check if validation fails
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error', $validator->errors(), 422);
+        }
+    
+        try {
+            // Check if the payment file for the given transaction already exists
+            $existingPayment = Payment::where('no_transaction', $no_transaction)->first();
+            if ($existingPayment) {
+                return $this->sendError('Payment already exists for this transaction', [], 400);
+            }
+    
+             // Check if a transaction with the same no_transaction already exists
+            $existingTransaction = TransactionHeader::where('no_transaction', $no_transaction)->first();
+            if (!$existingTransaction) {
+                return $this->sendError('Transaction not found with this no_transaction', [], 404);
+            }
+    
+            // Store the payment file using the 'public' disk with the original name as $no_transaction
+            $file_path = 'img/payment';
+            $file_name = $no_transaction . '.' . $payment_file->getClientOriginalExtension();
+            $storedPath = $payment_file->storeAs($file_path, $file_name, 'public');
+    
+            // Check if the file was stored successfully
+            if (!$storedPath) {
+                return $this->sendError('Failed to store the payment file', [], 500);
+            }
+    
+            // Create a new Payment record
+            Payment::create([
+                'no_transaction' => $no_transaction,
+                'payment_file' => $file_path . '/' . $file_name,
+                'status' => '0',
+            ]);
+    
+            // Return a success response
+            return $this->sendResponse('Payment uploaded successfully', 201);
+        } catch (\Throwable $e) {
+            // Return an error response
+            return $this->sendError('An error occurred', $e->getMessage(), 500);
+        }
     }
+    
 
-    public function paymentSubmit(Request $request){
-        
+
+    public function paymentSubmit(Request $request) {
+        // Validate request data using the validate method
+        $validator = Validator::make($request->all(), [
+            'no_transaction' => 'required|string', // Assuming no_transaction is a string
+        ]);
+    
+        // Check if validation fails
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error', $validator->errors(), 422);
+        }
+    
+        try {
+            $no_transaction = $request->no_transaction;
+    
+            // Check if the transaction exists with the given no_transaction
+            $transaction = TransactionHeader::where('no_transaction', $no_transaction)->first();
+            if (!$transaction) {
+                return $this->sendError('Transaction not found with this no_transaction', [], 404);
+            }
+    
+            // Check if the transaction is already successful
+            if ($transaction->status == '1') {
+                return $this->sendError('Transaction is already successful', [], 400);
+            }
+    
+            // Update the status of transaction_headers to 1
+            $transaction->update(['status' => '1']);
+    
+            // Update the status of payments related to this transaction
+            Payment::where('no_transaction', $no_transaction)->update(['status' => '1']);
+    
+            // Return a success response
+            return $this->sendResponse('Transaction marked as successful', 200);
+        } catch (\Throwable $e) {
+            // Return an error response
+            return $this->sendError('An error occurred', $e->getMessage(), 500);
+        }
     }
+    
 
     function generateNoTransaction() {
         $timestamp = now()->format('YmdHis'); // Current date and time in the format: YearMonthDayHourMinuteSecond
