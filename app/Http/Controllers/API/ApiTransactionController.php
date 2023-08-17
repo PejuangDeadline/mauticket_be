@@ -101,7 +101,26 @@ class ApiTransactionController extends ApiBaseController
     }
 
     public function seatCheck(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id_showtime' => 'required|integer',
+            'no_seat' => 'required', // Validate the format
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error', $validator->errors(), 422);
+        }
+
+        $qcheckSeat = TransactionDetail::where('id_showtime',$request->id_showtime)
+            ->where('no_seat',$request->no_seat)
+            ->count();
         
+        if($qcheckSeat > 0){
+            return $this->sendError('Validation Error', 'No Seat '.$request->no_seat.' Already Taken');
+        }
+        else{
+            return $this->sendResponse($qcheckSeat, 'Seat Available');
+        }
     }
 
     public function checkoutStore(Request $request)
