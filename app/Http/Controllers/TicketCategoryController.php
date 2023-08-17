@@ -37,7 +37,6 @@ class TicketCategoryController extends Controller
                         'category' => $request->category,
                         'inc_seat' => $request->inc_seat,
                         'price' => $price,
-                        'quantity' => $request->quantity,
                         'is_active' => '1',
                         //'created_by' => $created_by,
                     ]);
@@ -57,7 +56,7 @@ class TicketCategoryController extends Controller
     }
 
     public function edit(Request $request,$id){
-        dd($request);
+        // dd($request);
         //dd($request->id_event);
         // $id = decrypt($id);
         // $ticketCategory = TicketCategory::where('id_event',$id)->get();
@@ -85,8 +84,7 @@ class TicketCategoryController extends Controller
                 ->update([
                     'category' => $request->category,
                     'inc_seat' => $request->inc_seat,
-                    'price' => $price,
-                    'quantity' => $request->quantity
+                    'price' => $price
                 ]);
             }
             else
