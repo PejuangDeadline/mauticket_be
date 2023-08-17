@@ -67,7 +67,15 @@ class ApiTransactionController extends ApiBaseController
     }
 
     public function chartDelete($id_chart){
-        
+        //delete Transaction Temp
+        $delTemp = TransactionTemp::where('id', $id_chart)->delete();
+
+        // dd($delTemp);
+        if ($delTemp) {
+            return $this->sendResponse($delTemp, 'Success Delete Transaction Temp');
+        } else {
+            return $this->sendError('Validation Error.', 'ID Transaction Temp is Invalid');
+        }
     }
 
     public function refCodeCheck(Request $request){
