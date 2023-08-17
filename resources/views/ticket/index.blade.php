@@ -88,9 +88,6 @@
                                 <div class="form-group mb-4">
                                   <input type="text" id="price" name="price" class="form-control" autocomplete="off" placeholder="Enter Price">
                                 </div>
-                                <div class="form-group">
-                                  <input type="text" id="quantity" name="quantity" class="form-control" autocomplete="off" placeholder="Enter Quantity">
-                                </div>
 
                               </div>
                               <div class="modal-footer">
@@ -162,6 +159,7 @@
                               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-addShowTime{{ $data->id }}">
                                 <i class="fas fa-clock"></i></i>
                               </button>
+                              <a href="{{ url('show-time/'.encrypt($data->id) ) }}" class="btn btn-success btn-sm">List Showtimes</a>
                               @if ($data->inc_seat == 1)
                               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-include{{ $data->id }}">
                                 Upload Seat
@@ -276,9 +274,6 @@
                                     <br>
                                     <div class="form-group mb-4">
                                       <input type="text" id="price" name="price" class="form-control" value="{{ old('',number_format($data->price)) }}" autocomplete="off">
-                                    </div>
-                                    <div class="form-group">
-                                      <input type="text" id="quantity" name="quantity" class="form-control" value="{{ old('',number_format($data->quantity)) }}" autocomplete="off">
                                     </div>
                                   </div>
                                   <div class="modal-footer">
