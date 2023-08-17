@@ -79,6 +79,9 @@
                                                         <div class="mb-3">
                                                             <input type="text" id="price" name="max_discount" class="form-control" autocomplete="off" placeholder="Input Max Discount">
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <input class="form-control" id="qty" name="qty" type="text" placeholder="Input Qty" />
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
@@ -131,6 +134,7 @@
                                                     <th>Type</th>
                                                     <th>Value</th>
                                                     <th>Max Discount</th>
+                                                    <th>Qty</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -146,6 +150,7 @@
                                                     <td>{{ $data->type }}</td>
                                                     <td>{{ $data->value }}</td>
                                                     <td>Rp. {{ number_format($data->max_discount) }}</td>
+                                                    <td>{{ $data->qty }}</td>
                                                     <td>
                                                         @if ($data->is_active == '1')
                                                         <div class="text-success">
@@ -197,6 +202,9 @@
                                                     </div>
                                                     <div class="form-group mb-3">
                                                         <input type="text" id="price" name="max_discount" class="form-control" value="{{ old('',number_format($data->max_discount)) }}" autocomplete="off">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input class="form-control" id="qty" name="qty" type="text" value="{{ $data->qty }}" />
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
