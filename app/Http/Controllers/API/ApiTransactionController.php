@@ -23,7 +23,7 @@ class ApiTransactionController extends ApiBaseController
         if ($delTemp) {
             return $this->sendResponse($delTemp, 'Success Delete Transaction Temp');
         } else {
-            return $this->sendError('Validation Error.', 'Transaction Temp is Invalid');
+            return $this->sendError('Validation Error.', 'ID Transaction Temp is Invalid');
         }
     }
 
