@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/event/active/{id}', [EventController::class, 'activeEvent'])->middleware(['checkRole:User']);
     Route::get('/event/detail/{id}', [EventController::class, 'detailEvent'])->middleware(['checkRole:User']);
     Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue'])->middleware(['checkRole:User']);
+    Route::post('/event/banner/{id}', [EventController::class, 'UploadAttachmentBanner'])->middleware(['checkRole:User']);
 
     //Ticket Category
     Route::get('/ticket-category/{id}', [TicketCategoryController::class, 'index'])->middleware(['checkRole:User']);

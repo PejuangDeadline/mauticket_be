@@ -386,4 +386,42 @@ class EventController extends Controller
             return redirect('/event')->with('failed', 'Failed Add Venue Image');
         }
     }
+
+    public function UploadAttachmentBanner(Request $request,$id)
+    {
+        //dd($request->id);
+        $request->validate([
+            'banner' => 'required|mimes:jpeg,jpg,png,pdf|max:3048'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            if ($request->hasFile('banner')) {
+                $path_attach = $request->file('banner');
+                $url = $path_attach->move('storage/banner', $path_attach->hashName());
+                // $image = "data:image/png;base64,".base64_encode(file_get_contents($request->file('attach')->path()));
+            }
+
+            // dd($image);
+
+            $store =  Event::where('id',$id)
+                    ->update([
+                        'banner' => $url
+                    ]);
+
+
+            DB::commit();
+            // all good
+
+            return redirect('/event')->with('status', 'Success Add Banner Image');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/event')->with('failed', 'Failed Add Banner Image');
+        }
+    }
 }
