@@ -89,7 +89,13 @@ class ApiTransactionController extends ApiBaseController
         }
 
         //checkRefCode
-        $qcheck = RefCode::where('id',$request->id_refcode)->first();
+        $query = RefCode::where('id',$request->id_refcode)->where('is_active','1');
+        $qcheck = $query->first();
+        $qcount = $query->count();
+
+        if($qcount == '0'){
+            return $this->sendError('Validation Error.', 'Referral Code is Invalid');   
+        }
 
         // dd($qcheck);
         if($qcheck->qty > 0){
@@ -216,7 +222,6 @@ class ApiTransactionController extends ApiBaseController
         }
     }
 
-
     public function paymentUpload(Request $request)
     {
         // Initialize variables
@@ -272,8 +277,6 @@ class ApiTransactionController extends ApiBaseController
         }
     }
     
-
-
     public function paymentSubmit(Request $request) {
         // Validate request data using the validate method
         $validator = Validator::make($request->all(), [
@@ -313,7 +316,6 @@ class ApiTransactionController extends ApiBaseController
         }
     }
     
-
     function generateNoTransaction() {
         $timestamp = now()->format('YmdHis'); // Current date and time in the format: YearMonthDayHourMinuteSecond
         $randomNumber = rand(1000, 9999); // Generate a random 4-digit number

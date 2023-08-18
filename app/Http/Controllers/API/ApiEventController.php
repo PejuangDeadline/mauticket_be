@@ -49,7 +49,7 @@ class ApiEventController extends ApiBaseController
         ->where('events.city', 'LIKE', '%'.$request->city.'%')
         ->where('events.is_active', '1')
         ->get();
-        // dd($query);
+        //dd($query);
 
         return $this->sendResponse($query, 'Success Inquiry Event.');
     }
