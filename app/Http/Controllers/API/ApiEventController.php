@@ -19,6 +19,7 @@ class ApiEventController extends ApiBaseController
         $validator = Validator::make($request->all(), [
             'until' => 'required_with:from',
             'from' => 'required_with:until',
+            'limit' => 'required'
         ]);
    
         if($validator->fails()){
@@ -37,8 +38,7 @@ class ApiEventController extends ApiBaseController
         ->leftJoinSub(function ($query) {
             $query->select('*')
                 ->from('showtimes')
-                ->orderBy('id', 'asc')
-                ->limit(1);
+                ->orderBy('id', 'asc');
         }, 'showtimes', function ($join) {
             $join->on('events.id', '=', 'showtimes.id_event');
         })
@@ -48,7 +48,15 @@ class ApiEventController extends ApiBaseController
         ->where('events.event_name', 'LIKE', '%'.$request->event_name.'%')
         ->where('events.city', 'LIKE', '%'.$request->city.'%')
         ->where('events.is_active', '1')
-        ->get();
+        ->groupBy('events.id')
+        ->orderBy('events.id','desc');
+
+        if($request->limit > 0){
+            $query = $query->take($request->limit)->get();
+        }
+        else{
+            $query = $query->get();
+        }
         // dd($query);
 
         return $this->sendResponse($query, 'Success Inquiry Event.');
