@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Event Description</strong>
-                                    <p>{{$event->description}}</p>
+                                    <p>{!!$event->description!!}</p>
                                 </div>
                             </div>
                             <hr>
@@ -88,7 +88,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <strong>Address</strong>
-                                    <p>{{$event->event_address}}</p>
+                                    <p>{!!$event->event_address!!}</p>
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Zip Code</strong>
@@ -152,8 +152,7 @@
                                 @foreach ($ticketCategory as $data)
                                 <tr>
                                   <td>{{ $no++ }}</td>
-                                  <td>{{ $data->category }} <br>
-                                        Qty : {{$data->quantity}}</td>
+                                  <td>{{ $data->category }}</td>
                                   <td>Rp. {{ number_format($data->price) }}</td>
                                   <td>
                                   @if ($data->is_active == '1')
@@ -414,7 +413,7 @@
                                 <th>No</th>
                                 <th>Show Time Start</th>
                                 <th>Show Time Finish</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Qty</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -426,6 +425,7 @@
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $data->showtime_start }}</td>
                                     <td>{{ $data->showtime_finish }}</td>
+                                    <td>{{ $data->qty }}</td>
                                     {{-- <td>
                                         <button title="Edit Rule" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                             <i class="fas fa-edit"></i>

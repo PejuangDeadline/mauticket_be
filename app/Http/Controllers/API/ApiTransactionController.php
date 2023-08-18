@@ -15,6 +15,9 @@ use App\Models\Rule;
 use App\Models\Event;
 use App\Models\Payment;
 use App\Models\Showtime;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvoiceEmail;
 
 
 class ApiTransactionController extends ApiBaseController
@@ -34,6 +37,16 @@ class ApiTransactionController extends ApiBaseController
         // Check if validation fails
         if ($validator->fails()) {
             return $this->sendError('Validation Error', $validator->errors(), 422);
+        }
+
+         // Check if available quantity is less than transaction quantity for the given showtime and ticket category
+        $availableQty = Showtime::where([
+            'id' => $request->id_showtime,
+            'id_category' => $request->id_ticket_category,
+        ])->value('qty');
+
+        if ($availableQty < $request->qty) {
+            return $this->sendError('Insufficient quantity available', [], 400);
         }
 
         try {
@@ -309,6 +322,8 @@ class ApiTransactionController extends ApiBaseController
             if (!$transaction) {
                 return $this->sendError('Transaction not found with this no_transaction', [], 404);
             }
+
+            $getUser =  User::where('id',$transaction->id_user)->first();
     
             // Check if the transaction is already successful
             if ($transaction->status == '1') {
@@ -320,7 +335,10 @@ class ApiTransactionController extends ApiBaseController
     
             // Update the status of payments related to this transaction
             Payment::where('id_transaction_header', $transaction_header_id)->update(['status' => '1']);
-    
+        
+            // Replace this with the actual token
+            Mail::to($getUser->email)->send(new InvoiceEmail($transaction,$getUser));
+
             // Return a success response
             return $this->sendResponse('Transaction marked as successful', 200);
         } catch (\Throwable $e) {
