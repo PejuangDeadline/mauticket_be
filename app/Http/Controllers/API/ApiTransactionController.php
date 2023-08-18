@@ -14,6 +14,8 @@ use App\Models\TransactionDetail;
 use App\Models\Rule;
 use App\Models\Event;
 use App\Models\Payment;
+use App\Models\Showtime;
+
 
 class ApiTransactionController extends ApiBaseController
 {
@@ -172,6 +174,9 @@ class ApiTransactionController extends ApiBaseController
         $partner_portion = $grand_total - ($grand_total * ($platform_fee / 100));
         $status = '0';
 
+        $tax = ( ($queryTransactionTempsumPrice - $discount) * $tax / 100);
+        $platform_fee = ($grand_total * ($platform_fee / 100));
+
         try {
             // Start a database transaction
             DB::beginTransaction();
@@ -195,7 +200,7 @@ class ApiTransactionController extends ApiBaseController
                 // Remove square brackets and split the no_ticket string into an array
                 $seatNumbers = explode(',', str_replace(['[', ']'], '', $no_seat));
                 $seatNumber = $seatNumbers[$index] ?? null; // Get the corresponding ticket number or set to null if not found
-                TransactionDetail::create([
+                $insertDetail = TransactionDetail::create([
                     'transaction_header_id' => $transactionHeader->id,
                     'id_ticket_category' => $tempInfo->id_ticket_category,
                     'id_event' => $tempInfo->id_event,
@@ -203,7 +208,19 @@ class ApiTransactionController extends ApiBaseController
                     'price' => $tempInfo->price,
                     'no_seat' => $seatNumber,
                 ]);
+
+                // Reduce the qty in the showtimes table
+                $showtime = Showtime::where([
+                    'id' => $tempInfo->id_showtime,
+                    'id_event' => $tempInfo->id_event,
+                    'id_category' => $tempInfo->id_ticket_category,
+                ])->first();
+
+                if ($showtime) {
+                    $showtime->qty -= 1; // Reduce the qty by 1
+                    $showtime->save();
             }
+        }
 
             // Delete records from TransactionTemp
             $queryTransactionTemp->delete();
@@ -225,50 +242,45 @@ class ApiTransactionController extends ApiBaseController
     public function paymentUpload(Request $request)
     {
         // Initialize variables
-        $no_transaction = $request->no_transaction;
+        $transaction_header_id = $request->transaction_header_id;
         $payment_file = $request->file('payment_file');
-    
+        $payment_method = $request->payment_method;
+
         // Validate request data using the validate method
         $validator = Validator::make($request->all(), [
-            'no_transaction' => 'required|integer',
+            'transaction_header_id' => 'required|integer',
             'payment_file' => 'required|file|mimes:jpeg,png,pdf|max:2048', // Adjust allowed file types and size as needed
         ]);
-    
+
         // Check if validation fails
         if ($validator->fails()) {
             return $this->sendError('Validation Error', $validator->errors(), 422);
         }
-    
+
         try {
+            // Convert the payment file to a base64-encoded string
+            $base64PaymentFile = base64_encode(file_get_contents($payment_file->path()));
+
             // Check if the payment file for the given transaction already exists
-            $existingPayment = Payment::where('no_transaction', $no_transaction)->first();
+            $existingPayment = Payment::where('id_transaction_header', $transaction_header_id)->first();
             if ($existingPayment) {
                 return $this->sendError('Payment already exists for this transaction', [], 400);
             }
-    
-             // Check if a transaction with the same no_transaction already exists
-            $existingTransaction = TransactionHeader::where('no_transaction', $no_transaction)->first();
+
+            // Check if a transaction with the same transaction_header_id already exists
+            $existingTransaction = TransactionHeader::where('id', $transaction_header_id)->first();
             if (!$existingTransaction) {
-                return $this->sendError('Transaction not found with this no_transaction', [], 404);
+                return $this->sendError('Transaction not found with this transaction_header_id', [], 404);
             }
-    
-            // Store the payment file using the 'public' disk with the original name as $no_transaction
-            $file_path = 'img/payment';
-            $file_name = $no_transaction . '.' . $payment_file->getClientOriginalExtension();
-            $storedPath = $payment_file->storeAs($file_path, $file_name, 'public');
-    
-            // Check if the file was stored successfully
-            if (!$storedPath) {
-                return $this->sendError('Failed to store the payment file', [], 500);
-            }
-    
-            // Create a new Payment record
+
+            // Create a new Payment record with the base64-encoded payment file
             Payment::create([
-                'no_transaction' => $no_transaction,
-                'payment_file' => $file_path . '/' . $file_name,
+                'id_transaction_header' => $transaction_header_id,
+                'payment_file' => $base64PaymentFile,
                 'status' => '0',
+                'payment_method' => $payment_method,
             ]);
-    
+
             // Return a success response
             return $this->sendResponse('Payment uploaded successfully', 201);
         } catch (\Throwable $e) {
@@ -276,11 +288,12 @@ class ApiTransactionController extends ApiBaseController
             return $this->sendError('An error occurred', $e->getMessage(), 500);
         }
     }
+
     
     public function paymentSubmit(Request $request) {
         // Validate request data using the validate method
         $validator = Validator::make($request->all(), [
-            'no_transaction' => 'required|string', // Assuming no_transaction is a string
+            'transaction_header_id' => 'required|string', // Assuming no_transaction is a string
         ]);
     
         // Check if validation fails
@@ -289,10 +302,10 @@ class ApiTransactionController extends ApiBaseController
         }
     
         try {
-            $no_transaction = $request->no_transaction;
+            $transaction_header_id = $request->transaction_header_id;
     
             // Check if the transaction exists with the given no_transaction
-            $transaction = TransactionHeader::where('no_transaction', $no_transaction)->first();
+            $transaction = TransactionHeader::where('id', $transaction_header_id)->first();
             if (!$transaction) {
                 return $this->sendError('Transaction not found with this no_transaction', [], 404);
             }
@@ -306,7 +319,7 @@ class ApiTransactionController extends ApiBaseController
             $transaction->update(['status' => '1']);
     
             // Update the status of payments related to this transaction
-            Payment::where('no_transaction', $no_transaction)->update(['status' => '1']);
+            Payment::where('id_transaction_header', $transaction_header_id)->update(['status' => '1']);
     
             // Return a success response
             return $this->sendResponse('Transaction marked as successful', 200);
