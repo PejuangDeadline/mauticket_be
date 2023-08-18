@@ -39,10 +39,17 @@ class ApiEventController extends ApiBaseController
             $query->select('*')
                 ->from('showtimes')
                 ->orderBy('id', 'asc');
-        }, 'showtimes', function ($join) {
+        }, 'showtimes', function ($join) {  
             $join->on('events.id', '=', 'showtimes.id_event');
         })
-        ->select('events.*', 'showtimes.showtime_start')
+        ->leftJoinSub(
+            DB::table('ticket_categories')->groupBy('id_event'),
+            'ticket_categories',
+            function ($join) {
+                $join->on('events.id', '=', 'ticket_categories.id_event');
+            }
+        )
+        ->select('events.*', 'showtimes.showtime_start', 'ticket_categories.price')
         ->whereNotNull('showtimes.showtime_start')
         ->whereBetween(DB::raw("(STR_TO_DATE(showtime_start,'%Y-%m-%d'))"), [$now, $date_now])
         ->where('events.event_name', 'LIKE', '%'.$request->event_name.'%')
