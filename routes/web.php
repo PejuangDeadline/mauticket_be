@@ -14,7 +14,7 @@ use App\Http\Controllers\MstPartnerController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\TicketPaymentController;
 use App\Http\Controllers\TicketCategoryController;
-
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +84,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Ticket Seats
     Route::get('/list-seats/{id}', [SeatController::class, 'index'])->middleware(['checkRole:User']);
+
+    //Ticket Transaction
+    Route::get('/transaction', [TransactionController::class, 'index'])->middleware(['checkRole:User']);
 
     //Ticket Payment
     Route::get('/ticket-payment/{id}', [TicketPaymentController::class, 'index'])->middleware(['checkRole:User']);
