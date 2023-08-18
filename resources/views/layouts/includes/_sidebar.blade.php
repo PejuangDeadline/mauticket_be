@@ -24,6 +24,10 @@
                     <div class="nav-link-icon"><i class="fas fa-fw fa-percent"></i></div>
                     Referral Code
                 </a>
+                <a class="nav-link" href="{{url('/transaction')}}">
+                    <div class="nav-link-icon"><i class="fas fa-fw fa-shopping-cart"></i></div>
+                    Transaction
+                </a>
                 @endif
                 @if(\Auth::user()->role === 'Super Admin')
                 <!-- Sidenav Menu Heading (Core)-->
