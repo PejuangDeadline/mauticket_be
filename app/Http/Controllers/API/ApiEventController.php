@@ -47,6 +47,7 @@ class ApiEventController extends ApiBaseController
         ->whereBetween(DB::raw("(STR_TO_DATE(showtime_start,'%Y-%m-%d'))"), [$now, $date_now])
         ->where('events.event_name', 'LIKE', '%'.$request->event_name.'%')
         ->where('events.city', 'LIKE', '%'.$request->city.'%')
+        ->where('events.is_active', '1')
         ->get();
         // dd($query);
 

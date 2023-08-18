@@ -24,7 +24,6 @@ class EventController extends Controller
         $event = Event::leftJoin('mst_partners', 'events.id_partner', '=', 'mst_partners.id')
         ->select('events.*', 'mst_partners.partner_name')
         ->where('events.id_partner', $id_partner)
-        ->where('events.is_active','1')
         ->get();
         //dd($event);
 
@@ -309,6 +308,32 @@ class EventController extends Controller
             // something went wrong
 
             return redirect('/event')->with('failed','Failed Delete Event');
+        }
+    }
+
+    public function activeEvent($id){
+        // dd('destroy');
+        // create by email
+        $created_by = auth()->user()->email;
+
+        DB::beginTransaction();
+        try {
+
+            $query =  Event::where('id',$id)
+                    ->update([
+                        'is_active' => '1',
+                        'created_by' => $created_by,
+                    ]);
+            DB::commit();
+            // all good
+
+            return redirect('/event')->with('status','Success Activate Event');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/event')->with('failed','Failed Activate Event');
         }
     }
 

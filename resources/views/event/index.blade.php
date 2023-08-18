@@ -276,14 +276,14 @@
                             </div>
                         </td>
                         <td>
-                            @if ($data->is_active == '1')
+                        @if ($data->is_active == '1')
                         <small class="badge bg-success">Active</small>
                         @else
                         <small class="badge bg-danger">Inactive</small>
                         @endif
                         </td>
                         <td>
-                            @if ($getPartner->is_active == '1')
+                            @if ($getPartner->is_active == '1' && $data->is_active == '1')
                             <div class="dropdown">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
@@ -305,16 +305,44 @@
                                     <li><a class="dropdown-item" href="{{ url('show-time/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Showtimes</a></li>
                                     <li>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
-                                            <i class="fas fa-trash-alt"></i>Delete
+                                            <i class="fas fa-trash-alt"></i>Inactive
                                         </a>
                                     </li>
                                 </ul>
                                </div>
-                            @endif
-                            </div>
+                            @else
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#activateEvent{{ $data->id }}">
+                                <i class="fas fa-check"></i>Activate
+                            </button>
                         </td>
                     </tr>
-
+                    <!-- Modal Activate-->
+                    <div class="modal fade" id="activateEvent{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Activate Event</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url('/event/active/'.$data->id) }}" method="POST">
+                                @csrf
+                                @method('patch')
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                    Are you sure you want to Activate <label for="partner">{{ $data->event_name }}</label>?
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    </div>
 
                     {{-- Modal Venue --}}
                     <div class="modal fade" id="modal-venue{{ $data->id }}" tabindex="-1" aria-labelledby="modal-venue{{ $data->id }}-label" aria-hidden="true">

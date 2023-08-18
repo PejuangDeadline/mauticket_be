@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/event/store', [EventController::class, 'storeEvent'])->middleware(['checkRole:User']);
     Route::post('/event/update', [EventController::class, 'storeUpdateEvent'])->middleware(['checkRole:User']);
     Route::delete('/event/destroy/{id}', [EventController::class, 'destroyEvent'])->middleware(['checkRole:User']);
+    Route::patch('/event/active/{id}', [EventController::class, 'activeEvent'])->middleware(['checkRole:User']);
     Route::get('/event/detail/{id}', [EventController::class, 'detailEvent'])->middleware(['checkRole:User']);
     Route::post('/event/venue/{id}', [EventController::class, 'UploadAttachmentVenue'])->middleware(['checkRole:User']);
 
