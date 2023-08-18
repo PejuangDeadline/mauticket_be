@@ -226,7 +226,7 @@
                     <th>No</th>
                     <th>Event Name</th>
                     <th>Address</th>
-                    <th>Image Venue</th>
+                    <th>Image</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
@@ -250,7 +250,12 @@
                         <td>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#imageVenue{{ $data->id }}">
-                                View
+                                Venue
+                            </button>
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#imageBanner{{ $data->id }}">
+                                Banner
                             </button>
                             
                             <!-- Modal -->
@@ -258,12 +263,34 @@
                                 <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="staticBackdropLabel">Venue</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body text-center">
                                         @if (isset($data->attach_venue))
                                             <img src="{{ asset($data->attach_venue) }}" class="img-fluid" alt="">
+                                        @else
+                                            <img src="{{ asset('img/image_not_available.png') }}" class="img-fluid" alt="">
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="imageBanner{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Banner</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        @if (isset($data->banner))
+                                            <img src="{{ asset($data->banner) }}" class="img-fluid" alt="">
                                         @else
                                             <img src="{{ asset('img/image_not_available.png') }}" class="img-fluid" alt="">
                                         @endif
@@ -298,6 +325,11 @@
                                     <li>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-venue{{ $data->id }}">
                                             <i class="fas fa-plus"></i> Venue Attachment
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-banner{{ $data->id }}">
+                                            <i class="fas fa-plus"></i> Banner Attachment
                                         </a>
                                     </li>
                                     <li><a class="dropdown-item" href="{{ url('ticket-category/'.encrypt($data->id) ) }}"><i class="fas fa-plus"></i> Ticket Categories</a></li>
@@ -393,6 +425,56 @@
                         </div>
                     </div>
                     {{-- Modal Venue --}}
+
+                    {{-- Modal Banner --}}
+                    <div class="modal fade" id="modal-banner{{ $data->id }}" tabindex="-1" aria-labelledby="modal-venue{{ $data->id }}-label" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="modal-venue{{ $data->id }}-label">Banner Attachment</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url('/event/banner/'.$data->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="file" name="banner" id="banner{{ $data->id }}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="card shadow mb-4">
+                                            <img id="preview-image-before-upload-banner{{ $data->id }}" src="{{ asset('img/image_not_available.png') }}"
+                                                alt="preview image" style="max-height: 500px; object-fit: contain;">
+                                        </div>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function(e) {
+
+                                            $('#banner'+ {{ $data->id }}).change(function(){
+
+                                                let reader = new FileReader();
+
+                                                reader.onload = (e) => {
+
+                                                  $('#preview-image-before-upload-banner'+ {{ $data->id }}).attr('src', e.target.result);
+                                                }
+
+                                                reader.readAsDataURL(this.files[0]);
+
+                                               });
+                                        } );
+
+
+                                    </script>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Modal banner --}}
 
 
                     {{-- Modal Update --}}
