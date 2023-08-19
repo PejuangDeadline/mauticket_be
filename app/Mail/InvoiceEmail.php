@@ -14,16 +14,19 @@ class InvoiceEmail extends Mailable
     public $transaction;
     public $getUser;
 
+    public $getEvenetInfo;
+
     /**
      * Create a new message instance.
      *
      * @param  \App\TransactionHeader  $transaction
      * @return void
      */
-    public function __construct($transaction,$getUser)
+    public function __construct($transaction,$getUser,$getEvenetInfo)
     {
         $this->transaction = $transaction;
         $this->getUser = $getUser;
+        $this->getEvenetInfo = $getEvenetInfo;
     }
 
     /**

@@ -45,6 +45,10 @@ class ApiTransactionController extends ApiBaseController
             'id_category' => $request->id_ticket_category,
         ])->value('qty');
 
+        if (!$availableQty) {
+            return $this->sendError('Showtime not found', 404);
+        }
+
         if ($availableQty < $request->qty) {
             return $this->sendError('Insufficient quantity available', [], 400);
         }
@@ -72,7 +76,7 @@ class ApiTransactionController extends ApiBaseController
             $response = [
                  $request->all(),
             ];
-            return $this->sendResponse($response, 'Chart added successfully', 201);
+            return $this->sendResponse($response, 'Chart added successfully');
         } catch (\Exception $e) {
             // Rollback the transaction if an exception occurs
             DB::rollback();
@@ -182,6 +186,48 @@ class ApiTransactionController extends ApiBaseController
         if ($getTransactionTempInfo->isEmpty()) {
             return $this->sendError('Transaction not found', 404);
         }
+
+       // Group the transaction temp records by id_ticket_category and count the occurrences
+        $idTicketCategoryCounts = $getTransactionTempInfo->groupBy('id_ticket_category');
+
+        // Initialize an array to store the summary information
+        $summary = [];
+
+        $idTicketCategoryCounts->each(function ($groupedRecords, $id_ticket_category) use (&$summary) {
+            // Assuming you have the same id_event and id_showtime for all records in each group
+            $id_event = $groupedRecords[0]->id_event;
+            $id_showtime = $groupedRecords[0]->id_showtime;
+
+            $summary[] = [
+                'id_event' => $id_event,
+                'id_showtime' => $id_showtime,
+                'id_ticket_category' => $id_ticket_category,
+                'qty' => count($groupedRecords),
+            ];
+        });
+
+
+        foreach ($summary as $item) {
+            $idEvent = $item['id_event'];
+            $idShowtime = $item['id_showtime'];
+            $idTicketCategory = $item['id_ticket_category'];
+            $qty = $item['qty'];
+        
+            $showtime = Showtime::where([
+                'id_event' => $idEvent,
+                'id_category' => $idTicketCategory,
+                'id' => $idShowtime,
+            ])->first();
+        
+            if (!$showtime) {
+                return $this->sendError('Showtime not found', 404);
+            }
+        
+            if ($qty > $showtime->qty) {
+                return $this->sendError('Insufficient available seats for showtime', 422);
+            }
+        }
+
         // Perform calculations
         $grand_total = $queryTransactionTempsumPrice - $discount + ( ($queryTransactionTempsumPrice - $discount) * $tax / 100);
         $partner_portion = $grand_total - ($grand_total * ($platform_fee / 100));
@@ -213,7 +259,7 @@ class ApiTransactionController extends ApiBaseController
                 // Remove square brackets and split the no_ticket string into an array
                 $seatNumbers = explode(',', str_replace(['[', ']'], '', $no_seat));
                 $seatNumber = $seatNumbers[$index] ?? null; // Get the corresponding ticket number or set to null if not found
-                $insertDetail = TransactionDetail::create([
+                TransactionDetail::create([
                     'transaction_header_id' => $transactionHeader->id,
                     'id_ticket_category' => $tempInfo->id_ticket_category,
                     'id_event' => $tempInfo->id_event,
@@ -304,6 +350,12 @@ class ApiTransactionController extends ApiBaseController
 
     
     public function paymentSubmit(Request $request) {
+
+      
+        
+        // Replace this with the actual token
+     
+
         // Validate request data using the validate method
         $validator = Validator::make($request->all(), [
             'transaction_header_id' => 'required|string', // Assuming no_transaction is a string
@@ -324,7 +376,7 @@ class ApiTransactionController extends ApiBaseController
             }
 
             $getUser =  User::where('id',$transaction->id_user)->first();
-    
+            $getEvenetInfo = Event::find(TransactionDetail::where('transaction_header_id', $transaction->id)->value('id_event'));
             // Check if the transaction is already successful
             if ($transaction->status == '1') {
                 return $this->sendError('Transaction is already successful', [], 400);
@@ -337,7 +389,7 @@ class ApiTransactionController extends ApiBaseController
             Payment::where('id_transaction_header', $transaction_header_id)->update(['status' => '1']);
         
             // Replace this with the actual token
-            Mail::to($getUser->email)->send(new InvoiceEmail($transaction,$getUser));
+            Mail::to($getUser->email)->send(new InvoiceEmail($transaction,$getUser,$getEvenetInfo));
 
             // Return a success response
             return $this->sendResponse('Transaction marked as successful', 200);
