@@ -1,24 +1,54 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
 use App\Models\Rule;
 use App\Models\Showtime;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Console\Command;
 use App\Models\TransactionDetail;
 use App\Models\TransactionHeader;
 
-class TransactionController extends Controller
+class DeleteChart extends Command
 {
-    public function index()
-    {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'deleteChart:cron';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
         // Max Checkout Hour
         $max_checkout = Rule::where('rule_name', 'Max Checkout')->first()->rule_value;
-        $hour = Carbon::now()->subHours($max_checkout);
+        $hour = Carbon::now()->subHours();
+
         $query = TransactionHeader::where('status', 0)  //general query
-            ->where('created_at', '>=', $hour);
+            ->where('created_at', '<=', $hour);
+
         $getArrayID = $query->pluck('id')->toArray(); //get id TransactionHeader dalam bentuk array dari general query
         // dd($getArrayID);
         $getArrayDetail = TransactionDetail::where('transaction_header_id', $getArrayID) //get atribut untuk update showtime
@@ -43,7 +73,6 @@ class TransactionController extends Controller
                     ->where('id', $idShowtime)
                     ->increment('qty', 1);
             }
-            dd('berhasil update status header + kembaliin qty');
         }
     }
 }

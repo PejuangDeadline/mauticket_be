@@ -171,7 +171,7 @@
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                         @else
-                                                        <button title="Delete RefCode" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
+                                                        <button title="Activate RefCode" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                                             <i class="fas fa-check"></i>
                                                         </button>
                                                         @endif
