@@ -18,7 +18,7 @@ use App\Models\Showtime;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceEmail;
-
+use App\Models\TicketPayment;
 
 class ApiTransactionController extends ApiBaseController
 {
@@ -295,6 +295,20 @@ class ApiTransactionController extends ApiBaseController
 
             // Return an error response
             return $this->sendError('An error occurred', $e->getMessage(), 500);
+        }
+    }
+
+    public function paymentMethod($id_event){
+        // dd('hai');
+        $query = TicketPayment::where('id_event',$id_event);
+        $checkMethodPay = $query->count();
+        $methodPayments = $query->get();
+
+        if($checkMethodPay > 0){
+            return $this->sendResponse($methodPayments, 'Success Inquiry Payment Method.');
+        }
+        else{
+            return $this->sendError('Data Not Found.', 'Payment Method Data Not Found');
         }
     }
 
