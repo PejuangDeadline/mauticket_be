@@ -41,4 +41,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('checkout', [ApiTransactionController::class, 'checkoutStore']);
     Route::post('payment/upload', [ApiTransactionController::class, 'paymentUpload']);
     Route::post('payment/submit', [ApiTransactionController::class, 'paymentSubmit']);
+    Route::get('payment/method/{id_event}', [ApiTransactionController::class, 'paymentMethod']);
 });

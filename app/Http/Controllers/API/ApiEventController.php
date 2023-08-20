@@ -9,6 +9,7 @@ use App\Http\Controllers\API\ApiBaseController;
 use App\Models\Event;
 use App\Models\Showtime;
 use App\Models\TicketCategory;
+use App\Models\TicketPayment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -77,7 +78,18 @@ class ApiEventController extends ApiBaseController
 
         if($checkEvent > 0){
             //query event
-            $events = Event::where('id',$id_event)->get();
+            $events = Event::where('events.id',$id_event)
+                ->select('mst_partners.partner_name','events.*', 'showtimes.showtime_start')
+                ->leftJoinSub(function ($query) {
+                    $query->select('*')
+                        ->from('showtimes')
+                        ->orderBy('id', 'asc');
+                }, 'showtimes', function ($join) {  
+                    $join->on('events.id', '=', 'showtimes.id_event');
+                }) 
+                ->leftJoin('mst_partners','events.id_partner', 'mst_partners.id')
+                ->groupBy('events.id')
+                ->get();
 
             $categories = TicketCategory::where('id_event',$id_event)
                 ->leftJoin('events','events.id', 'ticket_categories.id_event')
@@ -87,9 +99,12 @@ class ApiEventController extends ApiBaseController
                 ->leftJoin('events','events.id', 'showtimes.id_event')
                 ->get();
 
+            $methodPayments = TicketPayment::where('id_event',$id_event)->get();
+
             $data['events'] = $events;
             $data['categories'] = $categories;
             $data['showtimes'] = $showtimes;
+            $data['payment_method'] = $methodPayments;
 
             return $this->sendResponse($data, 'Success Inquiry Event.');
         }
