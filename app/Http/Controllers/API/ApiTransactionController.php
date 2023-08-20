@@ -230,7 +230,8 @@ class ApiTransactionController extends ApiBaseController
 
         // Perform calculations
         $grand_total = $queryTransactionTempsumPrice - $discount + ( ($queryTransactionTempsumPrice - $discount) * $tax / 100);
-        $partner_portion = $grand_total - ($grand_total * ($platform_fee / 100));
+        $grand_total_final = $grand_total + ($grand_total * ($platform_fee / 100));
+        $partner_portion = $grand_total;
         $status = '0';
 
         $tax = ( ($queryTransactionTempsumPrice - $discount) * $tax / 100);
@@ -250,7 +251,7 @@ class ApiTransactionController extends ApiBaseController
                 'discount' => $discount,
                 'tax' => $tax,
                 'platform_fee' => $platform_fee,
-                'grand_total' => $grand_total,
+                'grand_total' => $grand_total_final,
                 'partner_portion' => $partner_portion,
                 'status' => $status,
             ]);
@@ -346,6 +347,11 @@ class ApiTransactionController extends ApiBaseController
                 return $this->sendError('Transaction not found with this transaction_header_id', [], 404);
             }
 
+            $getPaymentMethod = TicketPayment::where('id_event', TransactionDetail::where('transaction_header_id', $existingTransaction->id)->value('id_event'))->value('id');
+            if ($getPaymentMethod != $payment_method) {
+                return $this->sendError('Payment Method not found with this transaction_header_id', [], 404);
+            }
+
             // Create a new Payment record with the base64-encoded payment file
             Payment::create([
                 'id_transaction_header' => $transaction_header_id,
@@ -365,8 +371,6 @@ class ApiTransactionController extends ApiBaseController
     
     public function paymentSubmit(Request $request) {
 
-      
-        
         // Replace this with the actual token
      
 
@@ -382,7 +386,13 @@ class ApiTransactionController extends ApiBaseController
     
         try {
             $transaction_header_id = $request->transaction_header_id;
-    
+
+            // Check if the payment exists for this transaction
+            $paymentExists = Payment::where('id_transaction_header', $transaction_header_id)->exists();
+            if (!$paymentExists) {
+            return $this->sendError('Payment has not been input yet for this transaction', [], 400);
+            }
+
             // Check if the transaction exists with the given no_transaction
             $transaction = TransactionHeader::where('id', $transaction_header_id)->first();
             if (!$transaction) {
