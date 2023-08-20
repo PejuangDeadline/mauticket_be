@@ -96,7 +96,9 @@ class ApiEventController extends ApiBaseController
                 ->get();
 
             $showtimes = Showtime::where('id_event',$id_event)
+                ->select('showtime_start','showtime_finish','id_event')
                 ->leftJoin('events','events.id', 'showtimes.id_event')
+                ->groupBy('showtime_start')
                 ->get();
 
             $methodPayments = TicketPayment::where('id_event',$id_event)->get();
