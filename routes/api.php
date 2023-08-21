@@ -36,6 +36,7 @@ Route::middleware('auth:api')->group(function () {
 
     //API Transaction
     Route::post('chart/add', [ApiTransactionController::class, 'chartAdd']);
+    Route::get('chart/view/{id_user}', [ApiTransactionController::class, 'chartView']);
     Route::get('chart/delete/{id_chart}', [ApiTransactionController::class, 'chartDelete']);
     Route::post('refcode/check', [ApiTransactionController::class, 'refCodeCheck']);
     Route::post('seats/check', [ApiTransactionController::class, 'seatCheck']);

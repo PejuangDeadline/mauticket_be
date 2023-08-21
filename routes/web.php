@@ -113,4 +113,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ajax/mappingDistrict/{city_id}', 'App\Http\Controllers\AjaxAreaController@searchDistrict')->name('mappingDistrict');
     Route::get('/ajax/mappingSubDistrict/{district_id}', 'App\Http\Controllers\AjaxAreaController@searchSubDistrict')->name('mappingSubDistrict');
     Route::get('/ajax/mappingZipcode/{subdistrict_id}', 'App\Http\Controllers\AjaxAreaController@searchZipcode')->name('mappingZipcode');
+
+    //Transaction
+    Route::get('/transaction', [TransactionController::class, 'index'])->middleware(['checkRole:User']);
+    Route::get('/transaction/detail/{id}', [TransactionController::class, 'detail'])->middleware(['checkRole:User']);
+    Route::get('/transaction/payment/{id}', [TransactionController::class, 'payment'])->middleware(['checkRole:User']);
+    Route::post('/transaction/accept-payment/{id}', [TransactionController::class, 'acceptPayment'])->middleware(['checkRole:User']);
+    Route::post('/transaction/refund-payment/{id}', [TransactionController::class, 'refundPayment'])->middleware(['checkRole:User']);
 });
