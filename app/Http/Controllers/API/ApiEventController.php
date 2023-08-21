@@ -120,7 +120,7 @@ class ApiEventController extends ApiBaseController
 
         //cek showtime exist
         $checkShowtime = Showtime::where('showtimes.id_event', $id_event)
-            ->whereDate('showtimes.showtime_start', $showtime)
+            ->where('showtimes.showtime_start', $showtime)
             ->count();
 
         if($checkShowtime > 0){
