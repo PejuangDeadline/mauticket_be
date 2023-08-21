@@ -443,20 +443,26 @@ class ApiTransactionController extends ApiBaseController
 
             $transaction_header_id = $request->transaction_header_id; // Add this line
 
-            $event = TransactionHeader::where('id', $transaction_header_id)->first();
-            if (!$event) {
+            $transactionHeader = TransactionHeader::where('id', $transaction_header_id)->first();
+            if (!$transactionHeader) {
                 return $this->sendError('Transaction not found with this id', [], 404);
             }
 
-            $user =  User::where('id', $event->id_user)->first();
-            $ticketDetails = TransactionDetail::where('transaction_header_id', $event->id)->get(); // Change to get()
-            $getEventInfo = TransactionHeader::where('id', $transaction_header_id)->first();
+            $user =  User::where('id', $transactionHeader->id_user)->first();
+            $transactionDetail = TransactionDetail::where('transaction_header_id', $transactionHeader->id)->get(); // Change to get()
+            $getEventInfo = Event::find(TransactionDetail::where('transaction_header_id', $transactionHeader->id)->first());
+            $getEventInfo = $getEventInfo[0];
             // Check if the transaction is already successful
-            if ($event->status == '0') {
+            if ($transactionHeader->status == '0') {
                 return $this->sendError('Transaction is Not Paid', [], 400);
             }
+             // Generate QR code for no_transaction value
+            $qrCode = new QrCode($transactionHeader->no_transaction);
 
-            Mail::to('mtaufikramadhan27@gmail.com')->send(new ETicketEmail($user, $event, $ticketDetails,$getEventInfo));
+            // Get the QR code image data as a data URI
+            
+
+            Mail::to('mtaufikramadhan27@gmail.com')->send(new ETicketEmail($user, $transactionHeader, $transactionDetail,$getEventInfo,$qrCode));
             return $this->sendResponse('E-ticket sent successfully', 200);
         }
 

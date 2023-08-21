@@ -30,6 +30,8 @@
     <div class="container">
         <header>
             <img src="{{ $message->embed(public_path('assets/img/Logo Option 3 (1).png')) }}" alt="Logo MauKarcis" class="logo align-left">
+           <!-- Add this code within the <header> or <div class="content"> section of your email view -->
+            {!! QrCode::size(250)->generate($transactionHeader->no_transaction) !!}
             <div style="clear: both;"></div> 
             <h1>{{ $getEventInfo->event_name }}</h1>
             <hr>
@@ -63,7 +65,7 @@
                     <th colspan="2">Info Penting</th>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ $event->important_info }}</td>
+                    <td colspan="2">{{ $transactionHeader->important_info }}</td>
                 </tr>
             </table>
 
@@ -72,18 +74,18 @@
                     <th colspan="2">Lainnya</th>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ $event->other_info }}</td>
+                    <td colspan="2">{{ $transactionHeader->other_info }}</td>
                 </tr>
             </table>
 
             <table>
                 <tr>
-                    <th>ID Event</th>
+                    <th>Seat Number</th>
                     <th>Price</th>
                 </tr>
-                @foreach ($ticketDetails as $ticketDetail)
+                @foreach ($transactionDetail as $ticketDetail)
                 <tr>
-                    <td>{{ $ticketDetail->id_event }}</td>
+                    <td>{{ $ticketDetail->no_seat }}</td>
                     <td>{{ 'Rp ' . number_format($ticketDetail->price, 0, ',', '.') }}</td>
                 </tr>
                 @endforeach
