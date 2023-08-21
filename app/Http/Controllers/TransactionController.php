@@ -62,6 +62,7 @@ class TransactionController extends Controller
             'payments.payment_method',
             )
         ->get();
+        //dd(base64_decode($payment->payment_file));
         return view('transaction.payment',compact('payment'));
     }
 

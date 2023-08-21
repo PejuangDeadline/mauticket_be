@@ -99,7 +99,34 @@
                           @foreach ($payment as $data)
                           <tr>
                             <td>{{ $no++ }}</td>
-                            <td>-</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#imagePayment{{ $data->id }}">
+                                    Show
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="imagePayment{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Payment File</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            @if (isset($data->payment_file))
+                                                <img src="data:image/png;base64, {{$data->payment_file}}" />
+                                            @else
+                                                <img src="{{ asset('img/image_not_available.png') }}" class="img-fluid" alt="">
+                                            @endif
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <!-- Modal -->
+                            </td>
                             <td>
                                 @if($data->closed_by)
                                 <div class="text-primary">
