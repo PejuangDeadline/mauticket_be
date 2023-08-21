@@ -86,13 +86,6 @@ class ApiTransactionController extends ApiBaseController
     }
 
     public function chartView($id_user){
-        $events = TransactionTemp::where('id_user',$id_user)
-            ->select('events.event_name')
-            ->leftJoin('ticket_categories','transaction_temps.id_ticket_category','ticket_categories.id')
-            ->leftJoin('events','transaction_temps.id_event','events.id')
-            ->groupBy('events.event_name')
-            ->get();
-
         $charts = TransactionTemp::where('id_user',$id_user)
             ->select('transaction_temps.*','ticket_categories.category','events.event_name')
             ->leftJoin('ticket_categories','transaction_temps.id_ticket_category','ticket_categories.id')
