@@ -30,7 +30,7 @@ Route::middleware('auth:api')->group(function () {
     //API Event
     Route::post('event/search', [ApiEventController::class, 'eventSearch']);
     Route::get('event/{id_event}', [ApiEventController::class, 'getByEvent']);
-    Route::get('showtime/{id_showtime}', [ApiEventController::class, 'getByShowtime']);
+    Route::get('showtime/{id_event}/{showtime}', [ApiEventController::class, 'getByShowtime']);
     Route::get('category/{id_category}', [ApiEventController::class, 'getByCategory']);
 
     //API Transaction
@@ -41,4 +41,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('checkout', [ApiTransactionController::class, 'checkoutStore']);
     Route::post('payment/upload', [ApiTransactionController::class, 'paymentUpload']);
     Route::post('payment/submit', [ApiTransactionController::class, 'paymentSubmit']);
+    Route::get('payment/method/{id_event}', [ApiTransactionController::class, 'paymentMethod']);
 });

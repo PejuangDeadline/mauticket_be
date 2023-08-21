@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rule;
+use App\Models\Showtime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -9,7 +11,6 @@ use App\Models\TransactionHeader;
 use App\Models\TransactionDetail;
 use App\Models\Payment;
 use App\Models\TransactionTemp;
-use App\Models\Rule;
 use App\Models\Dropdown;
 use Illuminate\Support\Carbon;
 
@@ -90,7 +91,7 @@ class TransactionController extends Controller
             $id = encrypt($id);
             return redirect('/transaction/payment/'. $id)->with('status', 'Success Accept Ticket Payment');
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             DB::rollback();
             // something went wrong
             $id = encrypt($id);

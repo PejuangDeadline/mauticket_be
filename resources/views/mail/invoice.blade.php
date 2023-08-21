@@ -2,79 +2,69 @@
 <html>
 <head>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+        /* Add your CSS styles here */
+        .logo {
+            max-width: 30%; /* Set the maximum width to 100% of the container */
+            height: auto; /* Automatically adjust the height to maintain aspect ratio */
+            display: block; /* Remove any extra space around the image */
+            margin: 0 auto; /* Center the image horizontally */
         }
-
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        header {
-            background-color: #35424a;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            padding: 0;
-        }
-
-        .content {
-            background-color: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-
-        footer {
-            background-color: #35424a;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+        .align-left {
+            float: left; /* Float the image to the left */
+            margin-right: 20px; /* Add some margin to separate the image from text */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Invoice untuk Transaksi {{ $transaction->no_transaction }}</h1>
+            <h1>EMAIL INVOICE</h1>
+            <p>Subject: [maukarcis.com-Invoice] Order ID {{ $transaction->no_transaction }} ({{ $getEvenetInfo->event_name }})</p>
+            <hr>
         </header>
         <div class="content">
+            <img src="{{ $message->embed(public_path('assets/img/Logo Option 3 (1).png')) }}" alt="Logo MauKarcis" class="logo align-left">
+            <div style="clear: both;"></div> 
+            <p>Halo {{ $getUser->firstname }},</p>
+            <p>Terima kasih telah memesan tiket {{ $getEvenetInfo->event_name }}.</p>
+            <p>Berikut detail pemesanan:</p>
+
             <table>
                 <tr>
-                    <th>Detail Transaksi</th>
+                    <td><strong>Order ID</strong></td>
+                    <td>: {{ $transaction->no_transaction }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Nama Pengguna:</strong></td>
-                    <td>{{ $getUser->firstname.' '.$getUser->lastname }}</td>
+                    <td><strong>Nama Pengguna</strong></td>
+                    <td>: {{ $getUser->firstname.' '.$getUser->lastname }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Jumlah:</strong></td>
-                    <td>{{ $transaction->qty }}</td>
+                    <td><strong>Jumlah Karcis</strong></td>
+                    <td>: {{ $transaction->qty }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Subtotal:</strong></td>
-                    <td>{{ 'Rp ' . number_format($transaction->grand_total, 0, ',', '.') }}</td>
+                    <td><strong>Subtotal</strong></td>
+                    <td>: {{ 'Rp ' . number_format($transaction->sub_total, 0, ',', '.') }}</td>
                 </tr>
-                
-                <!-- Tambahkan atribut lain jika diperlukan -->
+                <tr>
+                    <td><strong>Promo</strong></td>
+                    <td>: ({{ 'Rp ' . number_format($transaction->discount, 0, ',', '.') }})</td>
+                </tr>
+                <tr>
+                    <td><strong>Tax (10%)</strong></td>
+                    <td>: {{ 'Rp ' . number_format($transaction->tax, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Biaya Layanan</strong></td>
+                    <td>: {{ 'Rp ' . number_format($transaction->platform_fee, 0, ',', '.') }} <hr></td>
+                </tr>
+                <tr>
+                    <td><strong>Total Pembayaran</strong></td>
+                    <td>: {{ 'Rp ' . number_format($transaction->grand_total, 0, ',', '.') }}</td>
+                </tr>
             </table>
+            <p>maukarcis.com</p>
         </div>
-        
-        <footer>
-            [Tim MauKarcis]
-        </footer>
     </div>
 </body>
 </html>

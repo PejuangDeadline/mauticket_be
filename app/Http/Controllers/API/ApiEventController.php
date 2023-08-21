@@ -9,6 +9,7 @@ use App\Http\Controllers\API\ApiBaseController;
 use App\Models\Event;
 use App\Models\Showtime;
 use App\Models\TicketCategory;
+use App\Models\TicketPayment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -77,19 +78,35 @@ class ApiEventController extends ApiBaseController
 
         if($checkEvent > 0){
             //query event
-            $events = Event::where('id',$id_event)->get();
+            $events = Event::where('events.id',$id_event)
+                ->select('mst_partners.partner_name','events.*', 'showtimes.showtime_start')
+                ->leftJoinSub(function ($query) {
+                    $query->select('*')
+                        ->from('showtimes')
+                        ->orderBy('id', 'asc');
+                }, 'showtimes', function ($join) {  
+                    $join->on('events.id', '=', 'showtimes.id_event');
+                }) 
+                ->leftJoin('mst_partners','events.id_partner', 'mst_partners.id')
+                ->groupBy('events.id')
+                ->get();
 
             $categories = TicketCategory::where('id_event',$id_event)
                 ->leftJoin('events','events.id', 'ticket_categories.id_event')
                 ->get();
 
             $showtimes = Showtime::where('id_event',$id_event)
+                ->select('showtime_start','showtime_finish','id_event')
                 ->leftJoin('events','events.id', 'showtimes.id_event')
+                ->groupBy('showtime_start')
                 ->get();
+
+            $methodPayments = TicketPayment::where('id_event',$id_event)->get();
 
             $data['events'] = $events;
             $data['categories'] = $categories;
             $data['showtimes'] = $showtimes;
+            $data['payment_method'] = $methodPayments;
 
             return $this->sendResponse($data, 'Success Inquiry Event.');
         }
@@ -98,16 +115,19 @@ class ApiEventController extends ApiBaseController
         }
     }
 
-    public function getByShowtime($id_showtime){
+    public function getByShowtime($id_event,$showtime){
         // dd($id_event);
 
         //cek showtime exist
-        $checkShowtime = Showtime::where('id',$id_showtime)->count();
+        $checkShowtime = Showtime::where('showtimes.id_event', $id_event)
+            ->whereDate('showtimes.showtime_start', $showtime)
+            ->count();
 
         if($checkShowtime > 0){
-            $showtimes = Showtime::where('showtimes.id',$id_showtime)
-                ->leftJoin('events','events.id', 'showtimes.id_event')
-                ->leftJoin('ticket_categories','ticket_categories.id', 'showtimes.id_category')
+            $showtimes = Showtime::select('showtimes.*', 'ticket_categories.category', 'ticket_categories.price')
+                ->leftJoin('ticket_categories', 'showtimes.id_category', '=', 'ticket_categories.id')
+                ->where('showtimes.id_event', $id_event)
+                ->whereDate('showtimes.showtime_start', $showtime)
                 ->get();
 
             $data['showtimes'] = $showtimes;

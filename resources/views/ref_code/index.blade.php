@@ -163,12 +163,18 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <button title="Edit Rule" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
+                                                        <button title="Edit RefCode" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
+                                                        @if ($data->is_active == '1')
+                                                        <button title="Delete RefCode" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
+                                                        @else
+                                                        <button title="Activate RefCode" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                        @endif
                                                     </td>
                                     </div>
                                     </td>
@@ -230,9 +236,15 @@
                                                 @method('delete')
                                                 <input type="text" hidden value="{{$data->id}}">
                                                 <div class="modal-body">
+                                                    @if ($data->is_active == '1')
                                                     <div class="form-group">
                                                         Are you sure you want to delete <label for="rule">{{ $data->code }}</label>?
                                                     </div>
+                                                    @else
+                                                    <div class="form-group">
+                                                        Are you sure you want to activate <label for="rule">{{ $data->code }}</label>?
+                                                    </div>
+                                                    @endif
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
