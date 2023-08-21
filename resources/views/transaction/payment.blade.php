@@ -234,8 +234,8 @@
                                         <form action="{{ url('transaction/refund-payment/'.$data->id) }}" method="POST">
                                         @csrf
                                         @method('post')
-                                        <input type="text" hidden value="{{$data->id}}">
-                                        <input type="text" hidden value="{{$data->id_transaction_header}}">
+                                        <input type="hidden" name="id" id="id" value="{{ $data->payment_id }}">
+                                        <input type="hidden" name="id_transaction_header" id="id_transaction_header" value="{{ $data->id_transaction_header }}">
                                         <div class="modal-body">
                                             <div class="form-group">
                                             Are you sure you want to refund payment ?

@@ -99,4 +99,58 @@ class TransactionController extends Controller
             return redirect('/transaction/payment/'. $id)->with('failed', 'Failed Accept Ticket Payment');
         }
     }
+    public function refundPayment(Request $request,$id)
+    {
+        //dd($request);
+        $created_date=Carbon::now();
+        $created_by=auth()->user()->name;
+
+        DB::beginTransaction();
+        try {
+
+            $acceptTicketPayment = Payment::where('id', $id)->update([
+                'status' => '2',
+                'closed_by' => $created_by,
+                'closed_date' => $created_date
+            ]);
+
+            $acceptTicketPaymentHeader = TransactionHeader::where('id', $request->id_transaction_header)->update([
+                'status' => '2',
+                'notes' => $request->notes,
+            ]);
+            $query = TransactionHeader::where('id', $request->id_transaction_header);
+            $getArrayID = $query->pluck('id')->toArray();
+            $getArrayDetail = TransactionDetail::where('transaction_header_id', $request->id_transaction_header)
+            ->select('*')
+            ->get()->toArray();
+            //dd($getArrayDetail);
+            if (!empty($getArrayID)) {
+
+                // perulangan update array
+                foreach ($getArrayDetail as $detail) {
+                    //dd($detail);
+                    $idTicketCategory = $detail['id_ticket_category'];
+                    $idEvent = $detail['id_event'];
+                    $idShowtime = $detail['id_showtime'];
+
+                    // update tabel showtime qty bertambah 1 setiap kondisi terpenuhi
+                    Showtime::where('id_category', $idTicketCategory)
+                        ->where('id_event', $idEvent)
+                        ->where('id', $idShowtime)
+                        ->increment('qty', 1);
+                }
+            }
+
+            DB::commit();
+            // all good
+            $id = encrypt($id);
+            return redirect('/transaction/payment/'. $id)->with('status', 'Success Accept Ticket Payment');
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            // something went wrong
+            $id = encrypt($id);
+            return redirect('/transaction/payment/'. $id)->with('failed', 'Failed Accept Ticket Payment');
+        }
+    }
 }
