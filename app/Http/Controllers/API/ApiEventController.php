@@ -115,19 +115,27 @@ class ApiEventController extends ApiBaseController
         }
     }
 
-    public function getByShowtime($id_event,$showtime){
+    public function getByShowtime(Request $request){
         // dd($id_event);
+        $validator = Validator::make($request->all(), [
+            'id_event' => 'required',
+            'showtime' => 'required'
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
 
         //cek showtime exist
-        $checkShowtime = Showtime::where('showtimes.id_event', $id_event)
-            ->where('showtimes.showtime_start', $showtime)
+        $checkShowtime = Showtime::where('showtimes.id_event', $request->id_event)
+            ->where('showtimes.showtime_start', $request->showtime)
             ->count();
 
         if($checkShowtime > 0){
             $showtimes = Showtime::select('showtimes.*', 'ticket_categories.category', 'ticket_categories.price')
                 ->leftJoin('ticket_categories', 'showtimes.id_category', '=', 'ticket_categories.id')
-                ->where('showtimes.id_event', $id_event)
-                ->whereDate('showtimes.showtime_start', $showtime)
+                ->where('showtimes.id_event', $request->id_event)
+                ->where('showtimes.showtime_start', $request->showtime)
                 ->get();
 
             $data['showtimes'] = $showtimes;
