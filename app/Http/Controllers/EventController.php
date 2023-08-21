@@ -158,7 +158,7 @@ class EventController extends Controller
 
     public function storeUpdateEvent(Request $request)
     {
-         //dd($request->all());
+        //dd($request->all());
 
         $request->validate([
             "id_partner" => "required",
@@ -179,9 +179,9 @@ class EventController extends Controller
             "facility" => "required",
         ]);
 
-        $id_partner = $request->id_partner;
-        $event = Event::where('id',$id_partner)->first();
-
+        $id = $request->id;
+        $event = Event::where('id',$id)->first();
+        //dd($event);
         //get id if update regional
         $province_id = $request->province_by_id;
         $city_id = $request->city;
@@ -208,7 +208,7 @@ class EventController extends Controller
 
         //Area Province by ID
         $province_name = $this->provinceName($token, $request->province_by_id);
-
+        // dd($province_name);
         // compare data with database
         $event->province = $province_name;
         $event->city = $city_id;
@@ -229,7 +229,7 @@ class EventController extends Controller
                 //Area Subdistrict by ID
                 $subdistrict_name = $this->subdistrictName($token, $subdistrict_id);
 
-                $query =  Event:: where('id',$request->id_partner)
+                $query =  Event:: where('id',$id)
                     ->update([
                     'id_partner' => $request->id_partner,
                     'event_category' => $request->event_category,
@@ -254,7 +254,7 @@ class EventController extends Controller
             else
             {
                 //dd('tidak berubah');
-                $query =  Event:: where('id',$request->id_partner)
+                $query =  Event:: where('id',$id)
                     ->update([
                     'id_partner' => $request->id_partner,
                     'event_category' => $request->event_category,

@@ -155,7 +155,8 @@
 
                                         <div class="mb-3">
                                             <label><b>Address</b></label>
-                                            <textarea class="form-control my-editor" id="my-editor" name="event_address" cols="30" rows="3" placeholder=""></textarea>
+                                            {{-- <textarea class="form-control my-editor" id="my-editor" name="event_address" cols="30" rows="3" placeholder=""></textarea> --}}
+                                            <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder="">{{ old('event_address') }}</textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Exchange Ticket Info</b></label>
@@ -257,7 +258,7 @@
                             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#imageBanner{{ $data->id }}">
                                 Banner
                             </button>
-                            
+
                             <!-- Modal -->
                             <div class="modal fade" id="imageVenue{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -492,6 +493,7 @@
                                     <input class="form-control" id="created_by" name="created_by" value="{{auth()->user()->email}}"/>
                                     <input class="form-control" id="is_active" name="is_active" value="1"/>
                                     <input class="form-control" id="id_partner" name="id_partner" value="{{$data->id_partner}}"/>
+                                    <input class="form-control" id="id" name="id" value="{{$data->id}}"/>
                                 </div>
                                 <div class="row mb-3">
 
@@ -573,7 +575,7 @@
 
                                 <div class="mb-3">
                                     <label><b>Address</b></label>
-                                    <textarea class="form-control" id="address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
+                                    <textarea class="form-control" id="event_address" name="event_address" cols="30" rows="3" placeholder="">{{$data->event_address}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label><b>Exchange Ticket Info</b></label>
