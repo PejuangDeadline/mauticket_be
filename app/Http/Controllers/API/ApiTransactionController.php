@@ -19,6 +19,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceEmail;
 use App\Models\TicketPayment;
+use App\Mail\ETicketEmail;
+use Endroid\QrCode\QrCode;
 
 class ApiTransactionController extends ApiBaseController
 {
@@ -371,8 +373,6 @@ class ApiTransactionController extends ApiBaseController
     
     public function paymentSubmit(Request $request) {
 
-        // Replace this with the actual token
-
         // Validate request data using the validate method
         $validator = Validator::make($request->all(), [
             'transaction_header_id' => 'required|string', // Assuming no_transaction is a string
@@ -399,7 +399,7 @@ class ApiTransactionController extends ApiBaseController
             }
 
             $getUser =  User::where('id',$transaction->id_user)->first();
-            $getEvenetInfo = Event::find(TransactionDetail::where('transaction_header_id', $transaction->id)->value('id_event'));
+            $getEventInfo = Event::find(TransactionDetail::where('transaction_header_id', $transaction->id)->value('id_event'));
             // Check if the transaction is already successful
             if ($transaction->status == '1') {
                 return $this->sendError('Transaction is already successful', [], 400);
@@ -412,7 +412,7 @@ class ApiTransactionController extends ApiBaseController
             Payment::where('id_transaction_header', $transaction_header_id)->update(['status' => '1']);
         
             // Replace this with the actual token
-            Mail::to($getUser->email)->send(new InvoiceEmail($transaction,$getUser,$getEvenetInfo));
+            Mail::to($getUser->email)->send(new InvoiceEmail($transaction,$getUser,$getEventInfo));
 
             // Return a success response
             return $this->sendResponse('Transaction marked as successful', 200);
@@ -428,5 +428,37 @@ class ApiTransactionController extends ApiBaseController
         
         return $timestamp . $randomNumber;
     }
+
+            public function eTicket(Request $request)
+        {
+            // Validate request data using the validate method
+            $validator = Validator::make($request->all(), [
+                'transaction_header_id' => 'required|string', // Assuming no_transaction is a string
+            ]);
+
+            // Check if validation fails
+            if ($validator->fails()) {
+                return $this->sendError('Validation Error', $validator->errors(), 422);
+            }
+
+            $transaction_header_id = $request->transaction_header_id; // Add this line
+
+            $event = TransactionHeader::where('id', $transaction_header_id)->first();
+            if (!$event) {
+                return $this->sendError('Transaction not found with this id', [], 404);
+            }
+
+            $user =  User::where('id', $event->id_user)->first();
+            $ticketDetails = TransactionDetail::where('transaction_header_id', $event->id)->get(); // Change to get()
+            $getEventInfo = TransactionHeader::where('id', $transaction_header_id)->first();
+            // Check if the transaction is already successful
+            if ($event->status == '0') {
+                return $this->sendError('Transaction is Not Paid', [], 400);
+            }
+
+            Mail::to('mtaufikramadhan27@gmail.com')->send(new ETicketEmail($user, $event, $ticketDetails,$getEventInfo));
+            return $this->sendResponse('E-ticket sent successfully', 200);
+        }
+
     
 }

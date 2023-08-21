@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [ApiRegisterController::class, 'register']);
 Route::post('getToken', [ApiRegisterController::class, 'getToken']);
+Route::post('e-ticket', [ApiTransactionController::class, 'eTicket']);
 
 Route::middleware('auth:api')->group(function () {
     //Auth for FE
