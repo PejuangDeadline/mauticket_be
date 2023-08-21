@@ -179,6 +179,7 @@
                             </td>
                             <td>{{ $data->payment_method }}</td>
                             <td>
+                                @if($data->payment_status == 1)
                                 <button title="Accept Payment" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-accept{{ $data->id }}">
                                     <i class="fas fa-check"></i>
                                 </button>
@@ -186,6 +187,15 @@
                                 <button title="Refund Payment" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-refund{{ $data->id }}">
                                     <i class="fas fa-undo"></i>
                                 </button>
+                                @else
+                                {{-- <button title="Accept Payment" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-accept{{ $data->id }}" disabled >
+                                    <i class="fas fa-check"></i>
+                                </button>
+
+                                <button title="Refund Payment" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-refund{{ $data->id }}" disabled >
+                                    <i class="fas fa-undo"></i> --}}
+                                </button>
+                                @endif
 
                                 {{-- Modal Accept Payment --}}
                                 <div class="modal fade" id="modal-accept{{ $data->id }}" tabindex="-1" aria-labelledby="modal-accept{{ $data->id }}-label" aria-hidden="true">

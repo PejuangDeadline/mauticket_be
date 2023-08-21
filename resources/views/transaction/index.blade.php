@@ -146,7 +146,10 @@
                             <td>{{ $data->notes }}</td>
                             <td>
                                 <a href="{{ url('transaction/detail/'.encrypt($data->id) ) }}" class="btn btn-secondary btn-sm my-1" title="Transaction Details"><i class="fa fa-file"></i></a>
+                                @if($data->status != 3)
                                 <a href="{{ url('transaction/payment/'.encrypt($data->id) ) }}" class="btn btn-primary btn-sm my-1" title="Payment"><i class="fas fa-shopping-bag"></i></a>
+                                @else
+                                @endif
                             </td>
                           </tr>
 
