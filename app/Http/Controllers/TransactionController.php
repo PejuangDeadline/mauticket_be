@@ -67,7 +67,7 @@ class TransactionController extends Controller
     public function acceptPayment(Request $request,$id)
     {
         //dd($request->id_transaction_header);
-        // $id = decrypt($id);
+        //$id = decrypt($id);
         $created_date=Carbon::now();
         $created_by=auth()->user()->name;
 
@@ -80,7 +80,7 @@ class TransactionController extends Controller
                 'closed_date' => $created_date
             ]);
 
-            $acceptTicketPaymentHeader = Payment::where('id', $request->id_transaction_header)->update([
+            $acceptTicketPaymentHeader = TransactionHeader::where('id', $request->id_transaction_header)->update([
                 'status' => '4',
                 'notes' => $request->notes,
             ]);
@@ -90,7 +90,7 @@ class TransactionController extends Controller
             $id = encrypt($id);
             return redirect('/transaction/payment/'. $id)->with('status', 'Success Accept Ticket Payment');
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
             // something went wrong
             $id = encrypt($id);
