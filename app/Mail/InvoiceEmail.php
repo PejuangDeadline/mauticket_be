@@ -36,7 +36,11 @@ class InvoiceEmail extends Mailable
      */
     public function build()
     {
+        $subject = "[maukarcis.com-Invoice] Order ID " . $this->transaction->no_transaction . " (" . $this->getEvenetInfo->event_name . ")";
+    
         return $this->view('mail.invoice')
-            ->subject('Invoice for Transaction ' . $this->transaction->no_transaction);
+            ->subject($subject);
     }
+    
+
 }

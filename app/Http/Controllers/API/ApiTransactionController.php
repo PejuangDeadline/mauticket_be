@@ -372,7 +372,6 @@ class ApiTransactionController extends ApiBaseController
     public function paymentSubmit(Request $request) {
 
         // Replace this with the actual token
-     
 
         // Validate request data using the validate method
         $validator = Validator::make($request->all(), [

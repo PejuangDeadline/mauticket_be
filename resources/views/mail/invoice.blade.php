@@ -18,14 +18,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>EMAIL INVOICE</h1>
-            <p>Subject: [maukarcis.com-Invoice] Order ID {{ $transaction->no_transaction }} ({{ $getEvenetInfo->event_name }})</p>
+            <img src="{{ $message->embed(public_path('assets/img/Logo Option 3 (1).png')) }}" alt="Logo MauKarcis" class="logo align-left">
+            <div style="clear: both;"></div> 
             <hr>
         </header>
         <div class="content">
-            <img src="{{ $message->embed(public_path('assets/img/Logo Option 3 (1).png')) }}" alt="Logo MauKarcis" class="logo align-left">
-            <div style="clear: both;"></div> 
-            <p>Halo {{ $getUser->firstname }},</p>
+            <h3>Halo <strong>{{ $getUser->firstname }}</strong>,</h3>
             <p>Terima kasih telah memesan tiket {{ $getEvenetInfo->event_name }}.</p>
             <p>Berikut detail pemesanan:</p>
 
@@ -63,7 +61,6 @@
                     <td>: {{ 'Rp ' . number_format($transaction->grand_total, 0, ',', '.') }}</td>
                 </tr>
             </table>
-            <p>maukarcis.com</p>
         </div>
     </div>
 </body>
