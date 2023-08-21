@@ -85,6 +85,44 @@ class ApiTransactionController extends ApiBaseController
         }
     }
 
+    public function chartView($id_user){
+        $events = TransactionTemp::where('id_user',$id_user)
+            ->select('events.event_name')
+            ->leftJoin('ticket_categories','transaction_temps.id_ticket_category','ticket_categories.id')
+            ->leftJoin('events','transaction_temps.id_event','events.id')
+            ->groupBy('events.event_name')
+            ->get();
+
+        $charts = TransactionTemp::where('id_user',$id_user)
+            ->select('transaction_temps.*','ticket_categories.category','events.event_name')
+            ->leftJoin('ticket_categories','transaction_temps.id_ticket_category','ticket_categories.id')
+            ->leftJoin('events','transaction_temps.id_event','events.id')
+            ->get();
+
+            $groupedData = [];
+            foreach ($charts as $chart) {
+            $groupName = $chart->event_name;
+            $groupedData[$groupName][] = [
+                'id' => $chart->id,
+                'id_user' => $chart->id_user,
+                'id_ticket_category' => $chart->id_ticket_category,
+                'id_event' => $chart->id_event,
+                'id_showtime' => $chart->id_showtime,
+                'price' => $chart->price,
+                'created_at' => $chart->created_at,
+                'updated_at' => $chart->updated_at,
+                'category' => $chart->category,
+                'event_name' => $chart->event_name,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $groupedData,
+            'message' => 'Success View Chart',
+        ]);
+    }
+
     public function chartDelete($id_chart){
         //delete Transaction Temp
         $delTemp = TransactionTemp::where('id', $id_chart)->delete();
