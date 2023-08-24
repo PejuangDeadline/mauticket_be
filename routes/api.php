@@ -30,11 +30,12 @@ Route::middleware('auth:api')->group(function () {
     //API Event
     Route::post('event/search', [ApiEventController::class, 'eventSearch']);
     Route::get('event/{id_event}', [ApiEventController::class, 'getByEvent']);
-    Route::get('showtime/{id_event}/{showtime}', [ApiEventController::class, 'getByShowtime']);
+    Route::post('showtime', [ApiEventController::class, 'getByShowtime']);
     Route::get('category/{id_category}', [ApiEventController::class, 'getByCategory']);
 
     //API Transaction
     Route::post('chart/add', [ApiTransactionController::class, 'chartAdd']);
+    Route::get('chart/view/{id_user}', [ApiTransactionController::class, 'chartView']);
     Route::get('chart/delete/{id_chart}', [ApiTransactionController::class, 'chartDelete']);
     Route::post('refcode/check', [ApiTransactionController::class, 'refCodeCheck']);
     Route::post('seats/check', [ApiTransactionController::class, 'seatCheck']);
