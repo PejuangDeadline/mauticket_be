@@ -30,10 +30,10 @@
     <div class="container">
         <header>
             <img src="{{ $message->embed(public_path('assets/img/Logo Option 3 (1).png')) }}" alt="Logo MauKarcis" class="logo align-left">
-           <!-- Add this code within the <header> or <div class="content"> section of your email view -->
-            {!! QrCode::size(250)->generate($transactionHeader->no_transaction) !!}
+            <img src="data:image/png;base64, {!! base64_encode(QrCode::size(100)->generate($transactionHeader->id)) !!} ">
             <div style="clear: both;"></div> 
             <h1>{{ $getEventInfo->event_name }}</h1>
+            <a href="{{url('pdfe-ticket/'.encrypt($transactionHeader->id))}}">Download E-Ticket</a>
             <hr>
         </header>
         <div class="content">
@@ -56,25 +56,34 @@
                     <th colspan="2">Info Penukaran</th>
                 </tr>
                 <tr>
-                    <td colspan="2">Tunjukkan eTicket yang telah diterima pada email atau halaman Order pada website maukarcis.com kepada petugas di lapangan</td>
+                    <td colspan="2">{!! $getEventInfo->exchange_ticket_info !!}</td>
                 </tr>
             </table>
 
             <table>
                 <tr>
-                    <th colspan="2">Info Penting</th>
+                    <th colspan="4">Info Penting</th>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ $transactionHeader->important_info }}</td>
+                    <td>{!! $getEventInfo->tc_info !!}</td>
+                    <td>{!! $getEventInfo->including_info !!}</td>
+                    <td>{!! $getEventInfo->excluding_info !!}</td>
+                    <td>{!! $getEventInfo->facility !!}</td>
                 </tr>
             </table>
 
             <table>
                 <tr>
-                    <th colspan="2">Lainnya</th>
+                    <th colspan="3">Lainnya</th>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ $transactionHeader->other_info }}</td>
+                    <td>Transaksi maukarcis.com yang resmi hanya dilakukan melalui website. Kami tidak bertanggungjawab atas transaksi yang terjadi diluar website</td>
+                </tr>
+                <tr>
+                    <td>Maukarcis.com berperan sebagai agen penjualan karcis yang hanya bertanggungjawab terhadap penjualan karcis, jika terjadi hal-hal yang timbul diluar penjualan karcis merupakan tanggungjawab antara pembeli dan promotor acara atau penyelenggara acara</td>
+                </tr>
+                <tr>
+                    <td>Terkait dengan pengembalian dana, maukarcis.com berperan sebagai agen penjualan karcis sehingga jika terjadi proses refund sepenuhnya tunduk kepada kebijakan promotor atau penyelenggara acara</td>
                 </tr>
             </table>
 

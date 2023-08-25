@@ -15,6 +15,7 @@ use App\Http\Controllers\SeatController;
 use App\Http\Controllers\TicketPaymentController;
 use App\Http\Controllers\TicketCategoryController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\EticketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ use App\Http\Controllers\TransactionController;
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'postLogin']);
 Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/pdfe-ticket/{id}', [EticketController::class, 'index']);
 
 Route::middleware(['auth'])->group(function () {
     //Home Controller
